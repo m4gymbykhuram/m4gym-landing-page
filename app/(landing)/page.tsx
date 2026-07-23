@@ -1,0 +1,32 @@
+import type { Metadata } from 'next'
+import HeroSection from '@/app/components/HeroSection'
+import MarqueeStrip from '@/app/components/landing/MarqueeStrip'
+import WhatInsited from '@/app/components/landing/WhatInsited'
+import WhatWeOffer from '../components/landing/WhatWeOffer'
+import Features from '../components/landing/Features'
+import PricingSection from '../components/landing/PricingSection'
+
+export const metadata: Metadata = {
+  title: 'M4 GYM – Run Your Entire Gym From One Place',
+  description:
+    'M4 GYM is a powerful all-in-one gym management platform. Manage members, staff, classes, payments and more — from a single dashboard.',
+  openGraph: {
+    title: 'M4 GYM – Run Your Entire Gym From One Place',
+    description:
+      'The all-in-one gym management platform for owners, managers, trainers and members.',
+    type: 'website',
+  },
+}
+
+export default function LandingPage() {
+  return (
+    <>
+      <HeroSection />
+      <MarqueeStrip />
+      <WhatInsited />
+      <WhatWeOffer />
+      <Features />
+      <PricingSection />
+    </>
+  )
+}

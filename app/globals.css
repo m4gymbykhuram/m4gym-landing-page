@@ -1,26 +1,107 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ───────────────────────────────────────────
+   Theme Tokens – Tailwind v4 @theme inline
+─────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Primary brand colors */
+  --color-primary: #DDEB18;
+  --color-primary-light: #B7FF3C;
+  --color-primary-dark: #c2d100;
+
+  /* Background / surface */
+  --color-bg-base: #0a0a0a;
+  --color-bg-surface: #111111;
+  --color-bg-elevated: #1a1a1a;
+  --color-bg-card: #141414;
+
+  /* Text */
+  --color-text-base: #ffffff;
+  --color-text-muted: #a0a0a0;
+  --color-text-dim: #666666;
+
+  /* Fonts */
+  --font-anton: var(--font-anton);
+  --font-archivo: var(--font-archivo);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ───────────────────────────────────────────
+   Global Reset & Base
+─────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  font-family: var(--font-archivo), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ───────────────────────────────────────────
+   Primary Gradient Utility
+─────────────────────────────────────────── */
+.bg-primary-gradient {
+  background: linear-gradient(90deg, #B7FF3C 0%, #E0F300 100%);
+}
+
+.text-primary-gradient {
+  background: linear-gradient(90deg, #B7FF3C 0%, #E0F300 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ───────────────────────────────────────────
+   Anton font helper class
+─────────────────────────────────────────── */
+.font-anton {
+  font-family: var(--font-anton), sans-serif;
+}
+
+.font-archivo {
+  font-family: var(--font-archivo), sans-serif;
+}
+
+/* ───────────────────────────────────────────
+   Marquee animation
+─────────────────────────────────────────── */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ───────────────────────────────────────────
+   Scrollbar styling
+─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #DDEB18;
+  border-radius: 3px;
 }
