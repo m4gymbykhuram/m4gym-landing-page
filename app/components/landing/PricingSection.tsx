@@ -5,6 +5,7 @@ import { motion, Variants } from 'framer-motion'
 import { pricingPlans } from '@/lib/pricing-data'
 import BillingToggle from '../BillingToggle'
 import PricingCard from '../PricingCard'
+import SectionHeading from './SectionHeading'
 
 const containerVariants: Variants = {
   hidden: {},
@@ -22,10 +23,12 @@ export default function PricingSection() {
   )
 
   return (
-    <section className="relative bg-[#0A0A0B] py-20 md:py-28 px-4 md:px-8">
+    <section className="relative bg-[#111214] py-20 md:py-28 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-          <h2 className="font-anton text-3xl sm:text-4xl text-white uppercase leading-tight max-w-lg">
+        <SectionHeading badge="Pricing Plans" align="left" />
+
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 mt-5">
+          <h2 className="font-anton text-3xl sm:text-4xl xl:text-[44px] text-white uppercase leading-tight max-w-lg">
             Pricing Plans For Smart Automation.
           </h2>
 

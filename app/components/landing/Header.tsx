@@ -8,17 +8,17 @@ import CustomButton from '../CustomButton'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Features', href: '#features', hasDropdown: true },
-  { label: 'Pricing', href: '#pricing' },
+  { label: 'Features', href: '#features' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '#blog' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '/contact' },
 ]
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('Home')
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 py-3 md:px-8">
+    <header className="fixed backdrop-blur-2xl md:backdrop-blur-none top-0 left-0 right-0 z-50 px-4 py-3 md:px-8">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
@@ -70,13 +70,6 @@ export default function Header() {
                   }`}
                 >
                   {link.label}
-                  {link.hasDropdown && (
-                    <ChevronDown
-                      className={`w-4 h-4 transition-colors duration-200 ${
-                        isActive ? 'text-[#E4FF3D]' : 'text-white/40'
-                      }`}
-                    />
-                  )}
                 </span>
               </Link>
             )

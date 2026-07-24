@@ -20,7 +20,7 @@ export default function BillingToggle({
             <button
               key={cycle}
               onClick={() => onChange(cycle)}
-              className="relative px-10 py-3  rounded-full text-sm font-archivo font-semibold"
+              className="relative px-4 w-45 py-3  rounded-full text-sm font-archivo font-semibold"
             >
               {isActive && (
                 <motion.span
@@ -42,11 +42,11 @@ export default function BillingToggle({
               >
                 {cycle}
               </span>
-              {/* {cycle === 'yearly' && (
-                <span className="text-xs font-archivo font-semibold bg-white/10 text-white/70 rounded-full px-2.5 py-1">
+              {cycle === 'yearly' && (
+                <span className="relative text-xs font-archivo font-semibold text-[#858585] bg-[#FFFFFF17] ml-2 z-50 rounded-full p-1 border border-white/6 px-2.5">
                   Save 30%
                 </span>
-              )} */}
+              )}
             </button>
           )
         })}

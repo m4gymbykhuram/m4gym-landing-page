@@ -1,12 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import CustomButton from '../CustomButton'
 
-/* ── Tab data ── */
 const tabs = [
   {
     id: 'members',
@@ -83,7 +82,19 @@ const imageVariants = {
 export default function WhatWeOffer() {
   const [activeTab, setActiveTab] = useState(0)
   const active = tabs[activeTab]
+  const tabHasDraggedSignificantly = useRef(false)
 
+  const constraintsRef = useRef<HTMLDivElement>(null)
+  const [dragStartX, setDragStartX] = useState(0)
+  const hasDraggedSignificantly = useRef(false)
+
+  const handleTabClick = (index: number) => {
+    if (hasDraggedSignificantly.current) {
+      hasDraggedSignificantly.current = false
+      return
+    }
+    setActiveTab(index)
+  }
   return (
     <section
       id="what-we-offer"
@@ -98,46 +109,64 @@ export default function WhatWeOffer() {
           <span className="bg-primary text-bg-base font-archivo font-bold text-sm uppercase tracking-[0.2em] px-5 py-4 rounded-xl mb-6">
             What We Offer
           </span>
-          <h2 className="font-anton uppercase text-3xl sm:text-4xl md:text-5xl text-white leading-tight max-w-2xl">
+          <h2 className="font-anton uppercase text-3xl sm:text-4xl  xl:text-[44px] text-white leading-tight max-w-2xl">
             Turning Repetitive Work Into Time-Saving Systems
           </h2>
         </div>
 
-        {/* ── Tab bar ── */}
         <div
-          className="relative flex items-center justify-center mx-auto gap-1 bg-bg-card w-max border border-white/8 rounded-full p-1.5 mb-8 overflow-x-auto scrollbar-none"
-          role="tablist"
-          aria-label="Feature tabs"
+          ref={constraintsRef}
+          className="relative max-w-full md:max-w-fit mx-auto mb-8 overflow-hidden bg-transparent sm:bg-bg-card border-0 sm:border sm:border-white/8 rounded-full"
         >
-          {tabs.map((tab, i) => (
-            <button
-              key={tab.id}
-              id={`tab-${tab.id}`}
-              role="tab"
-              aria-selected={activeTab === i}
-              aria-controls={`panel-${tab.id}`}
-              onClick={() => setActiveTab(i)}
-              className={`
-                relative shrink-0 px-10 py-4 rounded-full font-archivo font-medium text-md
-                transition-colors duration-200 whitespace-nowrap cursor-pointer
-                ${
-                  activeTab === i
-                    ? 'bg-linear-to-b from-[#111214]/18 to-[#dde118]/18 text-white shadow-sm'
-                    : 'text-white/50 hover:text-white/80'
-                }
-              `}
-            >
-              {/* Active pill indicator */}
-              {activeTab === i && (
-                <motion.span
-                  layoutId="tab-pill"
-                  className="absolute inset-0 rounded-full bg-[#1e1e0e] border border-primary/20"
-                  transition={{ type: 'spring', stiffness: 380, damping: 34 }}
-                />
-              )}
-              <span className="relative z-10">{tab.label}</span>
-            </button>
-          ))}
+          <motion.div
+            drag="x"
+            dragConstraints={constraintsRef}
+            dragElastic={0.05}
+            dragTransition={{ power: 0.15, timeConstant: 200 }}
+            onDragStart={(e, info) => {
+              hasDraggedSignificantly.current = false
+              setDragStartX(info.point.x)
+            }}
+            onDrag={(e, info) => {
+              if (Math.abs(info.point.x - dragStartX) > 5) {
+                hasDraggedSignificantly.current = true
+              }
+            }}
+            className="relative flex items-center gap-1 w-fit p-0 sm:p-1.5 pr-0 cursor-grab active:cursor-grabbing"
+            role="tablist"
+            aria-label="Feature tabs"
+          >
+            {tabs.map((tab, i) => (
+              <button
+                key={tab.id}
+                id={`tab-${tab.id}`}
+                role="tab"
+                aria-selected={activeTab === i}
+                aria-controls={`panel-${tab.id}`}
+                onClick={() => handleTabClick(i)}
+                className={`
+          relative shrink-0 px-6 sm:px-10 py-3 sm:py-4 rounded-full font-archivo font-medium text-sm sm:text-md
+          transition-colors duration-200 whitespace-nowrap cursor-pointer
+          ${
+            activeTab === i
+              ? 'bg-linear-to-b from-[#111214]/18 to-[#dde118]/18 text-white shadow-sm'
+              : 'text-white/50 hover:text-white/80'
+          }
+        `}
+              >
+                {activeTab === i && (
+                  <motion.span
+                    layoutId="tab-pill"
+                    className="absolute inset-0 rounded-full bg-[#1e1e0e] border border-primary/20"
+                    transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+                  />
+                )}
+                <span className="relative z-10 pointer-events-none">
+                  {tab.label}
+                </span>
+              </button>
+            ))}
+          </motion.div>
         </div>
 
         {/* ── Content card ── */}
@@ -151,12 +180,12 @@ export default function WhatWeOffer() {
               initial="enter"
               animate="center"
               exit="exit"
-              className="flex flex-col md:flex-row items-stretch gap-0 p-8 md:p-10"
+              className="flex flex-col md:flex-row items-stretch gap-8 p-8 md:p-10"
             >
               {/* Left: text content */}
               <motion.div
                 variants={contentVariants}
-                className="flex-1 flex flex-col justify-center gap-5"
+                className="flex-1 flex flex-col justify-center gap-2 md:gap-5"
               >
                 {/* Index number */}
                 <span className="font-anton text-2xl text-primary">
@@ -209,18 +238,6 @@ export default function WhatWeOffer() {
               </motion.div>
             </motion.div>
           </AnimatePresence>
-        </div>
-
-        {/* Mobile tab dots */}
-        <div className="flex justify-center gap-2 mt-5 md:hidden">
-          {tabs.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveTab(i)}
-              aria-label={`Go to tab ${i + 1}`}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${i === activeTab ? 'bg-primary w-5' : 'bg-white/20'}`}
-            />
-          ))}
         </div>
       </div>
     </section>

@@ -7,6 +7,7 @@ import Link from 'next/link'
 import CustomButton from './CustomButton'
 import { containerVariants, fadeUp, scaleIn } from '../../lib/motion-variants'
 import TitleWithLines from './TitleWithLines'
+import { useScreenSize } from '@/hooks/useScreenSize'
 
 /* ─── Floating badge data ─── */
 const badges = [
@@ -38,6 +39,7 @@ const stats = [
 ]
 
 export default function HeroSection() {
+  const { isMobile } = useScreenSize()
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -53,7 +55,7 @@ export default function HeroSection() {
     <section
       ref={ref}
       id="hero"
-      className="relative min-h-screen flex flex-col overflow-hidden bg-bg-base"
+      className="relative h-full md:min-h-screen flex flex-col px-4 md:px-0 overflow-hidden bg-bg-base"
     >
       {/* ── Ambient glow background ── */}
       <motion.div
@@ -74,26 +76,26 @@ export default function HeroSection() {
       </motion.div>
 
       {/* ── Main content ── */}
-      <div className="relative z-10 w-full pt-36 pb-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-8 flex-1">
+      <div className="relative z-10 w-full pt-28 md:pt-36 pb-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-8 flex-1">
         {/* ── LEFT TEXT BLOCK ── */}
         <motion.div
           style={{ y: contentY }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex-1 max-w-xl pl-20"
+          className="flex-1 md:max-w-xl md:pl-20"
         >
           {/* Label */}
           <TitleWithLines
             title="Gym Management Platform"
             variants={fadeUp}
-            showLeftLine={false}
+            showLeftLine={isMobile ? true : false}
           />
 
           {/* Headline */}
           <motion.h1
             variants={fadeUp}
-            className="font-anton uppercase leading-[1.95] text-5xl sm:text-6xl lg:text-5xl text-white mb-6"
+            className="font-anton text-center md:text-start uppercase mt-8 md:mt-0 md:leading-[1.95] text-3xl sm:text-6xl lg:text-5xl text-white mb-6"
           >
             Run Your Entire Gym
             <br />
@@ -103,7 +105,7 @@ export default function HeroSection() {
           {/* Subtext */}
           <motion.p
             variants={fadeUp}
-            className="font-archivo text-white/60 text-base sm:text-md leading-relaxed mb-10 max-w-md"
+            className="px-4 md:px-0 font-archivo text-center md:text-start text-white/60 text-base sm:text-md leading-relaxed mb-10 md:max-w-md"
           >
             One organized system for owners, managers, trainers and members —
             replacing spreadsheets, paper attendance, scattered payment records
@@ -113,7 +115,7 @@ export default function HeroSection() {
           {/* CTA buttons */}
           <motion.div
             variants={fadeUp}
-            className="flex flex-wrap items-center gap-4"
+            className="flex flex-wrap items-center justify-center md:justify-start gap-4"
           >
             <CustomButton
               text="How it Works"
@@ -164,7 +166,7 @@ export default function HeroSection() {
           </div>
           {/* badges */}
           <div
-            className={`inline-flex items-center rounded-3xl absolute bottom-10 -left-30 px-2 py-2 `}
+            className={`hidden md:inline-flex items-center rounded-3xl absolute bottom-10 -left-30 px-2 py-2 `}
             style={{
               background: '#1A1A1A36',
               border: '1px solid rgba(255,255,255,0.08)',

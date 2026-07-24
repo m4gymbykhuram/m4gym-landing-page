@@ -1,0 +1,170 @@
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { howItWorksSteps } from '@/lib/how-it-works-data'
+import TitleWithLines from '../TitleWithLines'
+
+function StepBlock({
+  step,
+  isActive,
+  blockRef,
+}: {
+  step: (typeof howItWorksSteps)[number]
+  isActive: boolean
+  blockRef: (el: HTMLDivElement | null) => void
+}) {
+  return (
+    <div
+      ref={blockRef}
+      className="min-h-[50vh] flex flex-col justify-center py-10"
+    >
+      <h3
+        className={`font-archivo text-2xl sm:text-5xl uppercase mb-4 transition-colors duration-500 ${
+          isActive ? 'text-white' : 'text-white/30'
+        }`}
+      >
+        {step.number} . {step.title}
+      </h3>
+      <span
+        className={`block h-px w-full mb-4 transition-colors duration-500 ${
+          isActive ? 'bg-white/30' : 'bg-white/10'
+        }`}
+      />
+      <p
+        className={`font-archivo text-xl transition-colors duration-500 ${
+          isActive ? 'text-white/60' : 'text-white/25'
+        }`}
+      >
+        {step.description}
+      </p>
+    </div>
+  )
+}
+
+function DeviceMockup({ activeStep }: { activeStep: number }) {
+  const activeImage = howItWorksSteps[activeStep].image
+
+  return (
+    <div className="relative w-full lg:h-130 xl:h-150 max-w-lg rounded-3xl border border-white/10 bg-bg-card overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeStep}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.3 }}
+          className="absolute top-6 right-6 w-9 h-9 rounded-full flex items-center justify-center font-archivo font-bold text-sm text-black z-10"
+          style={{ background: '#DFFF3D' }}
+        >
+          {activeStep + 1}
+        </motion.div>
+      </AnimatePresence>
+
+      <motion.div
+        className="relative rounded-xl overflow-hidden"
+        transition={{ duration: 0.5 }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={activeImage}
+            src={activeImage}
+            alt={`Step ${activeStep + 1} preview`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="w-full h-full  block"
+          />
+        </AnimatePresence>
+      </motion.div>
+    </div>
+  )
+}
+
+export default function HowItWorksSection() {
+  const [activeStep, setActiveStep] = useState(0)
+  const blockRefs = useRef<(HTMLDivElement | null)[]>([])
+  const stickyRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const stickyEl = stickyRef.current
+      if (!stickyEl) return
+
+      // Reference line = the vertical center of the sticky card itself,
+      // not the viewport — this is what "face to face" actually means.
+      const stickyRect = stickyEl.getBoundingClientRect()
+      const referenceY = stickyRect.top + stickyRect.height / 2
+
+      let closestIndex = 0
+      let closestDistance = Infinity
+
+      blockRefs.current.forEach((el, index) => {
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+
+        // Prefer a block that actually contains the reference line.
+        if (referenceY >= rect.top && referenceY <= rect.bottom) {
+          closestIndex = index
+          closestDistance = -1 // force this to win over any distance-based guess
+          return
+        }
+
+        if (closestDistance === -1) return // already found a containing block
+
+        const elCenter = rect.top + rect.height / 2
+        const distance = Math.abs(elCenter - referenceY)
+        if (distance < closestDistance) {
+          closestDistance = distance
+          closestIndex = index
+        }
+      })
+
+      setActiveStep(closestIndex)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <section
+      className="relative bg-[#0A0A0B] py-20 md:pt-28 px-4 md:px-8"
+      style={{ backgroundImage: "url('/assets/works-section-bg.png')" }}
+    >
+      <div className="max-w-7xl flex flex-col items-center mx-auto text-center mb-16">
+        <TitleWithLines title="How It Works" />
+        <h2 className="font-anton text-3xl sm:text-4xl xl:text-[44px] text-white uppercase mt-4">
+          Get Started In 3 Simple Steps
+        </h2>
+      </div>
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div>
+          {howItWorksSteps.map((step, index) => (
+            <StepBlock
+              key={step.id}
+              step={step}
+              isActive={activeStep === index}
+              blockRef={(el) => {
+                blockRefs.current[index] = el
+              }}
+            />
+          ))}
+
+          {/* Spacer so the last step has the same scroll runway as the others
+      before the sticky card unpins at the section boundary */}
+          <div className="h-[20vh]" aria-hidden="true" />
+        </div>
+
+        <div className="hidden lg:block relative ">
+          <div ref={stickyRef} className="sticky top-24 flex justify-end">
+            <DeviceMockup activeStep={activeStep} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

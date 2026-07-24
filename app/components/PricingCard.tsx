@@ -35,14 +35,22 @@ export default function PricingCard({
           : 'rgba(255,255,255,0.06)',
         background: isPreferred
           ? 'radial-gradient(120% 100% at 50% 0%, rgba(221,255,61,0.08) 0%, #141414 55%)'
-          : '#141414',
+          : '#1A1A1A',
+        boxShadow: isPreferred ? '0px 10px 43px 0px #DDEB1840 inset' : '',
       }}
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div
           className="flex items-center justify-center rounded-full shrink-0"
-          style={{ width: '3rem', height: '3rem', background: '#1e1e1e' }}
+          style={{
+            width: '3rem',
+            height: '3rem',
+            backgroundImage: `linear-gradient(#111214, #111214), linear-gradient(180deg, #666666 0%, #000000 100%)`,
+            backgroundOrigin: 'border-box, border-box',
+            backgroundClip: 'padding-box, border-box',
+            border: '1px solid transparent',
+          }}
         >
           <Icon className="w-5 h-5 text-primary" strokeWidth={2} />
         </div>
@@ -62,12 +70,12 @@ export default function PricingCard({
         />
 
         {!isFree && (
-          <span className="font-archivo text-xs text-white/50 uppercase tracking-wide ml-2">
+          <span className="font-anton text-sm text-white uppercase tracking-wide ml-2">
             ({plan.priceSuffix})
           </span>
         )}
         {isFree && (
-          <span className="font-archivo text-xs text-white/50 uppercase tracking-wide ml-2">
+          <span className="font-anton text-sm text-white uppercase tracking-wide ml-2">
             (Forever)
           </span>
         )}
@@ -96,12 +104,10 @@ export default function PricingCard({
           {plan.features.map((feature) => (
             <li key={feature} className="flex items-center gap-2.5">
               <CheckCircle2
-                className="w-4 h-4 text-white/50 shrink-0"
+                className="w-4 h-4 text-white shrink-0"
                 strokeWidth={2}
               />
-              <span className="font-archivo text-sm text-white/70">
-                {feature}
-              </span>
+              <span className="font-archivo text-sm text-white">{feature}</span>
             </li>
           ))}
         </ul>

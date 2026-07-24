@@ -5,6 +5,9 @@ import WhatInsited from '@/app/components/landing/WhatInsited'
 import WhatWeOffer from '../components/landing/WhatWeOffer'
 import Features from '../components/landing/Features'
 import PricingSection from '../components/landing/PricingSection'
+import HowItWorksSection from '../components/landing/HowItWorksSection'
+import Testimonials from '../components/landing/Testimonials'
+import TransformSection from '../components/landing/TransformSection'
 
 export const metadata: Metadata = {
   title: 'M4 GYM – Run Your Entire Gym From One Place',
@@ -26,7 +29,10 @@ export default function LandingPage() {
       <WhatInsited />
       <WhatWeOffer />
       <Features />
+      <HowItWorksSection />
       <PricingSection />
+      <Testimonials />
+      <TransformSection />
     </>
   )
 }
