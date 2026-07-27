@@ -19,7 +19,6 @@ export default function Header() {
   const pathname = usePathname()
 
   useEffect(() => {
-    // Handle normal routes
     const matchedLink = navLinks.find((link) => {
       if (link.href === '/') {
         return pathname === '/'
