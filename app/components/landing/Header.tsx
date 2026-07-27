@@ -1,21 +1,37 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
 import CustomButton from '../CustomButton'
+import { usePathname } from 'next/navigation'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Features', href: '#features' },
+  { label: 'Features', href: '/features' },
   { label: 'Pricing', href: '/pricing' },
-  { label: 'Blog', href: '#blog' },
+  { label: 'Blog', href: '/blogs' },
   { label: 'Contact', href: '/contact' },
 ]
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('Home')
+  const pathname = usePathname()
+
+  useEffect(() => {
+    const matchedLink = navLinks.find((link) => {
+      if (link.href === '/') {
+        return pathname === '/'
+      }
+      if (link.href.startsWith('#')) return false
+
+      return pathname.startsWith(link.href)
+    })
+
+    if (matchedLink) {
+      setActiveTab(matchedLink.label)
+    }
+  }, [pathname])
 
   return (
     <header className="fixed backdrop-blur-2xl md:backdrop-blur-none top-0 left-0 right-0 z-50 px-4 py-3 md:px-8">
