@@ -23,7 +23,6 @@ export default function Header() {
       if (link.href === '/') {
         return pathname === '/'
       }
-      // Ignore hash links for pathname matching
       if (link.href.startsWith('#')) return false
 
       return pathname.startsWith(link.href)
