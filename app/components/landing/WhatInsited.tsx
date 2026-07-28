@@ -51,7 +51,7 @@ export default function WhatInsited() {
       {/* Ambient glows */}
       <div className="pointer-events-none absolute top-1/3 right-0 w-125 h-125 rounded-full bg-primary/5 blur-[150px]" />
       <div className="pointer-events-none absolute bottom-0 left-0 w-100 h-100 rounded-full bg-primary-light/4 blur-[120px]" />
-
+    
       <div className="max-w-7xl mx-auto px-2 md:px-2 pt-10 md:pt-24">
         {/* ──────────────────────────────────────
             INTRO ROW

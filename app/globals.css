@@ -1,12 +1,12 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ───────────────────────────────────────────
    Theme Tokens – Tailwind v4 @theme inline
 ─────────────────────────────────────────── */
 @theme inline {
   /* Primary brand colors */
-  --color-primary: #DDEB18;
-  --color-primary-light: #B7FF3C;
+  --color-primary: #ddeb18;
+  --color-primary-light: #b7ff3c;
   --color-primary-dark: #c2d100;
 
   /* Background / surface */
@@ -51,11 +51,11 @@ body {
    Primary Gradient Utility
 ─────────────────────────────────────────── */
 .bg-primary-gradient {
-  background: linear-gradient(90deg, #B7FF3C 0%, #E0F300 100%);
+  background: linear-gradient(90deg, #b7ff3c 0%, #e0f300 100%);
 }
 
 .text-primary-gradient {
-  background: linear-gradient(90deg, #B7FF3C 0%, #E0F300 100%);
+  background: linear-gradient(90deg, #b7ff3c 0%, #e0f300 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -76,8 +76,12 @@ body {
    Marquee animation
 ─────────────────────────────────────────── */
 @keyframes marquee-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .marquee-track {
@@ -102,6 +106,74 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #DDEB18;
+  background: #ddeb18;
   border-radius: 3px;
+}
+
+.gradient-border-card {
+  position: relative;
+  border-radius: 1rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.gradient-border-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.45)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.gradient-border-custom {
+  background: linear-gradient(
+      119.54deg,
+      #ddeb18 0%,
+      #ffffff 34.04%,
+      #ddeb18 51.06%,
+      #ffffff 59.57%,
+      #ddeb18 63.83%,
+      #666666 65.89%,
+      #666666 67.95%
+    )
+    border-box;
+  border: 3px solid transparent !important;
+}
+
+@layer components {
+  .gradient-border-mask {
+    @apply relative backdrop-blur-lg;
+  }
+
+  .gradient-border-mask::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.45),
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.45)
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
 }

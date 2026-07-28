@@ -51,7 +51,7 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav
-          className="hidden md:flex items-center gap-1 bg-[#1A1A1A80] backdrop-blur-md rounded-full px-2 py-2 border border-white/6"
+          className="hidden md:flex items-center gap-1  bg-[#1A1A1A80] backdrop-blur-md rounded-full px-2 py-2 gradient-border-mask"
           role="navigation"
           aria-label="Main navigation"
         >

@@ -20,7 +20,7 @@ export default function BillingToggle({
             <button
               key={cycle}
               onClick={() => onChange(cycle)}
-              className="relative px-4 w-45 py-3  rounded-full text-sm font-archivo font-semibold"
+              className="relative px-2 md:px-4 w-38 md:w-45 py-3  rounded-full text-sm font-archivo font-semibold"
             >
               {isActive && (
                 <motion.span
