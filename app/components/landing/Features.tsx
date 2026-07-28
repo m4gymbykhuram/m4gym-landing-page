@@ -13,13 +13,13 @@ const Features = () => {
   return (
     <section
       id="features"
-      className="relative py-20 md:py-28 overflow-hidden bg-cover bg-center"
+      className="relative py-10 md:py-28 overflow-hidden bg-cover bg-center"
       style={{
         backgroundImage:
           "linear-gradient(rgba(17,18,20,0.7), rgba(17,18,20,0.7)), url('/assets/features-section-bg.jpg')",
       }}
     >
-      <div className="relative z-10 w-full flex flex-col items-center gap-12 lg:gap-8 flex-1">
+      <div className="relative z-10 w-full flex flex-col items-center gap-4 lg:gap-8 flex-1">
         <TitleWithLines title="Features" variants={fadeUp} />
         <h2 className="font-anton text-center uppercase text-3xl sm:text-4xl xl:text-[44px] text-white leading-tight max-w-2xl">
           Every part of your <span className="text-primary">gym</span>, in one

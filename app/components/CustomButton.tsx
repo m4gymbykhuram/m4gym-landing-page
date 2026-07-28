@@ -3,6 +3,7 @@
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronsRight } from 'lucide-react'
+import { useScreenSize } from '@/hooks/useScreenSize'
 
 interface CustomButtonProps {
   text: string
@@ -32,6 +33,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
     ref,
   ) => {
     const isFilled = variant === 'filled'
+    const { isMobile } = useScreenSize()
 
     return (
       <motion.button
@@ -39,8 +41,6 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         type={type}
         onClick={onClick}
         disabled={disabled}
-        // whileHover={{ scale: disabled ? 1 : 1.02 }}
-        // whileTap={{ scale: disabled ? 1 : 0.97 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         className={`inline-flex items-center rounded-full font-archivo font-semibold pl-1 pr-7 py-1 disabled:opacity-50 disabled:cursor-not-allowed ${
           isFilled ? 'text-black' : 'text-white border border-white/10'
@@ -65,8 +65,8 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         <span
           className="flex items-center justify-center rounded-full shrink-0 mr-4"
           style={{
-            width: '2.75rem',
-            height: '2.75rem',
+            width: isMobile ? '2.2rem' : '2.75rem',
+            height: isMobile ? '2.2rem' : '2.75rem',
             background: circleBg
               ? circleBg
               : isFilled
@@ -82,7 +82,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
             strokeWidth={2.5}
           />
         </span>
-        <span className="text-base">{text}</span>
+        <span className="text-sm md:text-base">{text}</span>
       </motion.button>
     )
   },

@@ -6,12 +6,14 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { testimonials } from '@/lib/testimonials-data'
 import TestimonialCard from './TestimonialCard'
 import SectionHeading from './SectionHeading'
+import { useScreenSize } from '@/hooks/useScreenSize'
 
 const PAGE_SIZE = 2
 
 export default function TestimonialsCarousel() {
   const [page, setPage] = useState(0)
   const [direction, setDirection] = useState(0)
+  const { isMobile } = useScreenSize()
 
   const totalPages = Math.ceil(testimonials.length / PAGE_SIZE)
   const currentItems = testimonials.slice(
@@ -31,9 +33,9 @@ export default function TestimonialsCarousel() {
 
   return (
     <div>
-      <div className="mb-5 flex items-center justify-between">
+      <div className="mb-5 flex flex-col-reverse md:flex-row items-center justify-between">
         {/* Arrow controls */}
-        <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
           <button
             onClick={goPrev}
             className="w-13 h-13 rounded-full flex items-center justify-center bg-bg-elevated"
@@ -61,7 +63,7 @@ export default function TestimonialsCarousel() {
         <SectionHeading
           badge="Testimonials"
           title="Success Stories Across Every Gym Role"
-          align="right"
+          align={isMobile ? 'center' : 'right'}
         />
       </div>
 
@@ -81,7 +83,9 @@ export default function TestimonialsCarousel() {
               <div
                 key={testimonial.id}
                 className={
-                  i === 1 ? 'md:pl-10 md:border-l md:border-white/10' : ''
+                  i === 1
+                    ? 'hidden md:block md:pl-10 md:border-l md:border-white/10'
+                    : ''
                 }
               >
                 <TestimonialCard testimonial={testimonial} />
@@ -89,6 +93,34 @@ export default function TestimonialsCarousel() {
             ))}
           </motion.div>
         </AnimatePresence>
+      </div>
+      {/* Arrow controls */}
+      <div className="flex md:hidden items-center justify-center gap-4">
+        <button
+          onClick={goPrev}
+          className="w-13 h-13 rounded-full flex items-center justify-center bg-bg-elevated"
+          style={{
+            width: '3rem',
+            height: '3rem',
+            backgroundImage: `linear-gradient(#1A1A1A, #1A1A1A), linear-gradient(180deg, #666666 0%, #000000 100%)`,
+            backgroundOrigin: 'border-box, border-box',
+            backgroundClip: 'padding-box, border-box',
+            border: '1px solid transparent',
+          }}
+        >
+          <ChevronLeft className="w-5 h-5 text-white/70" strokeWidth={2} />
+        </button>
+        <button
+          onClick={goNext}
+          className="w-13 h-13 rounded-full flex items-center justify-center"
+          style={{
+            width: '3rem',
+            height: '3rem',
+            background: 'linear-gradient(180deg, #E8FF5C 0%, #C6FF4D 100%)',
+          }}
+        >
+          <ChevronRight className="w-5 h-5 text-black" strokeWidth={2.5} />
+        </button>
       </div>
     </div>
   )

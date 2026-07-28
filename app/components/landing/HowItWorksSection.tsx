@@ -8,17 +8,23 @@ import TitleWithLines from '../TitleWithLines'
 function StepBlock({
   step,
   isActive,
+  index,
   blockRef,
 }: {
   step: (typeof howItWorksSteps)[number]
   isActive: boolean
+  index: number
   blockRef: (el: HTMLDivElement | null) => void
 }) {
   return (
     <div
       ref={blockRef}
-      className="min-h-[50vh] flex flex-col justify-center py-10"
+      className="flex flex-col justify-center py-8 lg:min-h-[50vh] lg:py-10"
     >
+      <div className="mb-6 lg:hidden">
+        <DeviceMockup activeStep={index} compact />
+      </div>
+
       <h3
         className={`font-archivo text-2xl sm:text-5xl uppercase mb-4 transition-colors duration-500 ${
           isActive ? 'text-white' : 'text-white/30'
@@ -42,27 +48,39 @@ function StepBlock({
   )
 }
 
-function DeviceMockup({ activeStep }: { activeStep: number }) {
+function DeviceMockup({
+  activeStep,
+  compact = false,
+}: {
+  activeStep: number
+  compact?: boolean
+}) {
   const activeImage = howItWorksSteps[activeStep].image
 
   return (
-    <div className="relative w-full lg:h-130 xl:h-150 max-w-lg rounded-3xl border border-white/10 bg-bg-card overflow-hidden">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeStep}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.3 }}
-          className="absolute top-6 right-6 w-9 h-9 rounded-full flex items-center justify-center font-archivo font-bold text-sm text-black z-10"
-          style={{ background: '#DFFF3D' }}
-        >
-          {activeStep + 1}
-        </motion.div>
-      </AnimatePresence>
+    <div
+      className={`relative w-full max-w-lg rounded-3xl border border-white/10 bg-bg-card overflow-hidden ${
+        compact ? 'h-82 sm:h-96' : 'lg:h-130 xl:h-150'
+      }`}
+    >
+      {!compact && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeStep}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="absolute top-6 right-6 w-9 h-9 rounded-full flex items-center justify-center font-archivo font-bold text-sm text-black z-10"
+            style={{ background: '#DFFF3D' }}
+          >
+            {activeStep + 1}
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       <motion.div
-        className="relative rounded-xl overflow-hidden"
+        className="relative h-full rounded-xl overflow-hidden"
         transition={{ duration: 0.5 }}
       >
         <AnimatePresence mode="wait">
@@ -74,7 +92,7 @@ function DeviceMockup({ activeStep }: { activeStep: number }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
-            className="w-full h-full  block"
+            className="w-full h-full object-cover block"
           />
         </AnimatePresence>
       </motion.div>
@@ -131,10 +149,10 @@ export default function HowItWorksSection() {
 
   return (
     <section
-      className="relative bg-[#0A0A0B] py-20 md:pt-28 px-4 md:px-8"
+      className="relative bg-[#0A0A0B] py-10 md:pt-28 px-4 md:px-8"
       style={{ backgroundImage: "url('/assets/works-section-bg.png')" }}
     >
-      <div className="max-w-7xl flex flex-col items-center mx-auto text-center mb-16">
+      <div className="max-w-7xl flex flex-col items-center mx-auto text-center md:mb-16">
         <TitleWithLines title="How It Works" />
         <h2 className="font-anton text-3xl sm:text-4xl xl:text-[44px] text-white uppercase mt-4">
           Get Started In 3 Simple Steps
@@ -147,6 +165,7 @@ export default function HowItWorksSection() {
             <StepBlock
               key={step.id}
               step={step}
+              index={index}
               isActive={activeStep === index}
               blockRef={(el) => {
                 blockRefs.current[index] = el
@@ -156,7 +175,7 @@ export default function HowItWorksSection() {
 
           {/* Spacer so the last step has the same scroll runway as the others
       before the sticky card unpins at the section boundary */}
-          <div className="h-[20vh]" aria-hidden="true" />
+          <div className="hidden md:h-[20vh]" aria-hidden="true" />
         </div>
 
         <div className="hidden lg:block relative ">

@@ -6,6 +6,7 @@ import { pricingPlans } from '@/lib/pricing-data'
 import BillingToggle from '../BillingToggle'
 import PricingCard from '../PricingCard'
 import SectionHeading from './SectionHeading'
+import { useScreenSize } from '@/hooks/useScreenSize'
 
 const containerVariants: Variants = {
   hidden: {},
@@ -18,6 +19,7 @@ const fadeUp: Variants = {
 }
 
 export default function PricingSection() {
+  const { isMobile } = useScreenSize()
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>(
     'monthly',
   )
@@ -25,14 +27,17 @@ export default function PricingSection() {
   return (
     <section className="relative bg-[#111214] py-20 md:py-28 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        <SectionHeading badge="Pricing Plans" align="left" />
+        <SectionHeading
+          badge="Pricing Plans"
+          align={isMobile ? 'center' : 'left'}
+        />
 
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 mt-5">
-          <h2 className="font-anton text-3xl sm:text-4xl xl:text-[44px] text-white uppercase leading-tight max-w-lg">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-4 md:mb-14 mt-2 md:mt-5">
+          <h2 className="font-anton text-3xl sm:text-4xl xl:text-[44px] text-white uppercase leading-tight max-w-lg text-center md:text-start">
             Pricing Plans For Smart Automation.
           </h2>
 
-          <div className="flex flex-col items-start md:items-end gap-2">
+          <div className="flex flex-col items-center md:items-end gap-2">
             <span className="font-archivo text-sm text-white/50">
               Choose options
             </span>

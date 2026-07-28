@@ -106,7 +106,7 @@ export default function WhatWeOffer() {
       <div className="max-w-6xl mx-auto px-4 md:px-8">
         {/* ── Section heading ── */}
         <div className="flex flex-col items-center text-center mb-12 md:mb-16">
-          <span className="bg-primary text-bg-base font-archivo font-bold text-sm uppercase tracking-[0.2em] px-5 py-4 rounded-xl mb-6">
+          <span className="bg-primary text-bg-base font-archivo font-bold text-xs md:text-sm uppercase tracking-[0.2em] px-3 md:px-5 py-2 md:py-4 rounded-xl mb-6">
             What We Offer
           </span>
           <h2 className="font-anton uppercase text-3xl sm:text-4xl  xl:text-[44px] text-white leading-tight max-w-2xl">
@@ -188,22 +188,22 @@ export default function WhatWeOffer() {
                 className="flex-1 flex flex-col justify-center gap-2 md:gap-5"
               >
                 {/* Index number */}
-                <span className="font-anton text-2xl text-primary">
+                <span className="font-anton text-3xl text-primary text-center md:text-start">
                   {active.index}
                 </span>
 
                 {/* Title */}
-                <h3 className="font-anton text-2xl md:text-3xl text-white uppercase leading-tight">
+                <h3 className="font-anton text-2xl md:text-3xl text-white uppercase leading-tight text-center md:text-start">
                   {active.title}
                 </h3>
 
                 {/* Description */}
-                <p className="font-archivo text-white/55 text-sm md:text-base leading-relaxed max-w-md">
+                <p className="font-archivo text-white/55 text-sm md:text-base leading-relaxed max-w-md text-center md:text-start">
                   {active.description}
                 </p>
 
                 {/* CTA */}
-                <div className="mt-2">
+                <div className="mt-2 text-center md:text-start">
                   <CustomButton
                     text="Get Started"
                     variant="filled"
@@ -215,7 +215,7 @@ export default function WhatWeOffer() {
               {/* Right: image with corner brackets */}
               <motion.div
                 variants={imageVariants}
-                className="relative flex-1 min-h-[200px] md:min-h-[240px] md:max-w-[440px] overflow-hidden"
+                className="relative flex-1 min-h-37.5 md:min-h-60 md:max-w-110 overflow-hidden"
               >
                 {/* Corner brackets decoration (matching reference image) */}
                 <span className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary z-20 pointer-events-none" />

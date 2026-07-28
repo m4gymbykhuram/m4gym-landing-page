@@ -83,7 +83,7 @@ export default function HeroSection() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex-1 md:max-w-xl md:pl-20"
+          className="flex-1 w-full md:max-w-xl md:pl-20"
         >
           {/* Label */}
           <TitleWithLines
@@ -138,23 +138,21 @@ export default function HeroSection() {
           <div className="absolute inset-0 rounded-3xl bg-primary/8 blur-3xl scale-90 pointer-events-none" />
 
           <div
-            className="mockup-image relative rounded-md "
+            className="mockup-image relative"
             style={{
               border: '5px solid',
               borderImageSource:
                 'linear-gradient(116.84deg, #DDEB18 0%, #FFFFFF 2.99%, #DDEB18 5.37%, #FFFFFF 7.55%, #DDEB18 9.72%, rgba(45, 45, 45, 0.93) 17.68%)',
               borderImageSlice: 1,
-              borderRadius: '20px',
             }}
           >
             <Image
               src={'/assets/dashboard-mockup.png'}
               width={900}
               height={900}
-              alt="dashboard-mockup "
+              alt="dashboard-mockup"
               className="rounded-md"
             />
-            {/* Gradient overlay: linear-gradient(180deg, rgba(10,10,11,0) 0%, #0A0A0B 100%) */}
             <div
               aria-hidden
               className="absolute inset-0 pointer-events-none"
@@ -166,12 +164,9 @@ export default function HeroSection() {
           </div>
           {/* badges */}
           <div
-            className={`hidden md:inline-flex items-center rounded-3xl absolute bottom-10 -left-30 px-2 py-2 `}
+            className={`hidden md:inline-flex items-center rounded-3xl gradient-border-mask absolute bottom-10 -left-30 px-2 py-2 `}
             style={{
               background: '#1A1A1A36',
-              border: '1px solid rgba(255,255,255,0.08)',
-              boxShadow:
-                '0px 1px 8px rgba(0,0,0,0.4), inset 0px 1px 0px rgba(255,255,255,0.06)',
             }}
           >
             {badges.map((stat, i) => (
