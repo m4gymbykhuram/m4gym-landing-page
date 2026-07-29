@@ -51,7 +51,7 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav
-          className="hidden md:flex items-center gap-1  bg-[#1A1A1A80] backdrop-blur-md rounded-full px-2 py-2 gradient-border-mask"
+          className="hidden lg:flex items-center gap-1  bg-[#1A1A1A80] backdrop-blur-md rounded-full px-2 py-2 gradient-border-mask"
           role="navigation"
           aria-label="Main navigation"
         >
@@ -93,7 +93,7 @@ export default function Header() {
         </nav>
 
         {/* CTA */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           <CustomButton
             text="Get Started"
             variant="outline"
@@ -105,7 +105,7 @@ export default function Header() {
         {/* Mobile burger */}
         <button
           id="mobile-menu-btn"
-          className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-white/10 transition-colors"
+          className="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-white/10 transition-colors"
           onClick={() => setMobileOpen((p) => !p)}
           aria-label="Toggle mobile menu"
           aria-expanded={mobileOpen}
@@ -130,7 +130,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden absolute top-full left-4 right-4 mt-2 bg-[#111]/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 flex flex-col gap-2"
+            className="lg:hidden absolute top-full left-4 right-4 mt-2 bg-[#111]/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 flex flex-col gap-2"
           >
             {navLinks.map((link) => (
               <Link

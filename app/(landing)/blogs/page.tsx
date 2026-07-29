@@ -33,15 +33,15 @@ const BlogsPage = () => {
         </motion.h2>
       </section>
 
-      <div className="mx-auto flex max-w-7xl gap-16 mb-20">
+      <div className="mx-auto flex flex-col lg:flex-row max-w-7xl gap-10 lg:gap-16 mb-20">
         <CategorySidebar />
 
-        <div className="flex-1">
+        <div className="flex-1 px-5 lg:px-0">
           <h1 className="mb-10 text-3xl font-medium text-white">
             Latest Articles
           </h1>
 
-          <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {allBlogs.map((blog) => (
               <BlogCard key={blog.id} blog={blog} />
             ))}

@@ -42,6 +42,31 @@ export default function WhatInsited() {
   const rolesRef = useRef(null)
   const rolesInView = useInView(rolesRef, { once: true, margin: '-80px' })
   const { isMobile } = useScreenSize()
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const isDragging = useRef(false)
+  const startX = useRef(0)
+  const scrollLeft = useRef(0)
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    const el = scrollRef.current
+    if (!el) return
+    isDragging.current = true
+    startX.current = e.pageX - el.offsetLeft
+    scrollLeft.current = el.scrollLeft
+    el.setPointerCapture(e.pointerId)
+  }
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    const el = scrollRef.current
+    if (!isDragging.current || !el) return
+    const x = e.pageX - el.offsetLeft
+    const walk = (x - startX.current) * 1.2 // drag speed multiplier
+    el.scrollLeft = scrollLeft.current - walk
+  }
+
+  const onPointerUp = () => {
+    isDragging.current = false
+  }
 
   return (
     <section
@@ -51,12 +76,9 @@ export default function WhatInsited() {
       {/* Ambient glows */}
       <div className="pointer-events-none absolute top-1/3 right-0 w-125 h-125 rounded-full bg-primary/5 blur-[150px]" />
       <div className="pointer-events-none absolute bottom-0 left-0 w-100 h-100 rounded-full bg-primary-light/4 blur-[120px]" />
-    
+
       <div className="max-w-7xl mx-auto px-2 md:px-2 pt-10 md:pt-24">
-        {/* ──────────────────────────────────────
-            INTRO ROW
-        ────────────────────────────────────── */}
-        <div className="flex flex-col-reverse lg:flex-row gap-3 lg:gap-20 items-center md:items-start mb-10 md:mb-20">
+        <div className="flex flex-col-reverse md:flex-row gap-3 lg:gap-20 items-center md:items-start mb-10 md:mb-20">
           {/* Left description */}
           <motion.div
             ref={rolesRef}
@@ -65,7 +87,7 @@ export default function WhatInsited() {
             animate={rolesInView ? 'visible' : 'hidden'}
             className="flex-1 max-w-md"
           >
-            <p className="font-archivo text-white/55 text-lg text-center md:text-start sm:text-lg leading-relaxed">
+            <p className="font-archivo text-white/55 md:text-md lg:text-lg text-center md:text-start sm:text-lg leading-relaxed">
               Manage your gym efficiently with four dedicated roles: Owner,
               Manager, Coach, and Member. Each role has personalized access to
               simplify operations, training, and member management.
@@ -82,10 +104,19 @@ export default function WhatInsited() {
           </div>
         </div>
 
-        {/* ──────────────────────────────────────
-            ROLE CARDS GRID
-        ────────────────────────────────────── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-24">
+        <div
+          ref={scrollRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerLeave={onPointerUp}
+          className="flex overflow-x-auto scrollbar-hide gap-4 mb-24 -mx-4 pl-8 pr-4 snap-x snap-proximity scroll-smooth cursor-grab active:cursor-grabbing select-none lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:snap-none lg:cursor-auto"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehaviorX: 'contain',
+            scrollPaddingLeft: '2rem',
+          }}
+        >
           {roles.map((role, i) => (
             <motion.div
               key={role.id}
@@ -95,7 +126,7 @@ export default function WhatInsited() {
               animate={rolesInView ? 'visible' : 'hidden'}
               whileHover={{ scale: 1.02, y: -4 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className={`relative h-55 md:h-95 flex items-end p-0 group border border-white/8 rounded-2xl overflow-hidden cursor-pointer`}
+              className={`relative h-55 md:h-95 w-[65%] sm:w-[45%] lg:w-auto shrink-0 lg:shrink flex items-end p-0 group border border-white/8 rounded-2xl overflow-hidden cursor-pointer snap-start`}
               style={{
                 backgroundImage: ` url(${role.image})`,
                 backgroundRepeat: 'no-repeat',
@@ -121,7 +152,7 @@ export default function WhatInsited() {
                 </span>
 
                 {/* Title */}
-                <h3 className="font-anton text-lg sm:text-3xl text-white uppercase mb-2 md:mb-4 leading-tight">
+                <h3 className="font-anton text-2xl sm:text-3xl text-white uppercase mb-2 md:mb-4 leading-tight">
                   {role.title}
                 </h3>
 
@@ -133,7 +164,7 @@ export default function WhatInsited() {
                         className="w-1.5 h-1.5 rounded-full shrink-0"
                         style={{ background: role.accent }}
                       />
-                      <span className="font-archivo text-white/60 text-xs md:text-sm group-hover:text-white/80 transition-colors">
+                      <span className="font-archivo text-white/60 text-sm group-hover:text-white/80 transition-colors">
                         {tag}
                       </span>
                     </div>

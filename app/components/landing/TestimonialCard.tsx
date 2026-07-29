@@ -1,5 +1,4 @@
 import { Testimonial } from '@/lib/testimonials-data'
-import { Quote } from 'lucide-react'
 
 export default function TestimonialCard({
   testimonial,
@@ -7,7 +6,7 @@ export default function TestimonialCard({
   testimonial: Testimonial
 }) {
   return (
-    <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+    <div className="flex flex-col md:flex-row md:justify-center items-center md:items-start gap-6">
       <div className="text-center space-y-4">
         <img
           src={testimonial.image}

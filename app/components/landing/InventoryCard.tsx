@@ -13,7 +13,7 @@ const InventoryCard = () => {
         src="/assets/inventory.png"
         width={900}
         height={500}
-        className="h-70 w-full rounded-2xl object-cover"
+        className="h-70 md:h-44 xl:h-64  w-full rounded-2xl object-cover"
         alt="Inventory & Stock"
       />
     </FeatureCard>

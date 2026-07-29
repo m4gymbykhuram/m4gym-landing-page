@@ -13,7 +13,7 @@ const PAGE_SIZE = 2
 export default function TestimonialsCarousel() {
   const [page, setPage] = useState(0)
   const [direction, setDirection] = useState(0)
-  const { isMobile } = useScreenSize()
+  const { isMobile, isTablet } = useScreenSize()
 
   const totalPages = Math.ceil(testimonials.length / PAGE_SIZE)
   const currentItems = testimonials.slice(
@@ -33,9 +33,9 @@ export default function TestimonialsCarousel() {
 
   return (
     <div>
-      <div className="mb-5 flex flex-col-reverse md:flex-row items-center justify-between">
+      <div className="mb-5 md:mb-10 lg:mb-5 flex flex-col-reverse lg:flex-row items-center justify-between">
         {/* Arrow controls */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4">
           <button
             onClick={goPrev}
             className="w-13 h-13 rounded-full flex items-center justify-center bg-bg-elevated"
@@ -63,7 +63,7 @@ export default function TestimonialsCarousel() {
         <SectionHeading
           badge="Testimonials"
           title="Success Stories Across Every Gym Role"
-          align={isMobile ? 'center' : 'right'}
+          align={isMobile || isTablet ? 'center' : 'right'}
         />
       </div>
 
@@ -77,14 +77,14 @@ export default function TestimonialsCarousel() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: direction >= 0 ? -60 : 60 }}
             transition={{ duration: 0.45, ease: 'easeInOut' }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-10"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10"
           >
             {currentItems.map((testimonial, i) => (
               <div
                 key={testimonial.id}
                 className={
                   i === 1
-                    ? 'hidden md:block md:pl-10 md:border-l md:border-white/10'
+                    ? 'hidden lg:block md:pl-10 lg:border-l md:border-white/10'
                     : ''
                 }
               >
@@ -95,7 +95,7 @@ export default function TestimonialsCarousel() {
         </AnimatePresence>
       </div>
       {/* Arrow controls */}
-      <div className="flex md:hidden items-center justify-center gap-4">
+      <div className="flex lg:hidden items-center justify-center gap-4">
         <button
           onClick={goPrev}
           className="w-13 h-13 rounded-full flex items-center justify-center bg-bg-elevated"

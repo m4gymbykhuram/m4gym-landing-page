@@ -26,7 +26,7 @@ export default async function BlogDetailPage({
     <>
       <ScrollToTop />
       <main
-        className="min-h-screen  px-6 py-16 pt-38 md:px-16 bg-[radial-gradient(ellipse_at_25%_30%,_#5c5c1a_0%,_transparent_55%),
+        className="min-h-screen  px-6 py-16 pt-20 lg:pt-38 lg:px-16 bg-[radial-gradient(ellipse_at_25%_30%,_#5c5c1a_0%,_transparent_55%),
             radial-gradient(ellipse_at_75%_70%,_#5c5c1a_0%,_transparent_55%)]"
       >
         {/* Left glow */}
@@ -57,7 +57,7 @@ export default async function BlogDetailPage({
           {/* Back link */}
           <Link
             href="/blogs"
-            className="mb-8 inline-flex items-center gap-1 text-lg text-white relative"
+            className="hidden mb-4 md:mb-8 md:inline-flex items-center gap-1 text-lg text-white relative"
           >
             <span aria-hidden>
               {' '}
@@ -67,14 +67,16 @@ export default async function BlogDetailPage({
           </Link>
 
           {/* Tags */}
-          <div className="mb-6 flex flex-wrap gap-3 relative">
+          <div className="mb-6 hidden md:flex flex-nowrap gap-3 overflow-x-auto scrollbar-hide relative -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible sm:flex-wrap">
             {blog.tags.map((tag) => (
-              <GlassButton key={tag}>{tag}</GlassButton>
+              <GlassButton key={tag} className="shrink-0">
+                {tag}
+              </GlassButton>
             ))}
           </div>
 
           {/* Title */}
-          <h1 className="mb-8 text-4xl relative font-medium text-white md:text-5xl">
+          <h1 className="mb-8 text-3xl relative font-medium text-white md:text-5xl">
             {blog.title}
           </h1>
 

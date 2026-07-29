@@ -19,14 +19,14 @@ function StepBlock({
   return (
     <div
       ref={blockRef}
-      className="flex flex-col justify-center py-8 lg:min-h-[50vh] lg:py-10"
+      className="flex flex-col justify-center py-8 md:min-h-[50vh] lg:py-10"
     >
-      <div className="mb-6 lg:hidden">
+      <div className="mb-6 md:hidden">
         <DeviceMockup activeStep={index} compact />
       </div>
 
       <h3
-        className={`font-archivo text-2xl sm:text-5xl uppercase mb-4 transition-colors duration-500 ${
+        className={`font-archivo text-2xl md:text-4xl lg:text-5xl uppercase mb-4 transition-colors duration-500 ${
           isActive ? 'text-white' : 'text-white/30'
         }`}
       >
@@ -38,7 +38,7 @@ function StepBlock({
         }`}
       />
       <p
-        className={`font-archivo text-xl transition-colors duration-500 ${
+        className={`font-archivo md:text-md text-xl transition-colors duration-500 ${
           isActive ? 'text-white/60' : 'text-white/25'
         }`}
       >
@@ -149,7 +149,7 @@ export default function HowItWorksSection() {
 
   return (
     <section
-      className="relative bg-[#0A0A0B] py-10 md:pt-28 px-4 md:px-8"
+      className="relative bg-[#0A0A0B] py-10 lg:pt-28 px-4 md:px-8"
       style={{ backgroundImage: "url('/assets/works-section-bg.png')" }}
     >
       <div className="max-w-7xl flex flex-col items-center mx-auto text-center md:mb-16">
@@ -159,7 +159,7 @@ export default function HowItWorksSection() {
         </h2>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
         <div>
           {howItWorksSteps.map((step, index) => (
             <StepBlock
@@ -175,10 +175,10 @@ export default function HowItWorksSection() {
 
           {/* Spacer so the last step has the same scroll runway as the others
       before the sticky card unpins at the section boundary */}
-          <div className="hidden md:h-[20vh]" aria-hidden="true" />
+          <div className="hidden lg:h-[20vh]" aria-hidden="true" />
         </div>
 
-        <div className="hidden lg:block relative ">
+        <div className="hidden md:block relative">
           <div ref={stickyRef} className="sticky top-24 flex justify-end">
             <DeviceMockup activeStep={activeStep} />
           </div>

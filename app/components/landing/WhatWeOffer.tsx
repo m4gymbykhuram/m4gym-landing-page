@@ -98,14 +98,14 @@ export default function WhatWeOffer() {
   return (
     <section
       id="what-we-offer"
-      className="relative bg-bg-base py-20 md:py-28 overflow-hidden"
+      className="relative bg-bg-base py-20 xl:py-28 overflow-hidden"
     >
       {/* Ambient glow */}
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-[#DDEB18]/5 blur-[120px] rounded-full" />
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-75 bg-[#DDEB18]/5 blur-[120px] rounded-full" />
 
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
+      <div className="max-w-6xl mx-auto md:px-8">
         {/* ── Section heading ── */}
-        <div className="flex flex-col items-center text-center mb-12 md:mb-16">
+        <div className="flex flex-col items-center text-center px-4 md:px-0 mb-12 md:mb-16">
           <span className="bg-primary text-bg-base font-archivo font-bold text-xs md:text-sm uppercase tracking-[0.2em] px-3 md:px-5 py-2 md:py-4 rounded-xl mb-6">
             What We Offer
           </span>
@@ -113,10 +113,9 @@ export default function WhatWeOffer() {
             Turning Repetitive Work Into Time-Saving Systems
           </h2>
         </div>
-
         <div
           ref={constraintsRef}
-          className="relative max-w-full md:max-w-fit mx-auto mb-8 overflow-hidden bg-transparent sm:bg-bg-card border-0 sm:border sm:border-white/8 rounded-full"
+          className="relative max-w-full md:max-w-fit mx-auto mb-8 overflow-hidden bg-transparent sm:bg-bg-card border-0 sm:border sm:border-white/8 md:rounded-full"
         >
           <motion.div
             drag="x"
@@ -132,7 +131,7 @@ export default function WhatWeOffer() {
                 hasDraggedSignificantly.current = true
               }
             }}
-            className="relative flex items-center gap-1 w-fit p-0 sm:p-1.5 pr-0 cursor-grab active:cursor-grabbing"
+            className="relative flex items-center gap-1 w-fit p-0 pl-5 md:pl-2 sm:p-1.5 pr-0 cursor-grab active:cursor-grabbing"
             role="tablist"
             aria-label="Feature tabs"
           >
@@ -157,7 +156,7 @@ export default function WhatWeOffer() {
                 {activeTab === i && (
                   <motion.span
                     layoutId="tab-pill"
-                    className="absolute inset-0 rounded-full bg-[#1e1e0e] border border-primary/20"
+                    className="absolute inset-0 rounded-full gradient-border-mask"
                     transition={{ type: 'spring', stiffness: 380, damping: 34 }}
                   />
                 )}
@@ -168,76 +167,76 @@ export default function WhatWeOffer() {
             ))}
           </motion.div>
         </div>
-
-        {/* ── Content card ── */}
-        <div
-          className="relative bg-[#111] border border-white/8 rounded-4xl overflow-hidden"
-          style={{ minHeight: '320px' }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="flex flex-col md:flex-row items-stretch gap-8 p-8 md:p-10"
-            >
-              {/* Left: text content */}
+        <div className="px-4 md:px-0">
+          <div
+            className="relative bg-[#111] border border-white/8 rounded-4xl overflow-hidden"
+            style={{ minHeight: '320px' }}
+          >
+            <AnimatePresence mode="wait">
               <motion.div
-                variants={contentVariants}
-                className="flex-1 flex flex-col justify-center gap-2 md:gap-5"
+                key={activeTab}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="flex flex-col md:flex-row items-stretch gap-8 p-8 md:p-10"
               >
-                {/* Index number */}
-                <span className="font-anton text-3xl text-primary text-center md:text-start">
-                  {active.index}
-                </span>
+                {/* Left: text content */}
+                <motion.div
+                  variants={contentVariants}
+                  className="flex-1 flex flex-col justify-center gap-2 md:gap-5"
+                >
+                  {/* Index number */}
+                  <span className="font-anton text-3xl text-primary text-center md:text-start">
+                    {active.index}
+                  </span>
 
-                {/* Title */}
-                <h3 className="font-anton text-2xl md:text-3xl text-white uppercase leading-tight text-center md:text-start">
-                  {active.title}
-                </h3>
+                  {/* Title */}
+                  <h3 className="font-anton text-2xl md:text-3xl text-white uppercase leading-tight text-center md:text-start">
+                    {active.title}
+                  </h3>
 
-                {/* Description */}
-                <p className="font-archivo text-white/55 text-sm md:text-base leading-relaxed max-w-md text-center md:text-start">
-                  {active.description}
-                </p>
+                  {/* Description */}
+                  <p className="font-archivo text-white/55 text-sm md:text-base leading-relaxed max-w-md text-center md:text-start">
+                    {active.description}
+                  </p>
 
-                {/* CTA */}
-                <div className="mt-2 text-center md:text-start">
-                  <CustomButton
-                    text="Get Started"
-                    variant="filled"
-                    className="cursor-pointer"
+                  {/* CTA */}
+                  <div className="mt-2 text-center md:text-start">
+                    <CustomButton
+                      text="Get Started"
+                      variant="filled"
+                      className="cursor-pointer"
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Right: image with corner brackets */}
+                <motion.div
+                  variants={imageVariants}
+                  className="relative flex-1 min-h-37.5 md:min-h-60 md:max-w-110 overflow-hidden"
+                >
+                  {/* Corner brackets decoration (matching reference image) */}
+                  <span className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary z-20 pointer-events-none" />
+                  <span className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-primary z-20 pointer-events-none" />
+                  <span className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary z-20 pointer-events-none" />
+                  <span className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary z-20 pointer-events-none" />
+
+                  <Image
+                    src={active.image}
+                    alt={active.imageAlt}
+                    fill
+                    className="object-cover opacity-70"
+                    sizes="(max-width: 768px) 100vw, 480px"
+                    priority={activeTab === 0}
                   />
-                </div>
+
+                  {/* Dark vignette on left edge for blend */}
+                  <div className="absolute inset-y-0 left-0 w-12 bg-linear-to-r from-[#111] to-transparent z-10" />
+                  <div className="absolute inset-y-0 right-0 w-12 bg-linear-to-r from-transparent to-[#111]  z-10" />
+                </motion.div>
               </motion.div>
-
-              {/* Right: image with corner brackets */}
-              <motion.div
-                variants={imageVariants}
-                className="relative flex-1 min-h-37.5 md:min-h-60 md:max-w-110 overflow-hidden"
-              >
-                {/* Corner brackets decoration (matching reference image) */}
-                <span className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary z-20 pointer-events-none" />
-                <span className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-primary z-20 pointer-events-none" />
-                <span className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary z-20 pointer-events-none" />
-                <span className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary z-20 pointer-events-none" />
-
-                <Image
-                  src={active.image}
-                  alt={active.imageAlt}
-                  fill
-                  className="object-cover opacity-70"
-                  sizes="(max-width: 768px) 100vw, 480px"
-                  priority={activeTab === 0}
-                />
-
-                {/* Dark vignette on left edge for blend */}
-                <div className="absolute inset-y-0 left-0 w-12 bg-linear-to-r from-[#111] to-transparent z-10" />
-                <div className="absolute inset-y-0 right-0 w-12 bg-linear-to-r from-transparent to-[#111]  z-10" />
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>

@@ -19,9 +19,11 @@ export default function FeatureCard({
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#E7FF33]">
           {icon}
         </div>
-        <h3 className="font-anton text-xl uppercase text-white">{title}</h3>
+        <h3 className="font-anton md:text-lg text-xl uppercase text-white">
+          {title}
+        </h3>
       </div>
-      <p className="mt-2 max-w-120 text-lg leading-8 text-white/55">
+      <p className="mt-2 max-w-120 md:text-sm lg:text-lg lg:leading-8 text-white/55">
         {description}
       </p>
     </div>
