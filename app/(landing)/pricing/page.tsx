@@ -1,7 +1,6 @@
 'use client'
 
 import BillingToggle from '@/app/components/BillingToggle'
-import PricingSection from '@/app/components/landing/PricingSection'
 import PricingCard from '@/app/components/PricingCard'
 import TitleWithLines from '@/app/components/TitleWithLines'
 import { containerVariants, fadeUp } from '@/lib/motion-variants'
@@ -9,11 +8,13 @@ import { pricingPlans } from '@/lib/pricing-data'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import EveryPlanIncludesBanner from './EveryPlanIncludesBanner'
+import { useScreenSize } from '@/hooks/useScreenSize'
 
 const PricingPage = () => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>(
     'monthly',
   )
+  const { isMobile } = useScreenSize()
   return (
     <div className="relative w-screen">
       <section
@@ -22,6 +23,7 @@ const PricingPage = () => {
           backgroundImage: "url('/assets/pricing-banner-bg.jpeg')",
           backgroundPosition: '100%',
           backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
         }}
       >
         <TitleWithLines title="Pricing & Plans" />
@@ -44,14 +46,14 @@ const PricingPage = () => {
           </span>
         </div>
       </section>
-      <div className="relative max-w-7xl mx-auto flex flex-col items-center space-y-8 -top-20">
+      <div className="relative px-5 lg:px-0 max-w-7xl mx-auto flex flex-col items-center space-y-8 -top-30 md:-top-20">
         <BillingToggle billingCycle={billingCycle} onChange={setBillingCycle} />
         <motion.div
-          initial="hidden"
+          initial={isMobile ? 'visible' : 'hidden'}
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={containerVariants}
-          className="w-full grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {pricingPlans.map((plan) => (
             <PricingCard

@@ -55,7 +55,7 @@ export default function HeroSection() {
     <section
       ref={ref}
       id="hero"
-      className="relative h-full md:min-h-screen flex flex-col px-4 md:px-0 overflow-hidden bg-bg-base"
+      className="relative h-full xl:min-h-screen flex flex-col px-4 md:px-0 overflow-hidden bg-bg-base"
     >
       {/* ── Ambient glow background ── */}
       <motion.div
@@ -76,14 +76,14 @@ export default function HeroSection() {
       </motion.div>
 
       {/* ── Main content ── */}
-      <div className="relative z-10 w-full pt-28 md:pt-36 pb-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-8 flex-1">
+      <div className="relative z-10 w-full pt-28 lg:pt-36 pb-16 flex flex-col md:flex-row items-center gap-12 lg:gap-8 flex-1">
         {/* ── LEFT TEXT BLOCK ── */}
         <motion.div
           style={{ y: contentY }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex-1 w-full md:max-w-xl md:pl-20"
+          className="flex-1 w-full md:max-w-xl md:pl-5 lg:pl-20"
         >
           {/* Label */}
           <TitleWithLines
@@ -95,7 +95,7 @@ export default function HeroSection() {
           {/* Headline */}
           <motion.h1
             variants={fadeUp}
-            className="font-anton text-center md:text-start uppercase mt-8 md:mt-0 md:leading-[1.95] text-3xl sm:text-6xl lg:text-5xl text-white mb-6"
+            className="font-anton text-center md:text-start uppercase mt-8 md:mt-0 md:leading-12 lg:leading-[1.95] text-3xl md:text-4xl xl:text-5xl text-white md:mb-2 mb-6"
           >
             Run Your Entire Gym
             <br />
@@ -105,7 +105,7 @@ export default function HeroSection() {
           {/* Subtext */}
           <motion.p
             variants={fadeUp}
-            className="px-4 md:px-0 font-archivo text-center md:text-start text-white/60 text-base sm:text-md leading-relaxed mb-10 md:max-w-md"
+            className="px-4 md:px-0 font-archivo text-center md:text-start text-white/60 text-base sm:text-md leading-relaxed md:mb-5 mb-10 md:max-w-md"
           >
             One organized system for owners, managers, trainers and members —
             replacing spreadsheets, paper attendance, scattered payment records
@@ -164,7 +164,7 @@ export default function HeroSection() {
           </div>
           {/* badges */}
           <div
-            className={`hidden md:inline-flex items-center rounded-3xl gradient-border-mask absolute bottom-10 -left-30 px-2 py-2 `}
+            className={`hidden xl:inline-flex items-center rounded-3xl gradient-border-mask absolute bottom-10 -left-30 px-2 py-2 `}
             style={{
               background: '#1A1A1A36',
             }}

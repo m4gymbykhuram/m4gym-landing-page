@@ -18,16 +18,18 @@ export default function EveryPlanIncludesBanner() {
     <div
       className="relative w-full rounded-3xl overflow-hidden px-8 md:px-12 py-10 md:py-12"
       style={{
-        backgroundImage: 'url(/assets/plans-bg.png)',
+      backgroundImage: 'url(/assets/plans-bg.png)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: '100% 100%',
       }}
     >
-      <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8 md:gap-16">
+      <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 md:gap-16">
         {/* Left: heading */}
         <div className="max-w-xs shrink-0">
-          <h3 className="font-anton text-2xl sm:text-3xl text-white uppercase mb-3 leading-tight">
+          <h3 className="font-anton text-2xl sm:text-3xl text-white uppercase mb-3 leading-tight text-center md:text-start">
             Every Plan Includes
           </h3>
-          <p className="font-archivo text-white/60 text-sm sm:text-base leading-relaxed">
+          <p className="font-archivo text-white/60 text-sm sm:text-base leading-relaxed text-center md:text-start">
             The core system is never paywalled, plans only change scale.
           </p>
         </div>

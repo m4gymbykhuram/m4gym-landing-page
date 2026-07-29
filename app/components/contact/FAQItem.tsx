@@ -12,7 +12,7 @@ interface FAQItemProps {
 
 export default function FAQItem({ item, isOpen, onToggle }: FAQItemProps) {
   return (
-    <div className="rounded-2xl bg-bg-elevated border border-[#2D2D2D] overflow-hidden">
+    <div className="rounded-3xl bg-bg-elevated border border-[#2D2D2D] overflow-hidden">
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"

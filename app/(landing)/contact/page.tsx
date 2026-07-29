@@ -11,7 +11,7 @@ const page = () => {
   return (
     <div className="relative w-screen h-screen">
       <section
-        className="relative bg-[#0A0A0B] flex flex-col items-center justify-center gap-4 h-130 px-4 md:px-8"
+        className="relative bg-[#0A0A0B] flex flex-col items-center justify-center gap-4 pt-15 md:pt-0 h-80 lg:h-130 px-4 md:px-8"
         style={{
           backgroundImage:
             "linear-gradient(rgba(10,10,11,0.8), rgba(10,10,11,0.8)) ,url('/assets/contact_banner_bg.jpg')",

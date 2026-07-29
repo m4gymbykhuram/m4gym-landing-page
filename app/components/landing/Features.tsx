@@ -27,24 +27,24 @@ const Features = () => {
         </h2>
 
         <section className="mx-auto max-w-7xl p-3 md:px-2">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
             {/* Calendar */}
-            <div className="lg:col-span-8">
+            <div className="md:col-span-8">
               <CalendarCard />
             </div>
 
             {/* Payment */}
-            <div className="lg:col-span-4">
+            <div className="md:col-span-4">
               <PaymentCard />
             </div>
 
             {/* Equipment */}
-            <div className="lg:col-span-4">
+            <div className="md:col-span-4">
               <EquipmentCard />
             </div>
 
             {/* Inventory */}
-            <div className="lg:col-span-8">
+            <div className="md:col-span-8">
               <InventoryCard />
             </div>
           </div>
