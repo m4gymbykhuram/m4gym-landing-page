@@ -33,7 +33,7 @@ const BlogsPage = () => {
         </motion.h2>
       </section>
 
-      <div className="mx-auto flex flex-col lg:flex-row max-w-7xl gap-10 lg:gap-16 mb-20">
+      <div className="mx-auto flex flex-col lg:flex-row max-w-7xl gap-10 lg:px-5 lg:gap-16 mb-20">
         <CategorySidebar />
 
         <div className="flex-1 px-5 lg:px-0">
