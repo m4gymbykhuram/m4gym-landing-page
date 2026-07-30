@@ -25,25 +25,19 @@ export default function BillingToggle({
               {isActive && (
                 <motion.span
                   layoutId="billing-toggle-pill"
-                  className="absolute inset-0 rounded-full"
-                  style={{
-                    backgroundImage: `radial-gradient(120% 140% at 50% 20%, rgba(221,255,0,0.18) 0%, rgba(221,255,0,0.05) 45%, rgba(20,20,20,0) 75%), linear-gradient(#1a1a1a, #1a1a1a), linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.1) 100%)`,
-                    backgroundOrigin: 'border-box, border-box, border-box',
-                    backgroundClip: 'padding-box, padding-box, border-box',
-                    border: '1px solid transparent',
-                  }}
+                  className="absolute inset-0 rounded-full active-tab-bg"
                   transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                 />
               )}
               <span
                 className={`relative z-10 capitalize ${
-                  isActive ? 'text-primary' : 'text-white/50'
+                  isActive ? 'text-black' : 'text-white/50'
                 }`}
               >
                 {cycle}
               </span>
               {cycle === 'yearly' && (
-                <span className="relative text-xs font-archivo font-semibold text-[#858585] bg-[#FFFFFF17] ml-2 z-50 rounded-full p-1 border border-white/6 px-2.5">
+                <span className="relative text-xs font-archivo font-semibold text-[#858585] bg-bg-card ml-2 z-50 rounded-full p-1 border border-white/6 px-2.5">
                   Save 30%
                 </span>
               )}

@@ -85,10 +85,12 @@ export default function PricingCard({
 
       <CustomButton
         text={plan.ctaText}
-        bg={isPreferred ? '#DCFF57' : 'white'}
-        className="w-full text-xs cursor-pointer text-center"
-        circleBg={isPreferred ? 'black' : '#DCFF57'}
-        arrowColor={isPreferred ? '#DCFF57' : 'black'}
+        bg={'white'}
+        className="w-full text-xs cursor-pointer text-center p-0!"
+        circleBg={'#DCFF57'}
+        arrowColor={'black'}
+        animate={true}
+        textCenter
       />
 
       <p className="font-archivo text-sm text-white/60 my-5">

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import CustomButton from '../CustomButton'
+import AnimatedHeading from './AnimatedHeading'
 
 const tabs = [
   {
@@ -109,9 +110,11 @@ export default function WhatWeOffer() {
           <span className="bg-primary text-bg-base font-archivo font-bold text-xs md:text-sm uppercase tracking-[0.2em] px-3 md:px-5 py-2 md:py-4 rounded-xl mb-6">
             What We Offer
           </span>
-          <h2 className="font-anton uppercase text-3xl sm:text-4xl  xl:text-[44px] text-white leading-tight max-w-2xl">
-            Turning Repetitive Work Into Time-Saving Systems
-          </h2>
+
+          <AnimatedHeading
+            text="Turning Repetitive Work Into **Time-Saving** Systems"
+            className="text-3xl sm:text-4xl xl:text-[44px]"
+          />
         </div>
         <div
           ref={constraintsRef}
@@ -148,7 +151,7 @@ export default function WhatWeOffer() {
           transition-colors duration-200 whitespace-nowrap cursor-pointer
           ${
             activeTab === i
-              ? 'bg-linear-to-b from-[#111214]/18 to-[#dde118]/18 text-white shadow-sm'
+              ? 'active-tab-bg text-black shadow-sm'
               : 'text-white/50 hover:text-white/80'
           }
         `}
@@ -156,7 +159,7 @@ export default function WhatWeOffer() {
                 {activeTab === i && (
                   <motion.span
                     layoutId="tab-pill"
-                    className="absolute inset-0 rounded-full gradient-border-mask"
+                    className="absolute inset-0 rounded-full"
                     transition={{ type: 'spring', stiffness: 380, damping: 34 }}
                   />
                 )}

@@ -1,15 +1,18 @@
 import { fadeUp, slideLeft } from '@/lib/motion-variants'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import AnimatedHeading from './AnimatedHeading'
 
 export default function SectionHeading({
   badge,
   title,
   align = 'left',
+  className,
 }: {
   badge: string
   title?: string
   align?: 'left' | 'center' | 'right'
+  className?: string
 }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
@@ -26,13 +29,11 @@ export default function SectionHeading({
           {badge}
         </span>
       </motion.div>
-      <motion.h2
-        variants={fadeUp}
-        custom={0}
-        className="font-anton text-3xl sm:text-4xl xl:text-[44px] uppercase text-white leading-tight"
-      >
-        {title}
-      </motion.h2>
+
+      <AnimatedHeading
+        text={title || ''}
+        className={`${'text-3xl sm:text-4xl xl:text-[44px]'} ${className || ''}`.trim()}
+      />
     </motion.div>
   )
 }
