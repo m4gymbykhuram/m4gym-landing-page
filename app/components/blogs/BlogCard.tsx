@@ -33,13 +33,13 @@ export default function BlogCard({ blog }: { blog: Blog }) {
       className="group block rounded-2xl border border-white/5 bg-bg-card p-3 transition-colors hover:border-lime-400/30"
     >
       {/* Thumbnail */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-black">
+      <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-black">
         <Image
           src={blog.image}
           alt={blog.title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          className="object-cover transition-transform duration-300 group-hover:scale-[1.2]"
         />
       </div>
 
@@ -61,7 +61,7 @@ export default function BlogCard({ blog }: { blog: Blog }) {
           </div>
           <p className="text-sm text-neutral-400">
             {blog.author} <span className="text-neutral-500">|</span>{' '}
-            <span className="text-lime-400">{formatDate(blog.date)}</span>
+            <span className="text-primary">{formatDate(blog.date)}</span>
           </p>
         </div>
       </div>

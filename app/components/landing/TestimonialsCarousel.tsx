@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { testimonials } from '@/lib/testimonials-data'
@@ -9,10 +9,12 @@ import SectionHeading from './SectionHeading'
 import { useScreenSize } from '@/hooks/useScreenSize'
 
 const PAGE_SIZE = 2
+const AUTOPLAY_DELAY = 4000 // ms
 
 export default function TestimonialsCarousel() {
   const [page, setPage] = useState(0)
-  const [direction, setDirection] = useState(0)
+  const [direction, setDirection] = useState(1)
+  const [isPaused, setIsPaused] = useState(false)
   const { isMobile, isTablet } = useScreenSize()
 
   const totalPages = Math.ceil(testimonials.length / PAGE_SIZE)
@@ -21,24 +23,39 @@ export default function TestimonialsCarousel() {
     page * PAGE_SIZE + PAGE_SIZE,
   )
 
-  const goPrev = () => {
+  const goPrev = useCallback(() => {
     setDirection(-1)
     setPage((p) => (p === 0 ? totalPages - 1 : p - 1))
-  }
+  }, [totalPages])
 
-  const goNext = () => {
+  const goNext = useCallback(() => {
     setDirection(1)
     setPage((p) => (p === totalPages - 1 ? 0 : p + 1))
-  }
+  }, [totalPages])
+
+  useEffect(() => {
+    if (isPaused || totalPages <= 1) return
+
+    const timer = setInterval(() => {
+      setDirection(1)
+      setPage((p) => (p === totalPages - 1 ? 0 : p + 1))
+    }, AUTOPLAY_DELAY)
+
+    return () => clearInterval(timer)
+  }, [isPaused, totalPages])
 
   return (
-    <div>
-      <div className="mb-5 md:mb-10 lg:mb-5 flex flex-col-reverse lg:flex-row items-center justify-between">
+    <div
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className="mb-5 md:mb-10 lg:mb-15 flex flex-col-reverse lg:flex-row items-center justify-between">
         {/* Arrow controls */}
         <div className="hidden lg:flex items-center gap-4">
           <button
             onClick={goPrev}
-            className="w-13 h-13 rounded-full flex items-center justify-center bg-bg-elevated"
+            aria-label="Previous testimonials"
+            className="w-13 h-13 rounded-full flex items-center justify-center bg-bg-elevated cursor-pointer transition-transform hover:scale-105 active:scale-95"
             style={{
               width: '3.5rem',
               height: '3.5rem',
@@ -52,8 +69,11 @@ export default function TestimonialsCarousel() {
           </button>
           <button
             onClick={goNext}
-            className="w-13 h-13 rounded-full flex items-center justify-center"
+            aria-label="Next testimonials"
+            className="w-13 h-13 rounded-full flex items-center justify-center cursor-pointer transition-transform hover:scale-105 active:scale-95"
             style={{
+              width: '3.5rem',
+              height: '3.5rem',
               background: 'linear-gradient(180deg, #E8FF5C 0%, #C6FF4D 100%)',
             }}
           >
@@ -64,6 +84,7 @@ export default function TestimonialsCarousel() {
           badge="Testimonials"
           title="Success Stories Across Every Gym Role"
           align={isMobile || isTablet ? 'center' : 'right'}
+          className="xl:text-nowrap"
         />
       </div>
 
@@ -94,11 +115,13 @@ export default function TestimonialsCarousel() {
           </motion.div>
         </AnimatePresence>
       </div>
-      {/* Arrow controls */}
-      <div className="flex lg:hidden items-center justify-center gap-4">
+
+      {/* Arrow controls (mobile) */}
+      <div className="flex lg:hidden items-center justify-center gap-4 mt-6">
         <button
           onClick={goPrev}
-          className="w-13 h-13 rounded-full flex items-center justify-center bg-bg-elevated"
+          aria-label="Previous testimonials"
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-bg-elevated cursor-pointer transition-transform active:scale-95"
           style={{
             width: '3rem',
             height: '3rem',
@@ -112,7 +135,8 @@ export default function TestimonialsCarousel() {
         </button>
         <button
           onClick={goNext}
-          className="w-13 h-13 rounded-full flex items-center justify-center"
+          aria-label="Next testimonials"
+          className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-transform active:scale-95"
           style={{
             width: '3rem',
             height: '3rem',

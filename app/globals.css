@@ -185,3 +185,7 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@utility active-tab-bg {
+  background: linear-gradient(180deg, #f5ff7a 0%, #ddeb18 100%);
+}

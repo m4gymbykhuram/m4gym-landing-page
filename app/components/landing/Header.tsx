@@ -13,6 +13,61 @@ const navLinks = [
   { label: 'Blog', href: '/blogs' },
   { label: 'Contact', href: '/contact' },
 ]
+
+function AnimatedNavLabel({
+  label,
+  isActive,
+}: {
+  label: string
+  isActive: boolean
+}) {
+  return (
+    <motion.span
+      initial="rest"
+      whileHover="hover"
+      animate="rest"
+      className={`relative z-10 inline-flex items-center font-archivo font-semibold ${
+        isActive ? 'text-black' : 'text-[#858585]'
+      }`}
+    >
+      {label.split('').map((char, i) => (
+        <span key={i} className="relative inline-block overflow-hidden">
+          <motion.span
+            className="inline-block"
+            variants={{
+              rest: { y: 0 },
+              hover: { y: '-100%' },
+            }}
+            transition={{
+              duration: 0.55,
+              ease: [0.22, 1, 0.36, 1],
+              delay: i * 0.025,
+            }}
+          >
+            {char === ' ' ? '\u00A0' : char}
+          </motion.span>
+          <motion.span
+            className={`absolute left-0 top-0 inline-block ${
+              isActive ? 'text-black' : 'text-white'
+            }`}
+            variants={{
+              rest: { y: '100%' },
+              hover: { y: 0 },
+            }}
+            transition={{
+              duration: 0.28,
+              ease: [0.22, 1, 0.36, 1],
+              delay: i * 0.025,
+            }}
+          >
+            {char === ' ' ? '\u00A0' : char}
+          </motion.span>
+        </span>
+      ))}
+    </motion.span>
+  )
+}
+
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('Home')
@@ -51,7 +106,7 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav
-          className="hidden lg:flex items-center gap-1  bg-[#1A1A1A80] backdrop-blur-md rounded-full px-2 py-2 gradient-border-mask"
+          className="hidden lg:flex items-center gap-1 bg-[#1A1A1A80] backdrop-blur-md rounded-full px-2 py-2 border border-[#2D2D2D]"
           role="navigation"
           aria-label="Main navigation"
         >
@@ -63,7 +118,7 @@ export default function Header() {
                 key={link.label}
                 href={link.href}
                 onClick={() => setActiveTab(link.label)}
-                className="relative px-7 py-2.5 rounded-full text-md font-archivo font-semibold"
+                className="relative px-7 py-2.5 rounded-full text-md font-archivo font-semibold group overflow-hidden"
               >
                 {isActive && (
                   <motion.span
@@ -71,22 +126,13 @@ export default function Header() {
                     className="absolute inset-0 rounded-full"
                     style={{
                       background:
-                        'linear-gradient(180deg, rgba(24, 24, 24, 0.12) 0%, rgba(221, 235, 24, 0.12) 100%)',
-                      border: '1px solid rgba(255,255,255,0.08)',
+                        'linear-gradient(180deg, #F5FF7A 0%, #DDEB18 100%)',
                     }}
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />
                 )}
 
-                <span
-                  className={`relative z-10 flex items-center gap-1.5 transition-colors duration-200 ${
-                    isActive
-                      ? 'text-[#E4FF3D]'
-                      : 'text-white/50 hover:text-white/80'
-                  }`}
-                >
-                  {link.label}
-                </span>
+                <AnimatedNavLabel label={link.label} isActive={isActive} />
               </Link>
             )
           })}

@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { howItWorksSteps } from '@/lib/how-it-works-data'
 import TitleWithLines from '../TitleWithLines'
+import AnimatedHeading from './AnimatedHeading'
+import { fadeUp } from '@/lib/motion-variants'
 
 function StepBlock({
   step,
@@ -153,10 +155,11 @@ export default function HowItWorksSection() {
       style={{ backgroundImage: "url('/assets/works-section-bg.png')" }}
     >
       <div className="max-w-7xl flex flex-col items-center mx-auto text-center md:mb-16">
-        <TitleWithLines title="How It Works" />
-        <h2 className="font-anton text-3xl sm:text-4xl xl:text-[44px] text-white uppercase mt-4">
-          Get Started In 3 Simple Steps
-        </h2>
+        <TitleWithLines title="How It Works" variants={fadeUp} />
+        <AnimatedHeading
+          text="Get Started In 3 Simple Steps"
+          className="text-3xl sm:text-4xl xl:text-[44px] mt-2"
+        />
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
