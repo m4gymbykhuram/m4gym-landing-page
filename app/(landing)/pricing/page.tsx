@@ -46,7 +46,7 @@ const PricingPage = () => {
           </span>
         </div>
       </section>
-      <div className="relative px-5 lg:px-0 max-w-7xl mx-auto flex flex-col items-center space-y-8 -top-30 md:-top-20">
+      <div className="relative px-5 lg:px-5 max-w-7xl mx-auto flex flex-col items-center space-y-8 -top-30 md:-top-20">
         <BillingToggle billingCycle={billingCycle} onChange={setBillingCycle} />
         <motion.div
           initial={isMobile ? 'visible' : 'hidden'}
