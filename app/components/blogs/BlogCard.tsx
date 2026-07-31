@@ -30,7 +30,7 @@ export default function BlogCard({ blog }: { blog: Blog }) {
   return (
     <Link
       href={`/blogs/${blog.id}`}
-      className="group block rounded-2xl border border-white/5 bg-bg-card p-3 transition-colors hover:border-lime-400/30"
+      className="group block rounded-2xl hover:border border-[#2D2D2D] hover:bg-bg-elevated p-3 transition-colors"
     >
       {/* Thumbnail */}
       <div className="relative aspect-16/10 w-full overflow-hidden rounded-xl bg-black">
@@ -39,7 +39,7 @@ export default function BlogCard({ blog }: { blog: Blog }) {
           alt={blog.title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.2]"
+          className="object-cover transition-transform duration-300 group-hover:scale-[1.1]"
         />
       </div>
 
