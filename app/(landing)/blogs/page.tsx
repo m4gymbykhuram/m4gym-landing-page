@@ -14,7 +14,7 @@ const BlogsPage = () => {
   useScrollToTop()
 
   return (
-    <div className="relative w-screen">
+    <div className="relative bg-[#111214] w-screen">
       <section
         className="relative bg-[#0A0A0B] flex flex-col items-center justify-center gap-4 h-100 px-4 md:px-8"
         style={{
@@ -33,7 +33,7 @@ const BlogsPage = () => {
         </motion.h2>
       </section>
 
-      <div className="mx-auto flex flex-col lg:flex-row max-w-7xl gap-10 lg:px-5 lg:gap-16 mb-20">
+      <div className="mx-auto flex flex-col lg:flex-row max-w-7xl gap-10 lg:px-5 lg:gap-16 py-20">
         <CategorySidebar />
 
         <div className="flex-1 px-5 lg:px-0">
@@ -41,7 +41,7 @@ const BlogsPage = () => {
             Latest Articles
           </h1>
 
-          <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-3 md:gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
             {allBlogs.map((blog) => (
               <BlogCard key={blog.id} blog={blog} />
             ))}

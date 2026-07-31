@@ -23,6 +23,8 @@
   /* Fonts */
   --font-anton: var(--font-anton);
   --font-archivo: var(--font-archivo);
+
+  --animate-border: border 4s linear infinite;
 }
 
 /* ───────────────────────────────────────────
@@ -81,6 +83,12 @@ body {
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes border {
+  to {
+    --border-angle: 360deg;
   }
 }
 
@@ -188,4 +196,10 @@ body {
 
 @utility active-tab-bg {
   background: linear-gradient(180deg, #f5ff7a 0%, #ddeb18 100%);
+}
+
+@property --border-angle {
+  inherits: false;
+  initial-value: 0deg;
+  syntax: '<angle>';
 }

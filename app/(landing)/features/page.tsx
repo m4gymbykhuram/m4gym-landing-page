@@ -1,18 +1,15 @@
 'use client'
 
 import CustomButton from '@/app/components/CustomButton'
+import { FeatureOwnerDashboardSection } from '@/app/components/features/OwnerDashboardSection'
+import GlowBorderCard from '@/app/components/GlowBorderCard'
 import TitleWithLines from '@/app/components/TitleWithLines'
 import { useScreenSize } from '@/hooks/useScreenSize'
-import {
-  containerVariants,
-  fadeUp,
-  slideLeft,
-  scaleIn,
-} from '@/lib/motion-variants'
+import { containerVariants, fadeUp } from '@/lib/motion-variants'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowUpDown, Clock } from 'lucide-react'
 import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 
 const works = [
@@ -159,19 +156,74 @@ const managementTabs = [
   },
 ]
 
+function DashboardBentoGrid() {
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-8">
+      {/* Row 1 */}
+      <GlowBorderCard
+        src="/assets/classes.png"
+        alt="Classes panel"
+        className="md:col-span-2 lg:col-span-4"
+      />
+
+      <GlowBorderCard
+        src="/assets/attendance.png"
+        alt="Mark attendance panel"
+        className="rounded-xl object-cover w-full h-full md:col-span-1 lg:col-span-2"
+      />
+
+      <GlowBorderCard
+        src="/assets/notifications.png"
+        alt="Notifications panel"
+        className="rounded-xl object-cover w-full h-full md:col-span-1 lg:col-span-2"
+      />
+
+      {/* Row 2 */}
+      <GlowBorderCard
+        src="/assets/equipments.png"
+        alt="Equipment's panel"
+        className="rounded-xl w-full h-full md:col-span-1 lg:col-span-3"
+      />
+
+      <GlowBorderCard
+        src="/assets/features-calender.png"
+        alt="Drag & Drop Calendar panel"
+        className="rounded-3xl w-full h-full md:col-span-3 lg:col-span-5"
+      />
+    </div>
+  )
+}
+
 const FeaturesPage = () => {
   const { isMobile } = useScreenSize()
   return (
-    <div className="relative w-screen overflow-hidden bg-[#080809]">
+    <div className="relative w-full overflow-x-clip bg-[#080809]">
       {/* Hero Section */}
-      <div
-        className="relative bg-[#0A0A0B] z-10 w-full pt-28 px-4 lg:px-20 lg:pt-36 pb-16 flex flex-col md:flex-row items-center gap-12 lg:gap-8 flex-1"
-        style={{
-          backgroundImage: "url('/assets/blogs-banner-bg.jpeg')",
-          backgroundPosition: '100%',
-          backgroundSize: 'cover',
-        }}
-      >
+      <div className="relative bg-[#0A0A0B] z-10 w-full pt-28 px-4 lg:px-20 lg:pt-36 pb-16 flex flex-col md:flex-row items-center gap-12 lg:gap-8 flex-1">
+        {/* Left glow */}
+        <div
+          className="hidden md:block
+          absolute top-[40%] left-[8%]
+          w-[320px] h-44
+          bg-[#4a4a12]
+          rounded-full
+          blur-[100px]
+          opacity-80
+        "
+        />
+
+        {/* Right glow */}
+        <div
+          className="hidden md:block
+          absolute bottom-[1%] right-[16%]
+          w-95 h-90
+          bg-[#4a4a12]
+          rounded-full
+          blur-[110px]
+          opacity-70
+        "
+        />
+
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -193,7 +245,7 @@ const FeaturesPage = () => {
           </motion.h2>
           <motion.p
             variants={fadeUp}
-            className="md:text-sm text-md text-[#858585] max-w-125 text-center md:text-start"
+            className="md:text-md text-lg text-[#858585] max-w-125 text-center md:text-start"
           >
             Stop switching between spreadsheets, WhatsApp groups, payment apps,
             and attendance sheets. M4GYM keeps your owners, managers, trainers,
@@ -209,14 +261,9 @@ const FeaturesPage = () => {
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="flex-1 relative flex items-center justify-center w-full max-w-2xl lg:max-w-none"
+          className="flex-1 relative flex items-center justify-center w-full max-w-3xl lg:max-w-none"
         >
-          <Image
-            src={'/assets/feature-banner-group.png'}
-            alt="features"
-            height={600}
-            width={600}
-          />
+          <DashboardBentoGrid />
         </motion.div>
       </div>
 
@@ -289,7 +336,9 @@ const FeaturesPage = () => {
         </motion.div>
       </div>
 
-      <OwnerDashboardSection />
+      {/* Skiper Sticky Stacked Cards Component */}
+      <FeatureOwnerDashboardSection />
+
       <RoleFeaturesSection />
       <ManagementFeaturesSection />
       <BranchManagementSection />
@@ -436,117 +485,6 @@ const FeaturePreviewPanel = ({ item }: { item: FeaturePanelItem }) => (
   </motion.div>
 )
 
-const OwnerDashboardSection = () => {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const activeFeature = ownerFeatures[activeIndex]
-  const { isMobile, isTablet } = useScreenSize()
-
-  return (
-    <section className="bg-[#080809] py-14 md:py-24">
-      <SectionHeading
-        align={isMobile || isTablet ? 'center' : 'split'}
-        title={
-          <p className="text-center lg:text-start">
-            Run Your Entire Gym From One Dashboard As A Gym{' '}
-            <span className="text-primary">Owner</span>
-          </p>
-        }
-        description="From memberships and revenue to staff, equipment, and multiple locations, M4GYM gives gym owners complete control over every part of their business. Make smarter decisions with real-time insights, automate daily operations."
-      />
-
-      <div className="mx-auto mt-10 grid max-w-7xl min-w-0 gap-6 lg:gap-12 px-5 lg:px-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-        {/* Left Column: Feature Buttons with scroll-driven active detection */}
-        <div className="min-w-0">
-          <div className="flex w-full max-w-full gap-3 overflow-x-auto pb-2 scrollbar-none lg:flex-col lg:space-y-4 lg:overflow-visible md:pb-0">
-            {ownerFeatures.map((feature, index) => (
-              <motion.div
-                key={feature.label}
-                onViewportEnter={() => setActiveIndex(index)}
-                viewport={{ amount: 0.6, margin: '-10% 0px -30% 0px' }}
-                className="w-full shrink-0"
-              >
-                <button
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  aria-pressed={activeIndex === index}
-                  className={`relative flex min-h-12 w-full shrink-0 items-center rounded-2xl lg:rounded-xl px-4 py-4 text-left text-sm transition-all duration-300 md:min-h-16 md:text-lg sm:text-base lg:text-xl cursor-pointer ${
-                    activeIndex === index
-                      ? 'text-white bg-white/5 border border-white/10 shadow-lg'
-                      : 'text-white/45 hover:text-white/80 hover:bg-white/2'
-                  }`}
-                >
-                  <motion.span
-                    animate={{
-                      width: activeIndex === index ? 24 : 0,
-                      opacity: activeIndex === index ? 1 : 0,
-                      marginRight: activeIndex === index ? 16 : 0,
-                    }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                    className="h-1 shrink-0 bg-primary rounded-full"
-                  />
-                  <span className="truncate md:whitespace-normal font-medium">
-                    {feature.label}
-                  </span>
-                </button>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="hidden lg:block mt-10 text-center md:text-start"
-          >
-            <CustomButton text="Get Started" className="cursor-pointer" />
-          </motion.div>
-        </div>
-
-        {/* Right Column: Sticky preview card with motion transitions */}
-        <div className="lg:sticky lg:top-28 lg:self-start transition-all duration-300">
-          <OwnerImagePreview item={activeFeature} />
-        </div>
-      </div>
-    </section>
-  )
-}
-
-const OwnerImagePreview = ({ item }: { item: FeaturePanelItem }) => (
-  <div className="min-w-0 w-full overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#1a1b1b] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.35)] sm:p-8">
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={item.title}
-        initial={{ opacity: 0, y: 15, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -15, scale: 0.98 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-      >
-        <div className="mb-6">
-          <h3 className="text-2xl font-semibold text-white text-center md:text-start">
-            {item.title}
-          </h3>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-white/45 text-center md:text-start">
-            {item.description}
-          </p>
-        </div>
-        <div className="relative h-80 overflow-hidden rounded-[1.15rem] bg-black sm:h-80 lg:h-96">
-          <Image
-            src={item.image}
-            alt={item.imageAlt}
-            fill
-            sizes="(max-width: 1024px) 92vw, 650px"
-            className={`transition-opacity duration-300 ${
-              item.fit === 'cover' ? 'object-cover' : 'object-contain p-5'
-            }`}
-            priority={item.image === '/assets/dashboard-mockup.png'}
-          />
-          <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent via-transparent to-black/35" />
-        </div>
-      </motion.div>
-    </AnimatePresence>
-  </div>
-)
-
 const RoleFeaturesSection = () => {
   const [activeIndex, setActiveIndex] = useState(0)
   const activeTab = roleTabs[activeIndex]
@@ -632,7 +570,7 @@ const BranchManagementSection = () => (
           variants={fadeUp}
           className="mt-7 text-center lg:text-start"
         >
-          <CustomButton text="Get Started" />
+          <CustomButton text="Get Started" className="cursor-pointer" />
         </motion.div>
       </motion.div>
 

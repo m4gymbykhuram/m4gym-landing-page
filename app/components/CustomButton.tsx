@@ -139,7 +139,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         whileHover="hover"
         animate="rest"
         className={`group relative inline-flex items-center rounded-full font-archivo font-semibold pl-1 py-1 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed ${
-          isFilled ? 'text-black' : 'text-white border border-white/10'
+          isFilled ? 'text-black' : 'text-white border border-[#2D2D2D]'
         } ${textCenter ? 'pr-1' : 'pr-7'} ${className}`}
         style={{
           background: resolvedBg,

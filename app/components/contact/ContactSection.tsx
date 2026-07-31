@@ -24,20 +24,20 @@ export default function ContactSection() {
   }
 
   return (
-    <section className="bg-[#111214] py-6 lg:py-20 md:px-8">
+    <section className="bg-[#0A0A0B] py-6 lg:py-14 md:px-8">
       <div className="max-w-7xl mx-auto rounded-3xl md:border border-white/10 bg-[#111214] overflow-hidden grid grid-cols-1 lg:grid-cols-2">
         {/* Left: form */}
         <div className="p-4 sm:p-6 lg:p-8">
-          <h2 className="font-anton text-3xl sm:text-4xl text-white uppercase mb-4 text-center md:text-start">
+          <h2 className="font-anton text-3xl sm:text-4xl text-white uppercase mb-2 text-center md:text-start">
             Prefer To Write To Us?
           </h2>
 
-          <p className="font-archivo text-white/50 text-md mb-10  text-center md:text-start max-w-md">
+          <p className="font-archivo text-white/50 text-md mb-6  text-center md:text-start max-w-md">
             You can also reach out by filling out the form below. We aim to
             respond to all enquiries within two business days.
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
                 htmlFor="name"
