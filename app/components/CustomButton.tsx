@@ -113,17 +113,6 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
       )
     }
 
-    /* ── Animated variant ── */
-    /*
-     * Layout: `relative overflow-hidden` pill container.
-     *
-     * Layers (bottom → top):
-     *  1. Expanding circle  — absolutely positioned, grows from left to full width on hover
-     *  2. Original row      — [circle icon] [label]  slides right & fades out on hover
-     *  3. Centered reveal   — [icon + label] centred, fades in after expansion
-     */
-
-    // Timing constants (seconds)
     const expandDur = 0.62
     const revealDelay = 0.4
     const revealDur = 0.38
@@ -225,15 +214,7 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         </motion.span>
 
         {/* ── Layer 3: Reveal — text slides left-edge→center, icon fades in place ── */}
-        {/*
-         * The wrapper only handles opacity.
-         * Text label is its own motion.span: starts at x:'-50%' which, on an
-         * inset-0 span (= full button width W), translates by -W/2 — placing
-         * the centered content exactly at the button's left edge — then slides
-         * to x:0 (natural center). Overflow-hidden on the button clips the rest.
-         * Icon pill is a plain span; it just fades with the wrapper, staying
-         * pinned at the right corner throughout.
-         */}
+
         <motion.span
           aria-hidden
           className="absolute inset-0 z-30 pointer-events-none"

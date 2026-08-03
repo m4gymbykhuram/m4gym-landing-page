@@ -88,10 +88,9 @@ export default function HeroSection() {
           {/* Label */}
           <TitleWithLines
             title="Gym Management Platform"
-            variants={fadeUp}
-            showLeftLine={isMobile ? true : false}
+            showLeftLine
+            lineClassName="md:hidden"
           />
-
           {/* Headline */}
           <motion.h1
             variants={fadeUp}
