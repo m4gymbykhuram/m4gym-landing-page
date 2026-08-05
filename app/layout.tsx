@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Anton, Archivo } from "next/font/google";
 import "./globals.css";
+import RouteScrollReset from './components/RouteScrollReset'
 
 const anton = Anton({
   weight: "400",
@@ -32,8 +33,10 @@ export default function RootLayout({
       className={`${anton.variable} ${archivo.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-bg-base text-text-base font-archivo">
+        <RouteScrollReset />
         {children}
       </body>
     </html>
   );
 }
+

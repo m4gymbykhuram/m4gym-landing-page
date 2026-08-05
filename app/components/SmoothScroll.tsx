@@ -3,8 +3,15 @@
 import { ReactNode, useEffect, useRef } from 'react'
 import Lenis from 'lenis'
 
+declare global {
+  interface Window {
+    __lenis?: any
+  }
+}
+
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
+  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -18,15 +25,41 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
 
     lenisRef.current = lenis
 
-    function raf(time: number) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
+    // expose lenis to window for global access (so other utilities can call scrollTo)
+    try {
+      window.__lenis = lenis
+    } catch (e) {
+      // ignore if window is not writable
     }
-    requestAnimationFrame(raf)
+
+    function raf(time: number) {
+      // guard in case lenis was destroyed while an RAF was queued
+      if (lenisRef.current) lenisRef.current.raf(time)
+      rafRef.current = requestAnimationFrame(raf)
+    }
+
+    // start the loop and store the id so it can be cancelled
+    rafRef.current = requestAnimationFrame(raf)
 
     return () => {
-      lenis.destroy()
-      lenisRef.current = null
+      // cancel any pending RAF to stop the loop
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
+
+      // destroy lenis instance
+      if (lenisRef.current) {
+        lenisRef.current.destroy()
+        lenisRef.current = null
+      }
+
+      // remove global reference
+      try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        delete window.__lenis
+      } catch (e) {
+        // ignore
+      }
     }
   }, [])
 

@@ -1,11 +1,7 @@
 'use client'
 
 import { useRef, useEffect, useCallback } from 'react'
-import {
-  motion,
-  useInView,
-  useAnimation,
-} from 'framer-motion'
+import { motion, useInView, useAnimation } from 'framer-motion'
 import { fadeUp, slideLeft } from '@/lib/motion-variants'
 import SectionHeading from './SectionHeading'
 import { useScreenSize } from '@/hooks/useScreenSize'
