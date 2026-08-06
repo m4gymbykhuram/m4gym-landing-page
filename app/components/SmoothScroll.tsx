@@ -1,34 +1,31 @@
 'use client'
 
-import { ReactNode, useEffect, useRef } from 'react'
-import Lenis from 'lenis'
+import { ReactNode, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
+
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
 
 export default function SmoothScroll({ children }: { children: ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null)
-
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 3.5,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      touchMultiplier: 2,
+    // ✅ Create GSAP ScrollSmoother
+    const smoother = ScrollSmoother.create({
+      smooth: 2,          // 2s smoothing
+      effects: true,      // allow [data-speed] parallax if you want
+      normalizeScroll: true,
+      wrapper: '#smooth-wrapper', 
+      content: '#smooth-content',
     })
 
-    lenisRef.current = lenis
-
-    function raf(time: number) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
-    }
-    requestAnimationFrame(raf)
-
     return () => {
-      lenis.destroy()
-      lenisRef.current = null
+      smoother.kill() // cleanup on unmount
     }
   }, [])
 
-  return <>{children}</>
+  return (
+    <div id="smooth-wrapper" className="overflow-hidden">
+      <div id="smooth-content">{children}</div>
+    </div>
+  )
 }

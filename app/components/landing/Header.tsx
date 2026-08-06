@@ -117,10 +117,7 @@ export default function Header() {
               <Link
                 key={link.label}
                 href={link.href}
-                onClick={() => {
-                  window.scrollTo({ top: 0 })
-                  setActiveTab(link.label)
-                }}
+                onClick={() => setActiveTab(link.label)}
                 scroll={true}
                 className="relative px-7 py-2.5 rounded-full text-md font-archivo font-semibold group overflow-hidden"
               >

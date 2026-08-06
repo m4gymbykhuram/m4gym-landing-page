@@ -1,160 +1,113 @@
-'use client'
+"use client";
 
-import CustomButton from '@/app/components/CustomButton'
-import { FeatureOwnerDashboardSection } from '@/app/components/features/OwnerDashboardSection'
-import GlowBorderCard from '@/app/components/GlowBorderCard'
-import TitleWithLines from '@/app/components/TitleWithLines'
-import { useScreenSize } from '@/hooks/useScreenSize'
-import { containerVariants, fadeUp } from '@/lib/motion-variants'
-import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowUpDown, Clock } from 'lucide-react'
-import Image from 'next/image'
-import { useState } from 'react'
-import type { ReactNode } from 'react'
+import CustomButton from "@/app/components/CustomButton";
+import { FeatureOwnerDashboardSection } from "@/app/components/features/OwnerDashboardSection";
+import GlowBorderCard from "@/app/components/GlowBorderCard";
+import ScrollExpand from "@/app/components/ScrollExpand";
+import TitleWithLines from "@/app/components/TitleWithLines";
+import { useScreenSize } from "@/hooks/useScreenSize";
+import { containerVariants, fadeUp } from "@/lib/motion-variants";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpDown, Clock } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import type { ReactNode } from "react";
 
 const works = [
   {
     icon: Clock,
-    title: 'Save Time',
-    description: 'Automate everyday tasks',
+    title: "Save Time",
+    description: "Automate everyday tasks",
   },
   {
     icon: Clock,
-    title: 'Multi locations',
-    description: 'Manage every branch',
+    title: "Multi locations",
+    description: "Manage every branch",
   },
   {
     icon: Clock,
-    title: 'Easy Attendance',
-    description: 'seamless check-ins',
+    title: "Easy Attendance",
+    description: "seamless check-ins",
   },
-]
-
-const ownerFeatures = [
-  {
-    label: 'Real-Time Business Dashboard',
-    title: 'Real-Time Business Dashboard',
-    description:
-      'Track branch activity, revenue, attendance, and operations from one command center built for owners.',
-    image: '/assets/dashboard-mockup.png',
-    imageAlt: 'M4GYM business dashboard preview',
-    fit: 'contain',
-  },
-  {
-    label: 'Member Management',
-    title: 'Member Management',
-    description:
-      'View member details, requests, plans, and account status without moving between disconnected tools.',
-    image: '/assets/member-bg.jpg',
-    imageAlt: 'Gym member management preview',
-    fit: 'cover',
-  },
-  {
-    label: 'Class & Schedule Oversight',
-    title: 'Class & Schedule Oversight',
-    description:
-      'Keep class schedules, trainer assignments, and attendance windows clear for every location.',
-    image: '/assets/calendar.png',
-    imageAlt: 'Class and schedule calendar preview',
-    fit: 'contain',
-  },
-  {
-    label: 'Revenue & Financial Reports',
-    title: 'Revenue & Financial Reports',
-    description:
-      'Review payment activity and revenue records with a focused owner view for smarter decisions.',
-    image: '/assets/payment_records.png',
-    imageAlt: 'Payment records preview',
-    fit: 'contain',
-  },
-  {
-    label: 'Equipment & Maintenance Tracking',
-    title: 'Equipment & Maintenance Tracking',
-    description:
-      'Monitor equipment status, service needs, and inventory visibility before small issues become daily blockers.',
-    image: '/assets/equipment.png',
-    imageAlt: 'Equipment maintenance preview',
-    fit: 'contain',
-  },
-]
+];
 
 const roleTabs = [
   {
-    label: 'Calendar & Schedule',
-    title: 'Attendance & Calendar',
+    label: "Calendar & Schedule",
+    title: "Attendance & Calendar",
     description:
-      'Manage staff schedules, member check-ins, and calendar activity from one shared role-friendly workspace.',
-    image: '/assets/calendar.png',
-    imageAlt: 'Calendar and schedule preview',
-    fit: 'contain',
+      "Manage staff schedules, member check-ins, and calendar activity from one shared role-friendly workspace.",
+    image: "/assets/calendar.png",
+    imageAlt: "Calendar and schedule preview",
+    fit: "contain",
   },
   {
-    label: 'Profile Management',
-    title: 'Profile Management',
+    label: "Profile Management",
+    title: "Profile Management",
     description:
-      'Give each role a clean profile view for member details, assigned plans, activity history, and next actions.',
-    image: '/assets/member-bg.jpg',
-    imageAlt: 'Profile management preview',
-    fit: 'cover',
+      "Give each role a clean profile view for member details, assigned plans, activity history, and next actions.",
+    image: "/assets/member-bg.jpg",
+    imageAlt: "Profile management preview",
+    fit: "cover",
   },
   {
-    label: 'Activity & Updates',
-    title: 'Activity & Updates',
+    label: "Activity & Updates",
+    title: "Activity & Updates",
     description:
-      'Keep managers, trainers, and members aligned with updates that make recent work easy to understand.',
-    image: '/assets/dashboard-mockup.png',
-    imageAlt: 'Activity dashboard preview',
-    fit: 'contain',
+      "Keep managers, trainers, and members aligned with updates that make recent work easy to understand.",
+    image: "/assets/dashboard-mockup.png",
+    imageAlt: "Activity dashboard preview",
+    fit: "contain",
   },
   {
-    label: 'Role-Based Access',
-    title: 'Role-Based Access',
+    label: "Role-Based Access",
+    title: "Role-Based Access",
     description:
-      'Show owners, managers, trainers, and members only the tools and information they need.',
-    image: '/assets/manager-bg.jpg',
-    imageAlt: 'Role based access preview',
-    fit: 'cover',
+      "Show owners, managers, trainers, and members only the tools and information they need.",
+    image: "/assets/manager-bg.jpg",
+    imageAlt: "Role based access preview",
+    fit: "cover",
   },
-]
+];
 
 const managementTabs = [
   {
-    label: 'Goals & Workout plans',
-    title: 'Goals & Workout Plans',
+    label: "Goals & Workout plans",
+    title: "Goals & Workout Plans",
     description:
-      'Create, assign, and adjust workout plans so trainers can guide every member with clearer goals.',
-    image: '/assets/trainer-bg.jpg',
-    imageAlt: 'Workout plans preview',
-    fit: 'cover',
+      "Create, assign, and adjust workout plans so trainers can guide every member with clearer goals.",
+    image: "/assets/trainer-bg.jpg",
+    imageAlt: "Workout plans preview",
+    fit: "cover",
   },
   {
-    label: 'Attendance & Check In',
-    title: 'Attendance & Check In',
+    label: "Attendance & Check In",
+    title: "Attendance & Check In",
     description:
-      'Support fast check-ins and clean attendance records for staff, members, and daily operations.',
-    image: '/assets/calendar.png',
-    imageAlt: 'Attendance check-in preview',
-    fit: 'contain',
+      "Support fast check-ins and clean attendance records for staff, members, and daily operations.",
+    image: "/assets/calendar.png",
+    imageAlt: "Attendance check-in preview",
+    fit: "contain",
   },
   {
-    label: 'Payment Records',
-    title: 'Payment Records',
+    label: "Payment Records",
+    title: "Payment Records",
     description:
-      'Keep payment history organized and visible so financial follow-up is simple for every branch.',
-    image: '/assets/payment_records.png',
-    imageAlt: 'Payment records preview',
-    fit: 'contain',
+      "Keep payment history organized and visible so financial follow-up is simple for every branch.",
+    image: "/assets/payment_records.png",
+    imageAlt: "Payment records preview",
+    fit: "contain",
   },
   {
-    label: 'Inventory & Stocks',
-    title: 'Inventory & Stocks',
+    label: "Inventory & Stocks",
+    title: "Inventory & Stocks",
     description:
-      'Track stock movement, supplies, and inventory needs with a clear operational view.',
-    image: '/assets/inventory.png',
-    imageAlt: 'Inventory stocks preview',
-    fit: 'contain',
+      "Track stock movement, supplies, and inventory needs with a clear operational view.",
+    image: "/assets/inventory.png",
+    imageAlt: "Inventory stocks preview",
+    fit: "contain",
   },
-]
+];
 
 function DashboardBentoGrid() {
   return (
@@ -191,11 +144,11 @@ function DashboardBentoGrid() {
         className="rounded-3xl w-full h-full md:col-span-3 lg:col-span-5"
       />
     </div>
-  )
+  );
 }
 
 const FeaturesPage = () => {
-  const { isMobile } = useScreenSize()
+  const { isMobile } = useScreenSize();
   return (
     <div className="relative w-full overflow-x-clip bg-[#080809]">
       {/* Hero Section */}
@@ -273,13 +226,13 @@ const FeaturesPage = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
           className="relative w-full mx-auto rounded-3xl overflow-hidden px-8 md:px-12 py-10"
           style={{
-            backgroundImage: 'url(/assets/plans-bg.png)',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundImage: "url(/assets/plans-bg.png)",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         >
           <div className="relative z-10 flex flex-col xl:flex-row md:items-center justify-between gap-8 lg:gap-6">
@@ -296,7 +249,7 @@ const FeaturesPage = () => {
               className="flex flex-col md:flex-row md:justify-end flex-1 gap-4"
             >
               {works.map((w) => {
-                const Icon = w.icon
+                const Icon = w.icon;
                 return (
                   <motion.div
                     key={w.title}
@@ -308,12 +261,12 @@ const FeaturesPage = () => {
                       <div
                         className="flex items-center justify-center rounded-full shrink-0"
                         style={{
-                          width: '2.5rem',
-                          height: '2.5rem',
+                          width: "2.5rem",
+                          height: "2.5rem",
                           backgroundImage: `linear-gradient(#111214, #111214), linear-gradient(180deg, #666666 0%, #000000 100%)`,
-                          backgroundOrigin: 'border-box, border-box',
-                          backgroundClip: 'padding-box, border-box',
-                          border: '1px solid transparent',
+                          backgroundOrigin: "border-box, border-box",
+                          backgroundClip: "padding-box, border-box",
+                          border: "1px solid transparent",
                         }}
                       >
                         <Icon
@@ -329,39 +282,61 @@ const FeaturesPage = () => {
                       {w.description}
                     </div>
                   </motion.div>
-                )
+                );
               })}
             </motion.div>
           </div>
         </motion.div>
       </div>
 
+      <div className="m-0 h-screen w-full p-0">
+        <ScrollExpand
+          src="https://images.unsplash.com/photo-1641337221253-fdc7237f6b61?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Hero image"
+          startWidth={42}
+          startRadius={24}
+          endRadius={0}
+          mediaZoom={1.2}
+          title="Welcome"
+        >
+          <div className="flex flex-col items-center justify-center">
+            <h2 className="font-anton text-8xl uppercase leading-tight text-white">
+              M4GYM
+            </h2>
+            <p className="max-w-2xl text-left text-lg leading-8 text-white/45 lg:ml-auto lg:text-right">
+              M4GYM is a powerful gym management platform for owners, managers,
+              trainers and members. Replace spreadsheets and paper attendance
+              with one organized system.
+            </p>
+          </div>
+        </ScrollExpand>
+      </div>
+
       {/* Skiper Sticky Stacked Cards Component */}
       <FeatureOwnerDashboardSection />
-
       <RoleFeaturesSection />
       <ManagementFeaturesSection />
       <BranchManagementSection />
     </div>
-  )
-}
+  );
+};
 
 const SectionHeading = ({
   title,
   description,
-  align = 'center',
+  align = "center",
 }: {
-  title: ReactNode
-  description: string
-  align?: 'center' | 'split'
+  title: ReactNode;
+  description: string;
+  align?: "center" | "split";
 }) => {
-  if (align === 'split') {
+  if (align === "split") {
     return (
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
         className="mx-auto grid max-w-7xl gap-8 px-5 md:px-10 lg:grid-cols-2 lg:items-start"
       >
         <h2 className="font-anton text-3xl uppercase leading-tight text-white sm:text-4xl lg:text-[44px]">
@@ -371,7 +346,7 @@ const SectionHeading = ({
           {description}
         </p>
       </motion.div>
-    )
+    );
   }
 
   return (
@@ -379,7 +354,7 @@ const SectionHeading = ({
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.7, ease: 'easeOut' }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
       className="mx-auto max-w-3xl px-5 text-center"
     >
       <h2 className="font-anton text-3xl uppercase leading-tight text-white sm:text-4xl lg:text-[42px]">
@@ -389,17 +364,17 @@ const SectionHeading = ({
         {description}
       </p>
     </motion.div>
-  )
-}
+  );
+};
 
 type FeaturePanelItem = {
-  label: string
-  title: string
-  description: string
-  image: string
-  imageAlt: string
-  fit: string
-}
+  label: string;
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  fit: string;
+};
 
 const FeatureTabs = ({
   tabs,
@@ -407,16 +382,16 @@ const FeatureTabs = ({
   onChange,
   indicatorId,
 }: {
-  tabs: FeaturePanelItem[]
-  activeIndex: number
-  onChange: (index: number) => void
-  indicatorId: string
+  tabs: FeaturePanelItem[];
+  activeIndex: number;
+  onChange: (index: number) => void;
+  indicatorId: string;
 }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.3 }}
-    transition={{ duration: 0.6, ease: 'easeOut' }}
+    transition={{ duration: 0.6, ease: "easeOut" }}
     className="mx-auto md:mt-4 mt-8 max-w-7xl lg:px-5"
   >
     <div className="flex gap-2 pl-5 lg:pl-0 overflow-x-auto lg:rounded-4xl lg:border border-[#2D2D2D] lg:bg-[#111214] lg:p-1.5 scrollbar-none">
@@ -428,15 +403,15 @@ const FeatureTabs = ({
           aria-pressed={activeIndex === index}
           className={`relative min-w-max flex-1 overflow-hidden rounded-[1.65rem] px-7 py-4 text-sm font-semibold transition-colors duration-300 sm:text-base cursor-pointer ${
             activeIndex === index
-              ? 'text-white'
-              : 'text-white/75 hover:text-white bg-bg-elevated md:bg-transparent'
+              ? "text-white"
+              : "text-white/75 hover:text-white bg-bg-elevated md:bg-transparent"
           }`}
         >
           {activeIndex === index && (
             <motion.span
               layoutId={indicatorId}
               className="absolute inset-0 rounded-[1.65rem] gradient-border-mask bg-linear-to-b from-[#1112142E] to-[#DDEB182E] shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
-              transition={{ type: 'spring', stiffness: 360, damping: 34 }}
+              transition={{ type: "spring", stiffness: 360, damping: 34 }}
             />
           )}
           <span className="relative z-10">{tab.label}</span>
@@ -444,14 +419,14 @@ const FeatureTabs = ({
       ))}
     </div>
   </motion.div>
-)
+);
 
 const FeaturePreviewPanel = ({ item }: { item: FeaturePanelItem }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.2 }}
-    transition={{ duration: 0.7, ease: 'easeOut' }}
+    transition={{ duration: 0.7, ease: "easeOut" }}
     className="mx-auto mt-8 md:mt-4 max-w-7xl px-5 lg:px-10"
   >
     <div className="rounded-[1.7rem] border border-white/10 bg-[#151617] px-6 pt-6 overflow-hidden">
@@ -461,7 +436,7 @@ const FeaturePreviewPanel = ({ item }: { item: FeaturePanelItem }) => (
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
         >
           <div className="grid gap-5 lg:grid-cols-[1fr_1.15fr] lg:items-start">
             <h3 className="text-xl font-semibold text-white sm:text-2xl text-center md:text-start">
@@ -483,11 +458,11 @@ const FeaturePreviewPanel = ({ item }: { item: FeaturePanelItem }) => (
       </AnimatePresence>
     </div>
   </motion.div>
-)
+);
 
 const RoleFeaturesSection = () => {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const activeTab = roleTabs[activeIndex]
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeTab = roleTabs[activeIndex];
 
   return (
     <section className="bg-[#080809] py-14 lg:py-20">
@@ -503,12 +478,12 @@ const RoleFeaturesSection = () => {
       />
       <FeaturePreviewPanel item={activeTab} />
     </section>
-  )
-}
+  );
+};
 
 const ManagementFeaturesSection = () => {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const activeTab = managementTabs[activeIndex]
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeTab = managementTabs[activeIndex];
 
   return (
     <section className="bg-[#080809] py-14 lg:py-20">
@@ -529,8 +504,8 @@ const ManagementFeaturesSection = () => {
       />
       <FeaturePreviewPanel item={activeTab} />
     </section>
-  )
-}
+  );
+};
 
 const BranchManagementSection = () => (
   <section className="bg-[#080809] px-4 md:px-10 py-14 lg:py-20">
@@ -538,11 +513,11 @@ const BranchManagementSection = () => (
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
       className="relative mx-auto grid max-w-7xl overflow-hidden rounded-[1.6rem] border border-primary/10 p-6 sm:p-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center"
       style={{
         background:
-          'radial-gradient(circle at 82% 35%, rgba(221,235,24,0.26), transparent 28%), linear-gradient(100deg, rgba(84,95,18,0.5), rgba(24,25,24,0.9) 34%, rgba(91,103,22,0.44))',
+          "radial-gradient(circle at 82% 35%, rgba(221,235,24,0.26), transparent 28%), linear-gradient(100deg, rgba(84,95,18,0.5), rgba(24,25,24,0.9) 34%, rgba(91,103,22,0.44))",
       }}
     >
       <div className="absolute inset-0 bg-[url('/assets/plans-bg.png')] bg-cover bg-center" />
@@ -578,7 +553,7 @@ const BranchManagementSection = () => (
         initial={{ opacity: 0, x: 30 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative z-10 my-12 md:min-h-57.5 lg:mt-0"
       >
         <Image
@@ -605,32 +580,32 @@ const BranchManagementSection = () => (
       </motion.div>
     </motion.div>
   </section>
-)
+);
 
 const BranchSwitch = () => (
   <motion.div
     animate={{ y: [0, -4, 0] }}
-    transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
+    transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
     className="absolute left-[45%] md:left-[47%] top-12 md:top-[38%] h-10 md:h-14 w-10 md:w-14 items-center justify-center rounded-full text-black bg-[linear-gradient(180deg,#B7FF3C_0%,#DDEB18_100%)] shadow-[0px_4px_12px_0px_#00000040] flex z-20"
   >
     <ArrowUpDown className="h-4 md:h-6 w-4 md:w-6" />
   </motion.div>
-)
+);
 
 const BranchCard = ({
   gym,
   enabled = false,
-  className = '',
+  className = "",
   avatarClass,
 }: {
-  gym: string
-  enabled?: boolean
-  className?: string
-  avatarClass: string
+  gym: string;
+  enabled?: boolean;
+  className?: string;
+  avatarClass: string;
 }) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
-    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
     className={`flex w-full max-w-lg items-center gap-4 rounded-xl bg-[#18191a] p-2 md:p-5 shadow-[0_16px_30px_rgba(0,0,0,0.32)] ${className}`}
   >
     <div
@@ -642,12 +617,12 @@ const BranchCard = ({
     </div>
     <div
       className={`ml-auto flex h-5 md:h-7 w-10 md:w-13 items-center rounded-full p-1 ${
-        enabled ? 'justify-end bg-green-500' : 'justify-start bg-white/45'
+        enabled ? "justify-end bg-green-500" : "justify-start bg-white/45"
       }`}
     >
       <span className="h-4 md:h-5 w-4 md:w-5 rounded-full bg-[#111]" />
     </div>
   </motion.div>
-)
+);
 
-export default FeaturesPage
+export default FeaturesPage;

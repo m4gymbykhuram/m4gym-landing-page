@@ -1,12 +1,11 @@
-import Header from '@/app/components/landing/Header'
-import Footer from '@/app/components/landing/Footer'
-import SmoothScroll from '../components/SmoothScroll'
-import 'lenis/dist/lenis.css'
+import Header from "@/app/components/landing/Header";
+import Footer from "@/app/components/landing/Footer";
+import SmoothScroll from "../components/SmoothScroll";
 
 export default function LandingLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <>
@@ -16,5 +15,5 @@ export default function LandingLayout({
         <Footer />
       </SmoothScroll>
     </>
-  )
+  );
 }
