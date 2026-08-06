@@ -37,9 +37,6 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
     ref,
   ) => {
     const isFilled = variant === 'filled'
-    const { isMobile } = useScreenSize()
-
-    const circleSize = isMobile ? '2.2rem' : '2.75rem'
 
     const resolvedBg = bg
       ? bg
@@ -86,10 +83,8 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         >
           {/* Icon pill — always left */}
           <span
-            className="flex items-center justify-center rounded-full shrink-0"
+            className="flex items-center justify-center rounded-full shrink-0 w-[2.2rem] h-[2.2rem] md:w-[2.75rem] md:h-[2.75rem]"
             style={{
-              width: circleSize,
-              height: circleSize,
               background: resolvedCircleBg,
               marginRight: textCenter ? 0 : '1rem',
             }}
@@ -151,14 +146,13 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
          */}
         <motion.span
           aria-hidden
-          className="absolute left-0 top-0 bottom-0 rounded-full pointer-events-none z-10"
+          className="absolute left-0 top-0 bottom-0 rounded-full pointer-events-none z-10 w-[2.2rem] md:w-11"
           style={{
             background: resolvedCircleBg,
-            width: circleSize,
           }}
           variants={{
             rest: {
-              width: circleSize,
+              width: 35,
               borderRadius: '9999px',
               transition: { duration: expandDur, ease: [0.4, 0, 0.2, 1] },
             },
@@ -188,10 +182,8 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
         >
           {/* Icon pill — always left */}
           <span
-            className="flex items-center justify-center rounded-full shrink-0"
+            className="flex items-center justify-center rounded-full shrink-0 w-[2.2rem] h-[2.2rem] md:w-[2.75rem] md:h-[2.75rem]"
             style={{
-              width: circleSize,
-              height: circleSize,
               background: resolvedCircleBg,
               marginRight: textCenter ? 0 : '1rem',
             }}
@@ -257,10 +249,8 @@ const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
 
           {/* Icon pill — right-edge corner, fades only (no slide) */}
           <span
-            className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full shrink-0"
+            className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center justify-center rounded-full shrink-0 w-[2.2rem] h-[2.2rem] md:w-[2.75rem] md:h-[2.75rem]"
             style={{
-              width: circleSize,
-              height: circleSize,
               background: resolvedCircleBg,
             }}
           >

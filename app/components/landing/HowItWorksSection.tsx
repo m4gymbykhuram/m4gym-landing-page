@@ -1,11 +1,12 @@
-'use client'
+"use client";
 
-import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { howItWorksSteps } from '@/lib/how-it-works-data'
-import TitleWithLines from '../TitleWithLines'
-import AnimatedHeading from './AnimatedHeading'
-import { fadeUp } from '@/lib/motion-variants'
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { howItWorksSteps } from "@/lib/how-it-works-data";
+import TitleWithLines from "../TitleWithLines";
+import AnimatedHeading from "./AnimatedHeading";
+import { fadeUp } from "@/lib/motion-variants";
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 function StepBlock({
   step,
@@ -13,10 +14,10 @@ function StepBlock({
   index,
   blockRef,
 }: {
-  step: (typeof howItWorksSteps)[number]
-  isActive: boolean
-  index: number
-  blockRef: (el: HTMLDivElement | null) => void
+  step: (typeof howItWorksSteps)[number];
+  isActive: boolean;
+  index: number;
+  blockRef: (el: HTMLDivElement | null) => void;
 }) {
   return (
     <div
@@ -29,40 +30,40 @@ function StepBlock({
 
       <h3
         className={`font-archivo text-2xl md:text-4xl lg:text-5xl uppercase mb-4 transition-colors duration-500 ${
-          isActive ? 'text-white' : 'text-white/30'
+          isActive ? "text-white" : "text-white/30"
         }`}
       >
         {step.number} . {step.title}
       </h3>
       <span
         className={`block h-px w-full mb-4 transition-colors duration-500 ${
-          isActive ? 'bg-white/30' : 'bg-white/10'
+          isActive ? "bg-white/30" : "bg-white/10"
         }`}
       />
       <p
         className={`font-archivo md:text-md text-xl transition-colors duration-500 ${
-          isActive ? 'text-white/60' : 'text-white/25'
+          isActive ? "text-white/60" : "text-white/25"
         }`}
       >
         {step.description}
       </p>
     </div>
-  )
+  );
 }
 
 function DeviceMockup({
   activeStep,
   compact = false,
 }: {
-  activeStep: number
-  compact?: boolean
+  activeStep: number;
+  compact?: boolean;
 }) {
-  const activeImage = howItWorksSteps[activeStep].image
+  const activeImage = howItWorksSteps[activeStep].image;
 
   return (
     <div
       className={`relative w-full max-w-lg rounded-3xl border border-white/10 bg-bg-card overflow-hidden ${
-        compact ? 'h-82 sm:h-96' : 'lg:h-130 xl:h-150'
+        compact ? "h-82 sm:h-96" : "lg:h-130 xl:h-150"
       }`}
     >
       {!compact && (
@@ -74,7 +75,7 @@ function DeviceMockup({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
             className="absolute top-6 right-6 w-9 h-9 rounded-full flex items-center justify-center font-archivo font-bold text-sm text-black z-10"
-            style={{ background: '#DFFF3D' }}
+            style={{ background: "#DFFF3D" }}
           >
             {activeStep + 1}
           </motion.div>
@@ -99,55 +100,69 @@ function DeviceMockup({
         </AnimatePresence>
       </motion.div>
     </div>
-  )
+  );
 }
 
 export default function HowItWorksSection() {
-  const [activeStep, setActiveStep] = useState(0)
-  const blockRefs = useRef<(HTMLDivElement | null)[]>([])
-  const stickyRef = useRef<HTMLDivElement>(null)
+  const [activeStep, setActiveStep] = useState(0);
+  const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null); // ← new
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const stickyEl = stickyRef.current
-      if (!stickyEl) return
+useEffect(() => {
+  const stickyEl = stickyRef.current;
+  const containerEl = containerRef.current;
+  if (!stickyEl || !containerEl) return;
 
-      // Reference line = the vertical center of the sticky card itself,
-      // not the viewport — this is what "face to face" actually means.
-      const stickyRect = stickyEl.getBoundingClientRect()
-      const referenceY = stickyRect.top + stickyRect.height / 2
+  const st = ScrollTrigger.create({
+    trigger: containerEl,
+    start: "top top+=96",
+    end: "bottom bottom",
+    pin: stickyEl,
+    pinSpacing: false,
+  });
 
-      let closestIndex = 0
-      let closestDistance = Infinity
+  return () => st.kill();
+}, []);
 
-      blockRefs.current.forEach((el, index) => {
-        if (!el) return
-        const rect = el.getBoundingClientRect()
+useEffect(() => {
+  const handleScroll = () => {
+    const stickyEl = stickyRef.current;
+    if (!stickyEl) return;
 
-        // Prefer a block that actually contains the reference line.
-        if (referenceY >= rect.top && referenceY <= rect.bottom) {
-          closestIndex = index
-          closestDistance = -1 // force this to win over any distance-based guess
-          return
-        }
+    const stickyRect = stickyEl.getBoundingClientRect();
+    const referenceY = stickyRect.top + stickyRect.height / 2;
 
-        if (closestDistance === -1) return // already found a containing block
+    let closestIndex = 0;
+    let closestDistance = Infinity;
 
-        const elCenter = rect.top + rect.height / 2
-        const distance = Math.abs(elCenter - referenceY)
-        if (distance < closestDistance) {
-          closestDistance = distance
-          closestIndex = index
-        }
-      })
+    blockRefs.current.forEach((el, index) => {
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
 
-      setActiveStep(closestIndex)
-    }
+      if (referenceY >= rect.top && referenceY <= rect.bottom) {
+        closestIndex = index;
+        closestDistance = -1;
+        return;
+      }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+      if (closestDistance === -1) return;
+
+      const elCenter = rect.top + rect.height / 2;
+      const distance = Math.abs(elCenter - referenceY);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    setActiveStep(closestIndex);
+  };
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  handleScroll();
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
   return (
     <section
@@ -162,7 +177,10 @@ export default function HowItWorksSection() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div
+        ref={containerRef}
+        className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12"
+      >
         <div>
           {howItWorksSteps.map((step, index) => (
             <StepBlock
@@ -171,7 +189,7 @@ export default function HowItWorksSection() {
               index={index}
               isActive={activeStep === index}
               blockRef={(el) => {
-                blockRefs.current[index] = el
+                blockRefs.current[index] = el;
               }}
             />
           ))}
@@ -182,11 +200,11 @@ export default function HowItWorksSection() {
         </div>
 
         <div className="hidden md:block relative">
-          <div ref={stickyRef} className="sticky top-24 flex justify-end">
+          <div ref={stickyRef} className="flex justify-end">
             <DeviceMockup activeStep={activeStep} />
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -8,6 +8,8 @@ import PricingSection from '../components/landing/PricingSection'
 import HowItWorksSection from '../components/landing/HowItWorksSection'
 import Testimonials from '../components/landing/Testimonials'
 import TransformSection from '../components/landing/TransformSection'
+import HorizontalCardGallery from '../components/HorizontalCardGallery';
+import GridExpansionScrollEffect from '../components/GridExpansionScrollEffect';
 
 export const metadata: Metadata = {
   title: 'M4 GYM – Run Your Entire Gym From One Place',
@@ -28,6 +30,8 @@ export default function LandingPage() {
       <MarqueeStrip />
       <WhatInsited />
       <WhatWeOffer />
+      <HorizontalCardGallery />
+      <GridExpansionScrollEffect />
       <Features />
       <HowItWorksSection />
       <PricingSection />
