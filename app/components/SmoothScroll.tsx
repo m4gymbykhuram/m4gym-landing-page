@@ -1,25 +1,32 @@
 'use client'
 
 import { ReactNode, useEffect } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ScrollSmoother } from 'gsap/ScrollSmoother'
-
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+import {  ScrollTrigger, ScrollSmoother } from '@/lib/gsap' // ← shared, single-instance import
 
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   useEffect(() => {
-    // ✅ Create GSAP ScrollSmoother
     const smoother = ScrollSmoother.create({
-      smooth: 2,          // 2s smoothing
-      effects: true,      // allow [data-speed] parallax if you want
+      smooth: 2,
+      effects: true,
       normalizeScroll: true,
-      wrapper: '#smooth-wrapper', 
+      wrapper: '#smooth-wrapper',
       content: '#smooth-content',
     })
 
+    // Re-measure once everything (images, fonts, late layout shifts) has
+    // actually settled — production asset timing differs from dev.
+    const refresh = () => ScrollTrigger.refresh()
+    window.addEventListener('load', refresh)
+
+    // Also catch late image loads that fire after window 'load' in some cases
+    const raf = requestAnimationFrame(() => {
+      setTimeout(refresh, 300)
+    })
+
     return () => {
-      smoother.kill() // cleanup on unmount
+      window.removeEventListener('load', refresh)
+      cancelAnimationFrame(raf)
+      smoother.kill()
     }
   }, [])
 
