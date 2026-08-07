@@ -78,7 +78,7 @@ export default function HorizontalCardGallery() {
     // We give the section a comfortable height (e.g., 100vh) so it pins nicely in the center of the screen
     <section 
       ref={sectionRef} 
-      className="relative flex h-screen w-full items-center overflow-hidden bg-neutral-950"
+      className="hidden relative md:flex h-screen w-full items-center overflow-hidden bg-neutral-950"
     >
       
       {/* The Track that moves left. It's wider than the screen. */}

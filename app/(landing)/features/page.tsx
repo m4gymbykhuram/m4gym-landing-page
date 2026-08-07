@@ -111,24 +111,24 @@ const managementTabs = [
 
 function DashboardBentoGrid() {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-8">
+    <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-8">
       {/* Row 1 */}
       <GlowBorderCard
         src="/assets/classes.png"
         alt="Classes panel"
-        className="md:col-span-2 lg:col-span-4"
+        className="h-20! md:h-auto md:col-span-2 lg:col-span-4"
       />
 
       <GlowBorderCard
         src="/assets/attendance.png"
         alt="Mark attendance panel"
-        className="rounded-xl object-cover w-full h-full md:col-span-1 lg:col-span-2"
+        className="h-20! rounded-xl object-cover w-full md:h-full md:col-span-1 lg:col-span-2"
       />
 
       <GlowBorderCard
         src="/assets/notifications.png"
         alt="Notifications panel"
-        className="rounded-xl object-cover w-full h-full md:col-span-1 lg:col-span-2"
+        className="h-20! rounded-xl object-cover w-full md:h-full md:col-span-1 lg:col-span-2"
       />
 
       {/* Row 2 */}
@@ -141,7 +141,7 @@ function DashboardBentoGrid() {
       <GlowBorderCard
         src="/assets/features-calender.png"
         alt="Drag & Drop Calendar panel"
-        className="rounded-3xl w-full h-full md:col-span-3 lg:col-span-5"
+        className="rounded-3xl w-full h-full col-span-2 md:col-span-3 lg:col-span-5"
       />
     </div>
   );
@@ -155,8 +155,8 @@ const FeaturesPage = () => {
       <div className="relative bg-[#0A0A0B] z-10 w-full pt-28 px-4 lg:px-20 lg:pt-36 pb-16 flex flex-col md:flex-row items-center gap-12 lg:gap-8 flex-1">
         {/* Left glow */}
         <div
-          className="hidden md:block
-          absolute top-[40%] left-[8%]
+          className="
+          absolute top-[20%] md:top-[40%] left-0 md:left-[8%]
           w-[320px] h-44
           bg-[#4a4a12]
           rounded-full
@@ -167,7 +167,7 @@ const FeaturesPage = () => {
 
         {/* Right glow */}
         <div
-          className="hidden md:block
+          className="block
           absolute bottom-[1%] right-[16%]
           w-95 h-90
           bg-[#4a4a12]
@@ -192,13 +192,13 @@ const FeaturesPage = () => {
           </motion.div>
           <motion.h2
             variants={fadeUp}
-            className="font-anton text-center md:text-start text-4xl md:text-3xl xl:text-[44px] uppercase text-white leading-tight"
+            className="font-anton text-center md:text-start text-3xl md:text-3xl xl:text-[44px] uppercase text-white leading-tight"
           >
             Every part of your gym, in <br /> one system .
           </motion.h2>
           <motion.p
             variants={fadeUp}
-            className="md:text-md text-lg text-[#858585] max-w-125 text-center md:text-start"
+            className="md:text-sm text-lg text-[#858585] max-w-125 text-center md:text-start"
           >
             Stop switching between spreadsheets, WhatsApp groups, payment apps,
             and attendance sheets. M4GYM keeps your owners, managers, trainers,
@@ -289,7 +289,7 @@ const FeaturesPage = () => {
         </motion.div>
       </div>
 
-      <div className="m-0 h-screen w-full p-0">
+      <div className="hidden md:flex m-0 h-screen w-full p-0">
         <ScrollExpand
           src="https://images.unsplash.com/photo-1641337221253-fdc7237f6b61?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Hero image"
@@ -465,7 +465,7 @@ const RoleFeaturesSection = () => {
   const activeTab = roleTabs[activeIndex];
 
   return (
-    <section className="bg-[#080809] py-14 lg:py-20">
+    <section className="bg-[#080809] py-0 lg:py-20">
       <SectionHeading
         title="The Features Every Role Depends On"
         description="Whether you're managing the business, coaching members, or checking in for your next workout, M4GYM provides a seamless experience with smart tools that save time, reduce manual work, and keep everyone on the same page."
@@ -508,7 +508,7 @@ const ManagementFeaturesSection = () => {
 };
 
 const BranchManagementSection = () => (
-  <section className="bg-[#080809] px-4 md:px-10 py-14 lg:py-20">
+  <section className="bg-[#080809] px-4 md:px-10 py-1 pb-10 lg:py-20">
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -563,7 +563,7 @@ const BranchManagementSection = () => (
           height={233}
           className="absolute -z-10 right-0 md:-top-12 h-auto w-full pointer-events-none"
         />
-        <div className="relative z-10 px-13 md:px-0">
+        <div className="relative z-10 px-8 md:px-0">
           <BranchSwitch />
           <BranchCard
             className="md:mx-24"

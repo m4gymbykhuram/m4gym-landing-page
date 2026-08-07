@@ -285,7 +285,7 @@ export default function WhatInsited() {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
-        className="flex overflow-x-auto scrollbar-hide gap-4 mb-24 px-4 snap-x snap-proximity scroll-smooth cursor-grab active:cursor-grabbing select-none lg:hidden"
+        className="flex overflow-x-auto scrollbar-hide gap-4 mb-10 px-4 snap-x snap-proximity scroll-smooth cursor-grab active:cursor-grabbing select-none lg:hidden"
         style={{
           WebkitOverflowScrolling: 'touch',
           overscrollBehaviorX: 'contain',

@@ -26,7 +26,7 @@ export default function PricingSection() {
   )
 
   return (
-    <section className="relative bg-[#111214] py-20 md:py-28 px-4 md:px-8">
+    <section className="relative bg-[#111214] py-10 md:py-28 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-4 md:mb-14 mt-2 md:mt-5">
           <div className="flex flex-col">
