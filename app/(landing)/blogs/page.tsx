@@ -16,7 +16,7 @@ const BlogsPage = () => {
   return (
     <div className="relative bg-[#111214] w-screen">
       <section
-        className="relative bg-[#0A0A0B] flex flex-col items-center justify-center gap-4 h-100 px-4 md:px-8"
+        className="relative bg-[#0A0A0B] flex flex-col items-center justify-center gap-4 h-64 pt-19 md:pt-0 lg:h-100 px-4 md:px-8"
         style={{
           backgroundImage: "url('/assets/blogs-banner-bg.jpeg')",
           backgroundPosition: '100%',

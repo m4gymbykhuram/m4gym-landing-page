@@ -25,11 +25,18 @@ const stats = [
   { value: '320',   label: 'New Enrollments' },
 ]
 
-/* ─── Card layout ─── */
-const CARD_W   = 150
-const CARD_H   = 188
+/* ─── Card layout ───
+ * Desktop size lives here as the baseline. Mobile size is derived inside
+ * the component (via useScreenSize) so it can react to the breakpoint —
+ * these can no longer be plain module constants since they now vary.
+ */
+const CARD_W_DESKTOP = 150
+const CARD_H_DESKTOP = 188
+const CARD_W_MOBILE  = 90
+// Scaled proportionally to the desktop aspect ratio so images don't look
+// squished on mobile. Change to a fixed 100 here for a square card instead.
+const CARD_H_MOBILE  = Math.round((CARD_H_DESKTOP / CARD_W_DESKTOP) * CARD_W_MOBILE)
 const CARD_GAP = 20
-const CARD_SLOT = CARD_W + CARD_GAP
 
 const SPEED = 32
 
@@ -54,13 +61,17 @@ const IMAGES = [
 ]
 
 const TRACK = [...IMAGES, ...IMAGES, ...IMAGES]
-const ONE_SET_PX = IMAGES.length * CARD_SLOT
 
 export default function HeroSection() {
   const { isMobile } = useScreenSize()
   const sectionRef   = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRefs     = useRef<(HTMLDivElement | null)[]>([])
+
+  const CARD_W = isMobile ? CARD_W_MOBILE : CARD_W_DESKTOP
+  const CARD_H = isMobile ? CARD_H_MOBILE : CARD_H_DESKTOP
+  const CARD_SLOT = CARD_W + CARD_GAP
+  const ONE_SET_PX = IMAGES.length * CARD_SLOT
 
   // Cached outside the per-frame loop — only updated on real resize events,
   // never read synchronously inside the RAF ticker (that was forcing a
@@ -156,7 +167,9 @@ export default function HeroSection() {
       io.disconnect()
       ro.disconnect()
     }
-  }, [])
+    // Re-run when isMobile flips (e.g. tablet rotation crossing the
+    // breakpoint) since CARD_W/CARD_H/CARD_SLOT/ONE_SET_PX all derive from it.
+  }, [isMobile])
 
   return (
     <section
@@ -195,7 +208,7 @@ export default function HeroSection() {
 
           <motion.h1
             variants={fadeUp}
-            className="font-anton text-center uppercase mt-8 md:mt-0 leading-[1.05] text-3xl sm:text-4xl md:text-5xl xl:text-6xl text-white mb-4"
+            className="font-anton text-center uppercase mt-2 md:mt-0 leading-[1.05] text-3xl sm:text-4xl md:text-5xl xl:text-6xl text-white mb-4"
           >
             Run Your Entire Gym
             <br />
@@ -230,7 +243,7 @@ export default function HeroSection() {
           variants={scaleIn}
           initial="hidden"
           animate="visible"
-          className="w-full mt-auto pt-10"
+          className="hidden lg:block w-full mt-auto pt-10"
         >
           <div
             style={{

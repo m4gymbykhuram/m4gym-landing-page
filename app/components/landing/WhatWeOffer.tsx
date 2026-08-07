@@ -99,7 +99,7 @@ export default function WhatWeOffer() {
   return (
     <section
       id="what-we-offer"
-      className="relative bg-bg-base py-20 xl:py-28 overflow-hidden"
+      className="relative bg-bg-base py-10 xl:py-28 overflow-hidden"
     >
       {/* Ambient glow */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-75 bg-[#DDEB18]/5 blur-[120px] rounded-full" />
