@@ -1,11 +1,7 @@
 'use client'
 
 import { ReactNode, useEffect, useState } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ScrollSmoother } from 'gsap/ScrollSmoother'
-
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+import { ScrollTrigger, ScrollSmoother } from '@/lib/gsap'
 
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   const [isMobile, setIsMobile] = useState(false)
@@ -28,12 +24,20 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     const smoother = ScrollSmoother.create({
       smooth: 1.1,
       effects: true,
-      normalizeScroll: true,
       wrapper: '#landing-wrapper',
       content: '#landing-content',
     })
 
+    // Re-measure total scroll height once everything has actually finished
+    // loading (images, fonts, late layout shifts) — production asset timing
+    // differs from dev, and a stale height reads as jumpy/laggy scrolling.
+    const refresh = () => ScrollTrigger.refresh()
+    window.addEventListener('load', refresh)
+    const settleTimer = setTimeout(refresh, 300)
+
     return () => {
+      window.removeEventListener('load', refresh)
+      clearTimeout(settleTimer)
       smoother.kill()
     }
   }, [isMobile])

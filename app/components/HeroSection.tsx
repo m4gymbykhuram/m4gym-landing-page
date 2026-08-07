@@ -26,13 +26,11 @@ const stats = [
 ]
 
 /* ─── Card layout ─── */
-// Sized to give 8-9 cards visibly in the 3-D arc
-const CARD_W   = 150  // px
-const CARD_H   = 188  // px  (portrait ≈ 1:1.25 ratio, matching reference)
-const CARD_GAP = 20   // px  gap between cards
-const CARD_SLOT = CARD_W + CARD_GAP  // 170 px per slot
+const CARD_W   = 150
+const CARD_H   = 188
+const CARD_GAP = 20
+const CARD_SLOT = CARD_W + CARD_GAP
 
-// Scroll speed (px / second) — low = slow and cinematic
 const SPEED = 32
 
 /* ─── Source images (16 unique) ─── */
@@ -55,18 +53,20 @@ const IMAGES = [
   'https://images.unsplash.com/photo-1526322722331-8a4a6b3d6b6b?auto=format&fit=crop&w=400&q=70',
 ]
 
-// We triple-duplicate the list so the seamless-loop reset is invisible
-// even when the strip is very wide.
 const TRACK = [...IMAGES, ...IMAGES, ...IMAGES]
-// One full set length in pixels (the reset boundary)
 const ONE_SET_PX = IMAGES.length * CARD_SLOT
 
 export default function HeroSection() {
   const { isMobile } = useScreenSize()
   const sectionRef   = useRef<HTMLDivElement>(null)
-  // 3-D arc carousel refs
   const containerRef = useRef<HTMLDivElement>(null)
   const cardRefs     = useRef<(HTMLDivElement | null)[]>([])
+
+  // Cached outside the per-frame loop — only updated on real resize events,
+  // never read synchronously inside the RAF ticker (that was forcing a
+  // layout recalculation on every single frame, competing with ScrollSmoother
+  // for main-thread time and causing the scroll lag).
+  const containerWidthRef = useRef<number>(0)
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -79,56 +79,54 @@ export default function HeroSection() {
 
   /* ── GSAP ticker: 3-D arc carousel, right-to-left ── */
   useEffect(() => {
-    if (!containerRef.current) return
+    const containerEl = containerRef.current
+    const sectionEl = sectionRef.current
+    if (!containerEl || !sectionEl) return
 
-    // Start at the second set so the seamless-loop boundary is off-screen
     let x = -ONE_SET_PX
+    let running = false
+
+    // Measure width once up front, then only on resize — never inside the
+    // per-frame loop.
+    containerWidthRef.current = containerEl.offsetWidth || window.innerWidth
+    const ro = new ResizeObserver((entries) => {
+      const w = entries[0]?.contentRect.width
+      if (w) containerWidthRef.current = w
+    })
+    ro.observe(containerEl)
 
     const update = (_time: number, deltaTime: number) => {
-      // Scroll right → left
       x -= SPEED * (deltaTime / 1000)
-      // Seamless loop: jump one set forward once we've passed two sets
       if (x <= -(ONE_SET_PX * 2)) x += ONE_SET_PX
 
-      const containerW = containerRef.current?.offsetWidth ?? window.innerWidth
-      const center     = containerW / 2
-      // arcNorm: how many px from center = "t = 1" on the arc.
-      // containerW * 0.50 → 4 cards per side at t≤1, 8–9 total visible.
+      const containerW = containerWidthRef.current
+      const center = containerW / 2
       const arcNorm = containerW * 0.50
 
       cardRefs.current.forEach((card, i) => {
         if (!card) return
 
-        // Virtual centre-x of this card in screen space
         const cardCenterX = i * CARD_SLOT + x + CARD_W / 2
-        const relX        = cardCenterX - center       // ±px from viewport centre
-        const t           = relX / arcNorm             // normalised position
+        const relX        = cardCenterX - center
+        const t           = relX / arcNorm
         const absT        = Math.abs(t)
 
-        // Cards far outside the arc are invisible – skip expensive transform
         if (absT > 2.6) {
           card.style.opacity = '0'
           return
         }
 
-        // ── 3-D transform values ──────────────────────────────────────────
         const clamped = Math.min(1, absT)
-        const beyond  = Math.max(0, absT - 1)          // 0 within arc, >0 outside
+        const beyond  = Math.max(0, absT - 1)
 
-        // rotateY: right cards face left, left cards face right
         const ry = -(t * 42)
-        // translateZ: parabolic peak at centre → cards at t=0 pop 220 px forward
         const tz = (1 - clamped * clamped) * 220
-        // slight downward drift at the edges (matches reference arc shape)
         const ty = absT * 16
-        // additional scale-down only for cards beyond the main arc
         const scale   = Math.max(0.55, 1 - beyond * 0.30)
-        // fade cards that have moved past the arc
         const opacity = beyond > 0.75
           ? Math.max(0, 1 - (beyond - 0.75) / 0.55)
           : 1
 
-        // px = pixel position of the card's left edge inside the container
         const px = center + relX - CARD_W / 2
 
         card.style.transform = `translate3d(${px}px, ${ty}px, ${tz}px) rotateY(${ry}deg) scale(${scale})`
@@ -136,8 +134,28 @@ export default function HeroSection() {
       })
     }
 
-    gsap.ticker.add(update)
-    return () => gsap.ticker.remove(update)
+    // Only run the ticker while the hero section is actually on screen —
+    // this stops ~48 elements from being recalculated every frame, forever,
+    // long after the user has scrolled past this section.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !running) {
+          gsap.ticker.add(update)
+          running = true
+        } else if (!entry.isIntersecting && running) {
+          gsap.ticker.remove(update)
+          running = false
+        }
+      },
+      { threshold: 0 },
+    )
+    io.observe(sectionEl)
+
+    return () => {
+      if (running) gsap.ticker.remove(update)
+      io.disconnect()
+      ro.disconnect()
+    }
   }, [])
 
   return (
@@ -214,11 +232,6 @@ export default function HeroSection() {
           animate="visible"
           className="w-full mt-auto pt-10"
         >
-          {/*
-            The stage: a full-width container with CSS perspective so every
-            child card participates in a shared 3-D space.
-            overflow:hidden clips cards that scroll beyond the viewport edges.
-          */}
           <div
             style={{
               position: 'relative',
@@ -226,12 +239,6 @@ export default function HeroSection() {
               overflow: 'hidden',
             }}
           >
-        
-           
-            {/*
-              3-D scene: perspective here, preserve-3d so child cards share
-              the same depth context.  Height = card height + arc headroom.
-            */}
             <div
               ref={containerRef}
               style={{
@@ -249,8 +256,6 @@ export default function HeroSection() {
                   ref={el => { cardRefs.current[i] = el }}
                   style={{
                     position: 'absolute',
-                    // Start all cards at the vertical midpoint of the stage;
-                    // the GSAP ticker's ty value shifts them for the arc.
                     top: `${(CARD_H + 64) / 2 - CARD_H / 2}px`,
                     left: 0,
                     width:  `${CARD_W}px`,
@@ -258,7 +263,6 @@ export default function HeroSection() {
                     borderRadius: '14px',
                     overflow: 'hidden',
                     background: '#111',
-                
                     willChange: 'transform, opacity',
                     backfaceVisibility: 'hidden',
                   }}
