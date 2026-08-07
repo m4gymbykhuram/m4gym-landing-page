@@ -1,9 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 export interface ScrollExpandProps {
   src?: string;
@@ -256,8 +253,30 @@ const ScrollExpand = ({
 
       window.addEventListener('resize', handleResize);
 
+      // ── Safety net for stale trigger positions ──
+      // Positions are measured once at mount. If anything else on the page
+      // (other images, fonts, sections above this one) finishes loading or
+      // shifts height afterward, the calculated start/end scroll points go
+      // stale — which is what makes this "sometimes" work: it depends on
+      // load timing, not on anything actually wrong with the animation logic.
+      const handleLoadRefresh = () => {
+        updateLayout();
+        ScrollTrigger.refresh();
+      };
+      window.addEventListener('load', handleLoadRefresh);
+      const settleTimer = setTimeout(handleLoadRefresh, 300);
+
+      // If the media image itself hasn't finished loading yet, refresh once
+      // it has — belt-and-suspenders in case it ever affects layout.
+      if (!image.complete) {
+        image.addEventListener('load', handleLoadRefresh, { once: true });
+      }
+
       return () => {
         window.removeEventListener('resize', handleResize);
+        window.removeEventListener('load', handleLoadRefresh);
+        clearTimeout(settleTimer);
+        image.removeEventListener('load', handleLoadRefresh);
       };
     }, root);
 

@@ -142,7 +142,7 @@ function DashboardBentoGrid() {
         src="/assets/features-calender.png"
         alt="Drag & Drop Calendar panel"
         className="rounded-3xl w-full h-full col-span-2 md:col-span-3 lg:col-span-5"
-      />
+      /> 
     </div>
   );
 }
