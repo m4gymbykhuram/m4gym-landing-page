@@ -10,6 +10,7 @@ import EquipmentCard from './EquipmentCard'
 import InventoryCard from './InventoryCard'
 import CustomButton from '../CustomButton'
 import AnimatedHeading from './AnimatedHeading'
+import InventoryChart from '../animated-svgs/InventoryChart';
 
 /* ── Card reveal variants — stagger-aware ── */
 const cardVariants: Variants = {
@@ -98,6 +99,10 @@ const Features = () => {
             >
               <InventoryCard />
             </motion.div>
+
+
+
+            
           </div>
         </section>
 
