@@ -116,19 +116,19 @@ function DashboardBentoGrid() {
       <GlowBorderCard
         src="/assets/classes.png"
         alt="Classes panel"
-        className="h-20! md:h-auto md:col-span-2 lg:col-span-4"
+        className="h-20! md:h-auto! md:col-span-2 lg:col-span-4"
       />
 
       <GlowBorderCard
         src="/assets/attendance.png"
         alt="Mark attendance panel"
-        className="h-20! rounded-xl object-cover w-full md:h-full md:col-span-1 lg:col-span-2"
+        className="h-20! md:h-auto! rounded-xl object-cover w-full md:col-span-1 lg:col-span-2"
       />
 
       <GlowBorderCard
         src="/assets/notifications.png"
         alt="Notifications panel"
-        className="h-20! rounded-xl object-cover w-full md:h-full md:col-span-1 lg:col-span-2"
+        className="h-20! md:h-auto! rounded-xl object-cover w-full md:col-span-1 lg:col-span-2"
       />
 
       {/* Row 2 */}
