@@ -10,10 +10,10 @@ export default function LandingLayout({
   return (
     <>
       <Header />
-      <SmoothScroll>
+      {/* <SmoothScroll> */}
         <main className="flex-1">{children}</main>
         <Footer />
-      </SmoothScroll>
+      {/* </SmoothScroll> */}
     </>
   );
 }
