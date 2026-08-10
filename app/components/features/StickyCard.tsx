@@ -109,7 +109,14 @@ const StickyCard = ({
             </div>
 
             <div className="mt-4">
-              <CustomButton text="Explore Feature" className="cursor-pointer" />
+              <CustomButton
+                text="Explore Feature"
+                variant="outline"
+                href="https://app.m4gym.com/"
+                target="_blank"
+                className="cursor-pointer"
+                animate={true}
+              />
             </div>
           </div>
 

@@ -9,7 +9,13 @@ const TransformSection = () => {
           text="READY TO TRANSFORM YOUR GYM?"
           className="font-anton text-center uppercase text-3xl sm:text-4xl  xl:text-[44px] text-white leading-tight max-w-2xl"
         />
-        <CustomButton text="Get Started For Free" className="cursor-pointer" />
+        <CustomButton
+          text="Get Started For Free"
+          href="https://app.m4gym.com/"
+          target="_blank"
+          className="cursor-pointer"
+          animate={true}
+        />
       </div>
     </section>
   )

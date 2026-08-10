@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Anton, Archivo } from "next/font/google";
 import "./globals.css";
-import RouteScrollReset from './components/RouteScrollReset'
+import RouteScrollReset from "./components/RouteScrollReset";
 
 const anton = Anton({
   weight: "400",
@@ -17,7 +17,7 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
- icons: {
+  icons: {
     icon: [
       {
         url: "/icon.png",
@@ -39,16 +39,19 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${anton.variable} ${archivo.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
     >
-     <head>
-  <link rel="icon" href="/favicon.png" sizes="25x25" />
-</head>
-     
-      <body className="min-h-full flex flex-col bg-bg-base text-text-base font-archivo" cz-shortcut-listen="true">
+      <head>
+        <link rel="icon" href="/favicon.png" sizes="25x25" />
+      </head>
+
+      <body
+        className="min-h-full flex flex-col bg-bg-base text-text-base font-archivo"
+        cz-shortcut-listen="true"
+      >
         <RouteScrollReset />
         {children}
       </body>
     </html>
   );
 }
-

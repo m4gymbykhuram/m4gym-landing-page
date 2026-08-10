@@ -14,37 +14,37 @@ const gymCards = [
     id: 1,
     title: "Raw Power",
     subtitle: "Heavy Lifting",
-    imgUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop",
+    imgUrl: "/images/HeavyLiftingRawPower.jpg",
   },
   {
     id: 2,
     title: "Cardio Burn",
     subtitle: "Endurance",
-    imgUrl: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop",
+    imgUrl: "images/EnduranceCardio.jpg",
   },
   {
     id: 3,
     title: "Functional",
     subtitle: "HIIT Zone",
-    imgUrl: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop",
+    imgUrl: "images/HIIT-Zone.jpg",
   },
   {
     id: 4,
     title: "Recovery",
     subtitle: "Mobility",
-    imgUrl: "https://images.unsplash.com/photo-1599901860904-17e08c2d4681?q=80&w=800&auto=format&fit=crop",
+    imgUrl: "images/MobilityRecovery.jpg",
   },
   {
     id: 5,
     title: "Combat",
     subtitle: "Boxing Ring",
-    imgUrl: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?q=80&w=800&auto=format&fit=crop",
+    imgUrl: "images/Boxing-Ring-Combat.jpg",
   },
   {
     id: 6,
     title: "Iron Core",
     subtitle: "Abs & Core",
-    imgUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop",
+    imgUrl: "images/Abs-Core.jpg",
   },
 ];
 

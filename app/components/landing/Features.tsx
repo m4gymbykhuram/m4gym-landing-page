@@ -115,7 +115,9 @@ const Features = () => {
         >
           <CustomButton
             text="Explore More Features"
+            href="/features"
             className="cursor-pointer"
+            animate={true}
           />
         </motion.div>
       </div>

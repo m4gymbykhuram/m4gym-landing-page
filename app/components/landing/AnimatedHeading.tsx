@@ -35,7 +35,7 @@ function AnimatedHeading({
   as = 'h2',
   className = '',
   highlightClassName = 'text-primary',
-  once = false,
+  once = true,
   amount = 0.6,
   staggerDelay,
 }: AnimatedHeadingProps) {

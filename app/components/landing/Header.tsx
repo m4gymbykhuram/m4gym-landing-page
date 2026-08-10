@@ -1,92 +1,74 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
-import CustomButton from '../CustomButton'
-import { usePathname } from 'next/navigation'
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import CustomButton from "../CustomButton";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Features', href: '/features' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Blog', href: '/blogs' },
-  { label: 'Contact', href: '/contact' },
-]
+  { label: "Home", href: "/" },
+  { label: "Features", href: "/features" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Blog", href: "/blogs" },
+  { label: "Contact", href: "/contact" },
+];
 
 function AnimatedNavLabel({
   label,
   isActive,
 }: {
-  label: string
-  isActive: boolean
+  label: string;
+  isActive: boolean;
 }) {
   return (
     <motion.span
+      className={`relative z-10 inline-block leading-none overflow-hidden ${
+        isActive ? "text-black" : "text-[#858585] group-hover:text-white"
+      }`}
       initial="rest"
       whileHover="hover"
-      animate="rest"
-      className={`relative z-10 inline-flex items-center font-archivo font-semibold ${
-        isActive ? 'text-black' : 'text-[#858585]'
-      }`}
     >
-      {label.split('').map((char, i) => (
-        <span key={i} className="relative inline-block overflow-hidden">
-          <motion.span
-            className="inline-block"
-            variants={{
-              rest: { y: 0 },
-              hover: { y: '-100%' },
-            }}
-            transition={{
-              duration: 0.55,
-              ease: [0.22, 1, 0.36, 1],
-              delay: i * 0.025,
-            }}
-          >
-            {char === ' ' ? '\u00A0' : char}
-          </motion.span>
-          <motion.span
-            className={`absolute left-0 top-0 inline-block ${
-              isActive ? 'text-black' : 'text-white'
-            }`}
-            variants={{
-              rest: { y: '100%' },
-              hover: { y: 0 },
-            }}
-            transition={{
-              duration: 0.28,
-              ease: [0.22, 1, 0.36, 1],
-              delay: i * 0.025,
-            }}
-          >
-            {char === ' ' ? '\u00A0' : char}
-          </motion.span>
-        </span>
-      ))}
+      <motion.span
+        className="block leading-none"
+        variants={{ rest: { y: 0 }, hover: { y: "-100%" } }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {label}
+      </motion.span>
+
+      <motion.span
+        className={`absolute left-0 top-full block leading-none ${
+          isActive ? "text-[#0A0A0A]" : "text-white"
+        }`}
+        variants={{ rest: { y: 0 }, hover: { y: "-100%" } }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {label}
+      </motion.span>
     </motion.span>
-  )
+  );
 }
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('Home')
-  const pathname = usePathname()
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("Home");
+  const pathname = usePathname();
 
   useEffect(() => {
     const matchedLink = navLinks.find((link) => {
-      if (link.href === '/') {
-        return pathname === '/'
+      if (link.href === "/") {
+        return pathname === "/";
       }
-      if (link.href.startsWith('#')) return false
+      if (link.href.startsWith("#")) return false;
 
-      return pathname.startsWith(link.href)
-    })
+      return pathname.startsWith(link.href);
+    });
 
     if (matchedLink) {
-      setActiveTab(matchedLink.label)
+      setActiveTab(matchedLink.label);
     }
-  }, [pathname])
+  }, [pathname]);
 
   return (
     <header className="fixed backdrop-blur-2xl md:backdrop-blur-none top-0 left-0 right-0 z-50 px-4 py-3 md:px-8">
@@ -111,7 +93,7 @@ export default function Header() {
           aria-label="Main navigation"
         >
           {navLinks.map((link) => {
-            const isActive = activeTab === link.label
+            const isActive = activeTab === link.label;
 
             return (
               <Link
@@ -119,23 +101,29 @@ export default function Header() {
                 href={link.href}
                 onClick={() => setActiveTab(link.label)}
                 scroll={true}
-                className="relative px-7 py-2.5 rounded-full text-md font-archivo font-semibold group overflow-hidden"
+                className="relative flex items-center justify-center px-7 py-3 rounded-full text-md font-archivo font-semibold leading-none group overflow-hidden transition-all duration-300"
               >
+                {/* Active Tab Pill */}
                 {isActive && (
                   <motion.span
                     layoutId="navbar-active-pill"
-                    className="absolute inset-0 rounded-full"
+                    className="absolute inset-0 rounded-full shadow-[0_0_20px_rgba(232,255,92,0.35)]"
                     style={{
                       background:
-                        'linear-gradient(180deg, #F5FF7A 0%, #DDEB18 100%)',
+                        "linear-gradient(180deg, #F5FF7A 0%, #DDEB18 100%)",
                     }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    transition={{ type: "spring", stiffness: 450, damping: 35 }}
                   />
+                )}
+
+                {/* Hover state background for inactive items */}
+                {!isActive && (
+                  <span className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                 )}
 
                 <AnimatedNavLabel label={link.label} isActive={isActive} />
               </Link>
-            )
+            );
           })}
         </nav>
 
@@ -144,8 +132,10 @@ export default function Header() {
           <CustomButton
             text="Get Started"
             variant="outline"
-            onClick={() => {}}
+            href="https://app.m4gym.com/"
+            target="_blank"
             className="cursor-pointer"
+            animate
           />
         </div>
 
@@ -158,13 +148,13 @@ export default function Header() {
           aria-expanded={mobileOpen}
         >
           <span
-            className={`w-5 h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-2' : ''}`}
+            className={`w-5 h-0.5 bg-white transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-2" : ""}`}
           />
           <span
-            className={`w-5 h-0.5 bg-white transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`}
+            className={`w-5 h-0.5 bg-white transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`}
           />
           <span
-            className={`w-5 h-0.5 bg-white transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-2' : ''}`}
+            className={`w-5 h-0.5 bg-white transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`}
           />
         </button>
       </div>
@@ -189,16 +179,18 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="#get-started"
+            <a
+              href="https://app.m4gym.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setMobileOpen(false)}
               className="mt-2 flex items-center justify-center gap-2 bg-primary-gradient text-[#0a0a0a] font-archivo font-bold text-sm px-5 py-3 rounded-full"
             >
               Get Started
-            </Link>
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }

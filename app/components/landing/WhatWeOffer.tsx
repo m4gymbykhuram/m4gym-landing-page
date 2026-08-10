@@ -16,7 +16,7 @@ const tabs = [
     description:
       'Accept or reject join requests, open member details, assign trainers, freeze or reactivate memberships.',
     image:
-      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80',
+      '/images/member-request.jpg',
     imageAlt: 'Gym member performing barbell squat',
   },
   {
@@ -27,7 +27,7 @@ const tabs = [
     description:
       'Create personalised workout plans for each member, track progress milestones, and adjust programs in real time.',
     image:
-      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
+      '/images/goals-plans.jpg',
     imageAlt: 'Trainer coaching a client with workout plan',
   },
   {
@@ -38,7 +38,7 @@ const tabs = [
     description:
       'Log member complaints, track resolution status, and keep a full audit trail of every issue raised across all branches.',
     image:
-      'https://images.unsplash.com/photo-1599058917765-a780eda501f3?w=800&q=80',
+      '/images/Issues.png',
     imageAlt: 'Gym receptionist helping member at front desk',
   },
   {
@@ -49,7 +49,7 @@ const tabs = [
     description:
       'Staff mark members present, or members self check-in with QR code. Everyone keeps a clean, searchable attendance history.',
     image:
-      'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80',
+      '/images/CHECK-IN.png',
     imageAlt: 'Member scanning QR code at gym entrance',
   },
 ]
@@ -208,7 +208,10 @@ export default function WhatWeOffer() {
                     <CustomButton
                       text="Get Started"
                       variant="filled"
+                      href="https://app.m4gym.com/"
+                      target="_blank"
                       className="cursor-pointer"
+                      animate={true}
                     />
                   </div>
                 </motion.div>
