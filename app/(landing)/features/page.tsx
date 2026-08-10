@@ -295,7 +295,7 @@ const FeaturesPage = () => {
         </motion.div>
       </div>
 
-      <div className="hidden md:flex m-0 w-full p-0">
+      {/* <div className="hidden md:flex m-0 w-full p-0">
         <ScrollExpand
           src="https://images.unsplash.com/photo-1641337221253-fdc7237f6b61?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Hero image"
@@ -319,7 +319,7 @@ const FeaturesPage = () => {
             </p>
           </div>
         </ScrollExpand>
-      </div>
+      </div> */}
 
       {/* Skiper Sticky Stacked Cards Component */}
       <FeatureOwnerDashboardSection />
