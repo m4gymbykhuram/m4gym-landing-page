@@ -93,7 +93,7 @@ export default function ContactSection() {
             </div>
 
             <div className="text-center lg:text-start">
-              <CustomButton text="Send Message" type="submit" />
+              <CustomButton text="Send Message" type="submit" animate={true} />
             </div>
           </form>
         </div>

@@ -22,7 +22,8 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     if (isMobile) return // skip smoothing on mobile, but DOM structure stays identical
 
     const smoother = ScrollSmoother.create({
-      smooth: 1.1,
+      smooth: 0.8,
+      smoothTouch: false,
       effects: true,
       wrapper: '#landing-wrapper',
       content: '#landing-content',

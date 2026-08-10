@@ -142,7 +142,7 @@ function DashboardBentoGrid() {
         src="/assets/features-calender.png"
         alt="Drag & Drop Calendar panel"
         className="rounded-3xl w-full h-full col-span-2 md:col-span-3 lg:col-span-5"
-      /> 
+      />
     </div>
   );
 }
@@ -205,7 +205,13 @@ const FeaturesPage = () => {
             and members connected in one powerful workspace.
           </motion.p>
           <motion.div variants={fadeUp}>
-            <CustomButton text="Explore Features" className="cursor-pointer" />
+            <CustomButton
+              text="Explore Features"
+              href="https://app.m4gym.com/"
+              target="_blank"
+              className="cursor-pointer"
+              animate={true}
+            />
           </motion.div>
         </motion.div>
 
@@ -289,7 +295,7 @@ const FeaturesPage = () => {
         </motion.div>
       </div>
 
-      <div className="hidden md:flex m-0 h-screen w-full p-0">
+      <div className="hidden md:flex m-0 w-full p-0">
         <ScrollExpand
           src="https://images.unsplash.com/photo-1641337221253-fdc7237f6b61?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Hero image"
@@ -297,12 +303,15 @@ const FeaturesPage = () => {
           startRadius={24}
           endRadius={0}
           mediaZoom={1.2}
+          scrollDistance={0.65}
           title="Welcome"
+          maxHeight={600}
         >
           <div className="flex flex-col items-center justify-center">
             <h2 className="font-anton text-8xl uppercase leading-tight text-white">
               M4GYM
             </h2>
+
             <p className="max-w-2xl text-left text-lg leading-8 text-white/45 lg:ml-auto lg:text-right">
               M4GYM is a powerful gym management platform for owners, managers,
               trainers and members. Replace spreadsheets and paper attendance
@@ -545,7 +554,13 @@ const BranchManagementSection = () => (
           variants={fadeUp}
           className="mt-7 text-center lg:text-start"
         >
-          <CustomButton text="Get Started" className="cursor-pointer" />
+          <CustomButton
+            text="Get Started"
+            href="https://app.m4gym.com/"
+            target="_blank"
+            className="cursor-pointer"
+            animate={true}
+          />
         </motion.div>
       </motion.div>
 

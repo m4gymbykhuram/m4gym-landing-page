@@ -12,6 +12,7 @@ interface PricingCardProps {
   variants?: Variants
 }
 
+
 export default function PricingCard({
   plan,
   billingCycle,
@@ -28,7 +29,7 @@ export default function PricingCard({
       variants={variants}
       whileHover={{ y: -4 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className="relative rounded-2xl p-6 border overflow-hidden"
+      className="relative rounded-2xl p-6 border overflow-hidden flex flex-col justify-between"
       style={{
         borderColor: isPreferred
           ? 'rgba(221,255,61,0.25)'
@@ -39,66 +40,67 @@ export default function PricingCard({
         boxShadow: isPreferred ? '0px 10px 43px 0px #DDEB1840 inset' : '',
       }}
     >
-      {/* Header */}
-      <div className="flex items-start justify-between mb-6">
-        <div
-          className="flex items-center justify-center rounded-full shrink-0"
-          style={{
-            width: '3rem',
-            height: '3rem',
-            backgroundImage: `linear-gradient(#111214, #111214), linear-gradient(180deg, #666666 0%, #000000 100%)`,
-            backgroundOrigin: 'border-box, border-box',
-            backgroundClip: 'padding-box, border-box',
-            border: '1px solid transparent',
-          }}
-        >
-          <Icon className="w-5 h-5 text-primary" strokeWidth={2} />
+      <div>
+        {/* Header */}
+        <div className="flex items-start justify-between mb-6">
+          <div
+            className="flex items-center justify-center rounded-full shrink-0"
+            style={{
+              width: '3rem',
+              height: '3rem',
+              backgroundImage: `linear-gradient(#111214, #111214), linear-gradient(180deg, #666666 0%, #000000 100%)`,
+              backgroundOrigin: 'border-box, border-box',
+              backgroundClip: 'padding-box, border-box',
+              border: '1px solid transparent',
+            }}
+          >
+            <Icon className="w-5 h-5 text-primary" strokeWidth={2} />
+          </div>
+
+          {isPreferred && (
+            <span className="text-xs font-archivo font-semibold text-white/80 bg-white/10 border border-white/10 rounded-full px-3 py-1.5">
+              Preferred
+            </span>
+          )}
         </div>
 
-        {isPreferred && (
-          <span className="text-xs font-archivo font-semibold text-white/80 bg-white/10 border border-white/10 rounded-full px-3 py-1.5">
-            Preferred
-          </span>
-        )}
-      </div>
+        {/* Price */}
+        <div className="mb-4">
+          <SlidingPrice
+            value={price}
+            className="font-anton text-2xl text-white uppercase"
+          />
 
-      {/* Price */}
-      <div className="mb-4">
-        <SlidingPrice
-          value={price}
-          className="font-anton text-2xl text-white uppercase"
-        />
+          {!isFree && (
+            <span className="font-anton text-sm text-white uppercase tracking-wide ml-2">
+              ({plan.priceSuffix})
+            </span>
+          )}
+          {isFree && (
+            <span className="font-anton text-sm text-white uppercase tracking-wide ml-2">
+              (Forever)
+            </span>
+          )}
+        </div>
 
-        {!isFree && (
-          <span className="font-anton text-sm text-white uppercase tracking-wide ml-2">
-            ({plan.priceSuffix})
-          </span>
-        )}
-        {isFree && (
-          <span className="font-anton text-sm text-white uppercase tracking-wide ml-2">
-            (Forever)
-          </span>
-        )}
-      </div>
-
-      {/* CTA */}
-
-      <CustomButton
+        {/* CTA */}
+         <CustomButton
         text={plan.ctaText}
         bg={'white'}
-        className="w-full text-xs cursor-pointer text-center p-0!"
+        className="w-full text-xs cursor-pointer text-center pr-0!"
         circleBg={'#DCFF57'}
         arrowColor={'black'}
         animate={true}
         textCenter
       />
 
-      <p className="font-archivo text-sm text-white/60 my-5">
-        {plan.description}
-      </p>
+        <p className="font-archivo text-sm text-white/60 my-5">
+          {plan.description}
+        </p>
+      </div>
 
       {/* Features */}
-      <div className="rounded-xl bg-black/40 border border-white/5 p-5">
+      <div className="rounded-xl bg-black/40 border border-white/5 p-5 mt-auto">
         <p className="font-archivo text-sm font-semibold text-white mb-4">
           What included:
         </p>

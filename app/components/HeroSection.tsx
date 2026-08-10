@@ -25,11 +25,7 @@ const stats = [
   { value: '320',   label: 'New Enrollments' },
 ]
 
-/* ─── Card layout ───
- * Desktop size lives here as the baseline. Mobile size is derived inside
- * the component (via useScreenSize) so it can react to the breakpoint —
- * these can no longer be plain module constants since they now vary.
- */
+/* ─── Card layout ── */
 const CARD_W_DESKTOP = 150
 const CARD_H_DESKTOP = 188
 const CARD_W_MOBILE  = 90
@@ -42,22 +38,22 @@ const SPEED = 32
 
 /* ─── Source images (16 unique) ─── */
 const IMAGES = [
-  'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1532619675605-3d9c1f4b7b23?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1432821596592-e2c18b78144f?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1518893061926-6d5d0b36490c?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1502767089025-6572583495b0?auto=format&fit=crop&w=400&q=70',
-  'https://images.unsplash.com/photo-1526322722331-8a4a6b3d6b6b?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1671316149443-d722ef4f960d?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1558611848-73f7eb4001a1?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1648995361141-30676a75fd27?q=80&w=776&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1571388208497-71bedc66e932?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=400&q=70',
+  'https://images.unsplash.com/photo-1659350776313-2223577feeda?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=1738&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 ]
 
 const TRACK = [...IMAGES, ...IMAGES, ...IMAGES]
@@ -73,10 +69,7 @@ export default function HeroSection() {
   const CARD_SLOT = CARD_W + CARD_GAP
   const ONE_SET_PX = IMAGES.length * CARD_SLOT
 
-  // Cached outside the per-frame loop — only updated on real resize events,
-  // never read synchronously inside the RAF ticker (that was forcing a
-  // layout recalculation on every single frame, competing with ScrollSmoother
-  // for main-thread time and causing the scroll lag).
+  
   const containerWidthRef = useRef<number>(0)
 
   const { scrollYProgress } = useScroll({
@@ -229,10 +222,22 @@ export default function HeroSection() {
             className="flex flex-wrap items-center justify-center gap-4"
           >
             <CustomButton
-              text="How it Works"
+              text="Get Started"
               variant="filled"
-              onClick={() => {}}
+              href="https://app.m4gym.com/"
+              target="_blank"
               className="cursor-pointer"
+              animate
+            />
+            <CustomButton
+              text="How it Works"
+              variant="outline"
+              onClick={() => {
+                const el = document.getElementById('how-it-works')
+                if (el) el.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="cursor-pointer"
+              animate={true}
             />
           </motion.div>
         </motion.div>
