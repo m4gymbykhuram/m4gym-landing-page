@@ -97,302 +97,359 @@ const ScrollExpand = ({
       return;
     }
 
-    const ctx = gsap.context(() => {
-      const getViewportHeight = () => {
-        return useWindowScroll ? window.innerHeight : root.clientHeight;
-      };
+    let cancelled = false;
+    let ctx: gsap.Context | undefined;
+    let cleanupListeners: (() => void) | undefined;
 
-      /**
-       * The section only needs enough height for:
-       *
-       * 1. The viewport-sized pinned stage
-       * 2. The expansion scroll distance
-       *
-       * Example:
-       * viewport = 900px
-       * scrollDistance = 0.65
-       *
-       * section height = 900 + 585 = 1485px
-       *
-       * This is considerably shorter than the previous 1800px.
-       */
+    /**
+     * IMPORTANT:
+     *
+     * We don't build the ScrollTrigger timeline immediately on mount.
+     * On first load, fonts / images / content above this section may
+     * not have finished laying out yet, which means `root.clientHeight`,
+     * `window.innerHeight`-relative offsets, and the trigger's start/end
+     * positions all get computed against a layout that is about to shift.
+     *
+     * When that happens, GSAP can evaluate the scroll position as already
+     * past `end` the moment it's created, snapping the frame straight to
+     * its FINAL state (closed clip-path, scrim visible, title faded out) —
+     * which looks like the section "hides itself" on first render.
+     *
+     * A hard reload happens to load things in a different (often cached,
+     * faster) order, so layout is already stable by the time this effect
+     * runs — which is why it "works after reload".
+     *
+     * Fix: wait for fonts to be ready, then wait two animation frames
+     * (so the browser has actually painted the settled layout) before
+     * measuring anything or creating the ScrollTrigger.
+     */
+    const setup = () => {
+      if (cancelled || !root || !stage || !frame || !image) return;
 
-      const updateLayout = () => {
-        const viewportHeight = getViewportHeight();
+      ctx = gsap.context(() => {
+        const getViewportHeight = () => {
+          return useWindowScroll ? window.innerHeight : root.clientHeight;
+        };
 
-        if (viewportHeight <= 0) return;
+        /**
+         * The section only needs enough height for:
+         *
+         * 1. The viewport-sized pinned stage
+         * 2. The expansion scroll distance
+         *
+         * Example:
+         * viewport = 900px
+         * scrollDistance = 0.65
+         *
+         * section height = 900 + 585 = 1485px
+         */
+        const updateLayout = () => {
+          const viewportHeight = getViewportHeight();
 
-        // Never allow the visible ScrollExpand stage
-        // to become taller than 500px.
-        const stageHeight = Math.min(viewportHeight, maxHeight);
+          if (viewportHeight <= 0) return;
 
-        const animationDistance = stageHeight * Math.max(scrollDistance, 0.1);
+          // Never allow the visible ScrollExpand stage
+          // to become taller than maxHeight.
+          const stageHeight = Math.min(viewportHeight, maxHeight);
 
-        root.style.height = `${stageHeight + animationDistance}px`;
-        stage.style.height = `${stageHeight}px`;
-      };
-      updateLayout();
+          const animationDistance =
+            stageHeight * Math.max(scrollDistance, 0.1);
 
-      // Initial state
-      gsap.set(frame, {
-        clipPath: initialClipPath,
-      });
+          root.style.height = `${stageHeight + animationDistance}px`;
+          stage.style.height = `${stageHeight}px`;
+        };
+        updateLayout();
 
-      gsap.set(image, {
-        scale: mediaZoom,
-      });
-
-      if (titleRef.current) {
-        gsap.set(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-        });
-      }
-
-      if (hintRef.current) {
-        gsap.set(hintRef.current, {
-          opacity: 1,
-          y: 0,
-        });
-      }
-
-      if (scrimRef.current) {
-        gsap.set(scrimRef.current, {
-          opacity: 0,
-        });
-      }
-
-      if (overlayRef.current) {
-        gsap.set(overlayRef.current, {
-          opacity: 0,
-          y: 18,
-        });
-      }
-
-      /**
-       * IMPORTANT:
-       *
-       * The animation starts when the section reaches
-       * the top of the viewport.
-       *
-       * Previously:
-       * start: 'top bottom'
-       *
-       * That caused the animation to start too early.
-       */
-      const timeline = gsap.timeline({
-        defaults: {
-          ease: "none",
-        },
-
-        scrollTrigger: {
-          trigger: root,
-          scroller: useWindowScroll ? window : root,
-
-          start: "top 100px",
-
-          end: () => {
-            const viewportHeight = getViewportHeight();
-
-            return `+=${viewportHeight * Math.max(scrollDistance, 0.1)}`;
-          },
-
-          scrub: smoothing > 0 ? smoothing : true,
-
-          pin: stage,
-          pinSpacing: false,
-
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-
-          onUpdate: (self) => {
-            if (self.progress >= 0.999) {
-              hasExpandedRef.current = true;
-            }
-          },
-        },
-      });
-
-      timeline.eventCallback("onComplete", () => {
-        hasExpandedRef.current = true;
-
+        // Initial state
         gsap.set(frame, {
-          clipPath: finalClipPath,
+          clipPath: initialClipPath,
         });
 
         gsap.set(image, {
-          scale: 1,
+          scale: mediaZoom,
         });
-
-        if (scrimRef.current) {
-          gsap.set(scrimRef.current, {
-            opacity: overlayScrim,
-          });
-        }
 
         if (titleRef.current) {
           gsap.set(titleRef.current, {
-            opacity: 0,
-            y: -28,
-            scale: 1.06,
+            opacity: 1,
+            y: 0,
+            scale: 1,
           });
         }
 
         if (hintRef.current) {
           gsap.set(hintRef.current, {
+            opacity: 1,
+            y: 0,
+          });
+        }
+
+        if (scrimRef.current) {
+          gsap.set(scrimRef.current, {
             opacity: 0,
-            y: 8,
           });
         }
 
         if (overlayRef.current) {
           gsap.set(overlayRef.current, {
-            opacity: 1,
-            y: 0,
+            opacity: 0,
+            y: 18,
           });
         }
-      });
 
-      // -----------------------------------------
-      // IMAGE EXPANSION
-      // -----------------------------------------
-
-      timeline.fromTo(
-        frame,
-        {
-          clipPath: initialClipPath,
-        },
-        {
-          clipPath: finalClipPath,
-          duration: 1,
-          immediateRender: false,
-        },
-        0,
-      );
-
-      // -----------------------------------------
-      // IMAGE ZOOM
-      // -----------------------------------------
-
-      timeline.fromTo(
-        image,
-        {
-          scale: mediaZoom,
-        },
-        {
-          scale: 1,
-          duration: 1,
-          immediateRender: false,
-        },
-        0,
-      );
-
-      // -----------------------------------------
-      // SCRIM
-      // -----------------------------------------
-
-      if (scrimRef.current) {
-        timeline.to(
-          scrimRef.current,
-          {
-            opacity: overlayScrim,
-            duration: 0.8,
+        /**
+         * The animation starts when the section reaches
+         * the top of the viewport.
+         */
+        const timeline = gsap.timeline({
+          defaults: {
+            ease: "none",
           },
-          0.15,
-        );
-      }
 
-      // -----------------------------------------
-      // TITLE
-      // -----------------------------------------
+          scrollTrigger: {
+            trigger: root,
+            scroller: useWindowScroll ? window : root,
 
-      if (titleRef.current) {
-        timeline.to(
-          titleRef.current,
-          {
-            opacity: 0,
-            y: -28,
-            scale: 1.06,
-            duration: 0.4,
+            start: "top 100px",
+
+            end: () => {
+              const viewportHeight = getViewportHeight();
+
+              return `+=${viewportHeight * Math.max(scrollDistance, 0.1)}`;
+            },
+
+            scrub: smoothing > 0 ? smoothing : true,
+
+            pin: stage,
+            pinSpacing: false,
+
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+
+            /**
+             * Whenever ScrollTrigger recalculates its start/end
+             * (e.g. after our hard refresh once the whole page has
+             * settled), re-sync the timeline to whatever the ACTUAL
+             * current progress is against the new bounds. Without
+             * this, a bad first evaluation can leave the timeline
+             * visually stuck at the wrong state even after the
+             * trigger's numbers are fixed.
+             */
+            onRefresh: (self) => {
+              timeline.progress(self.progress, false);
+            },
+
+            onUpdate: (self) => {
+              if (self.progress >= 0.999) {
+                hasExpandedRef.current = true;
+              }
+            },
           },
-          0.35,
-        );
-      }
+        });
 
-      // -----------------------------------------
-      // SCROLL HINT
-      // -----------------------------------------
+        timeline.eventCallback("onComplete", () => {
+          hasExpandedRef.current = true;
 
-      if (hintRef.current) {
-        timeline.to(
-          hintRef.current,
+          gsap.set(frame, {
+            clipPath: finalClipPath,
+          });
+
+          gsap.set(image, {
+            scale: 1,
+          });
+
+          if (scrimRef.current) {
+            gsap.set(scrimRef.current, {
+              opacity: overlayScrim,
+            });
+          }
+
+          if (titleRef.current) {
+            gsap.set(titleRef.current, {
+              opacity: 0,
+              y: -28,
+              scale: 1.06,
+            });
+          }
+
+          if (hintRef.current) {
+            gsap.set(hintRef.current, {
+              opacity: 0,
+              y: 8,
+            });
+          }
+
+          if (overlayRef.current) {
+            gsap.set(overlayRef.current, {
+              opacity: 1,
+              y: 0,
+            });
+          }
+        });
+
+        // -----------------------------------------
+        // IMAGE EXPANSION
+        // -----------------------------------------
+
+        timeline.fromTo(
+          frame,
           {
-            opacity: 0,
-            y: 8,
-            duration: 0.15,
+            clipPath: initialClipPath,
+          },
+          {
+            clipPath: finalClipPath,
+            duration: 1,
+            immediateRender: false,
           },
           0,
         );
-      }
 
-      // -----------------------------------------
-      // CONTENT OVERLAY
-      // -----------------------------------------
+        // -----------------------------------------
+        // IMAGE ZOOM
+        // -----------------------------------------
 
-      if (overlayRef.current) {
-        timeline.to(
-          overlayRef.current,
+        timeline.fromTo(
+          image,
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.3,
+            scale: mediaZoom,
           },
-          0.7,
+          {
+            scale: 1,
+            duration: 1,
+            immediateRender: false,
+          },
+          0,
         );
-      }
 
-      // -----------------------------------------
-      // RESIZE
-      // -----------------------------------------
+        // -----------------------------------------
+        // SCRIM
+        // -----------------------------------------
 
-      const handleResize = () => {
-        updateLayout();
-        ScrollTrigger.refresh();
-      };
+        if (scrimRef.current) {
+          timeline.to(
+            scrimRef.current,
+            {
+              opacity: overlayScrim,
+              duration: 0.8,
+            },
+            0.15,
+          );
+        }
 
-      window.addEventListener("resize", handleResize);
+        // -----------------------------------------
+        // TITLE
+        // -----------------------------------------
 
-      // -----------------------------------------
-      // LOAD REFRESH
-      // -----------------------------------------
+        if (titleRef.current) {
+          timeline.to(
+            titleRef.current,
+            {
+              opacity: 0,
+              y: -28,
+              scale: 1.06,
+              duration: 0.4,
+            },
+            0.35,
+          );
+        }
 
-      const handleLoadRefresh = () => {
-        updateLayout();
-        ScrollTrigger.refresh();
-      };
+        // -----------------------------------------
+        // SCROLL HINT
+        // -----------------------------------------
 
-      window.addEventListener("load", handleLoadRefresh);
+        if (hintRef.current) {
+          timeline.to(
+            hintRef.current,
+            {
+              opacity: 0,
+              y: 8,
+              duration: 0.15,
+            },
+            0,
+          );
+        }
 
-      const settleTimer = window.setTimeout(handleLoadRefresh, 300);
+        // -----------------------------------------
+        // CONTENT OVERLAY
+        // -----------------------------------------
 
-      if (!image.complete) {
-        image.addEventListener("load", handleLoadRefresh, { once: true });
-      }
+        if (overlayRef.current) {
+          timeline.to(
+            overlayRef.current,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.3,
+            },
+            0.7,
+          );
+        }
 
-      return () => {
-        window.removeEventListener("resize", handleResize);
+        // -----------------------------------------
+        // RESIZE
+        // -----------------------------------------
 
-        window.removeEventListener("load", handleLoadRefresh);
+        const handleResize = () => {
+          updateLayout();
+          ScrollTrigger.refresh(true);
+        };
 
-        window.clearTimeout(settleTimer);
+        window.addEventListener("resize", handleResize);
 
-        image.removeEventListener("load", handleLoadRefresh);
-      };
-    }, root);
+        // -----------------------------------------
+        // LOAD REFRESH
+        // -----------------------------------------
+
+        /**
+         * Hard refresh (`true`) once everything on the page has
+         * finished loading. A plain `ScrollTrigger.refresh()` only
+         * recalculates start/end positions — it doesn't guarantee the
+         * timeline's visual state gets re-synced to correct progress.
+         * The `onRefresh` callback above handles that re-sync.
+         */
+        const handleLoadRefresh = () => {
+          updateLayout();
+          ScrollTrigger.refresh(true);
+        };
+
+        window.addEventListener("load", handleLoadRefresh);
+
+        const settleTimer = window.setTimeout(handleLoadRefresh, 300);
+
+        if (!image.complete) {
+          image.addEventListener("load", handleLoadRefresh, { once: true });
+        }
+
+        cleanupListeners = () => {
+          window.removeEventListener("resize", handleResize);
+          window.removeEventListener("load", handleLoadRefresh);
+          window.clearTimeout(settleTimer);
+          image.removeEventListener("load", handleLoadRefresh);
+        };
+      }, root);
+    };
+
+    const start = () => {
+      // Wait two paint frames after fonts are ready so layout has
+      // actually settled before we measure anything or create the
+      // ScrollTrigger instance.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setup();
+        });
+      });
+    };
+
+    if (typeof document !== "undefined" && document.fonts?.ready) {
+      document.fonts.ready.then(start).catch(start);
+    } else {
+      start();
+    }
 
     return () => {
-      ctx.revert();
+      cancelled = true;
+      cleanupListeners?.();
+      ctx?.revert();
     };
   }, [
     enabled,
@@ -403,6 +460,7 @@ const ScrollExpand = ({
     scrollDistance,
     smoothing,
     overlayScrim,
+    maxHeight,
   ]);
 
   return (
