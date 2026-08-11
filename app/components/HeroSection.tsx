@@ -60,99 +60,99 @@ export default function HeroSection() {
   const CARD_H = isMobile ? CARD_H_MOBILE : CARD_H_DESKTOP
   const CARD_SLOT = CARD_W + CARD_GAP
   const ONE_SET_PX = IMAGES.length * CARD_SLOT
-  // const containerWidthRef = useRef<number>(0)
+  const containerWidthRef = useRef<number>(0)
 
-  // const { scrollYProgress } = useScroll({
-  //   target: sectionRef,
-  //   offset: ['start start', 'end start'],
-  // })
+  const { scrollYProgress } = useScroll({
+     target: sectionRef,
+     offset: ['start start', 'end start'],
+   })
 
-  // const bgY       = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
-  // const contentY  = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
-  // const carouselY = useTransform(scrollYProgress, [0, 1], ['0%', '-6%'])
+ const bgY       = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+   const contentY  = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
+   const carouselY = useTransform(scrollYProgress, [0, 1], ['0%', '-6%'])
 
   /* ── GSAP ticker: 3-D arc carousel, right-to-left ── */
-  // useEffect(() => {
-  //   const containerEl = containerRef.current
-  //   const sectionEl = sectionRef.current
-  //   if (!containerEl || !sectionEl) return
+  useEffect(() => {
+    const containerEl = containerRef.current
+    const sectionEl = sectionRef.current
+    if (!containerEl || !sectionEl) return
 
-  //   let x = -ONE_SET_PX
-  //   let running = false
+    let x = -ONE_SET_PX
+    let running = false
 
-  //   // Measure width once up front, then only on resize — never inside the
-  //   // per-frame loop.
-  //   containerWidthRef.current = containerEl.offsetWidth || window.innerWidth
-  //   const ro = new ResizeObserver((entries) => {
-  //     const w = entries[0]?.contentRect.width
-  //     if (w) containerWidthRef.current = w
-  //   })
-  //   ro.observe(containerEl)
+    // Measure width once up front, then only on resize — never inside the
+    // per-frame loop.
+    containerWidthRef.current = containerEl.offsetWidth || window.innerWidth
+    const ro = new ResizeObserver((entries) => {
+      const w = entries[0]?.contentRect.width
+      if (w) containerWidthRef.current = w
+    })
+    ro.observe(containerEl)
 
-  //   const update = (_time: number, deltaTime: number) => {
-  //     x -= SPEED * (deltaTime / 1000)
-  //     if (x <= -(ONE_SET_PX * 2)) x += ONE_SET_PX
+    const update = (_time: number, deltaTime: number) => {
+      x -= SPEED * (deltaTime / 1000)
+      if (x <= -(ONE_SET_PX * 2)) x += ONE_SET_PX
 
-  //     const containerW = containerWidthRef.current
-  //     const center = containerW / 2
-  //     const arcNorm = containerW * 0.50
+      const containerW = containerWidthRef.current
+      const center = containerW / 2
+      const arcNorm = containerW * 0.50
 
-  //     cardRefs.current.forEach((card, i) => {
-  //       if (!card) return
+      cardRefs.current.forEach((card, i) => {
+        if (!card) return
 
-  //       const cardCenterX = i * CARD_SLOT + x + CARD_W / 2
-  //       const relX        = cardCenterX - center
-  //       const t           = relX / arcNorm
-  //       const absT        = Math.abs(t)
+        const cardCenterX = i * CARD_SLOT + x + CARD_W / 2
+        const relX        = cardCenterX - center
+        const t           = relX / arcNorm
+        const absT        = Math.abs(t)
 
-  //       if (absT > 2.6) {
-  //         card.style.opacity = '0'
-  //         return
-  //       }
+        if (absT > 2.6) {
+          card.style.opacity = '0'
+          return
+        }
 
-  //       const clamped = Math.min(1, absT)
-  //       const beyond  = Math.max(0, absT - 1)
+        const clamped = Math.min(1, absT)
+        const beyond  = Math.max(0, absT - 1)
 
-  //       const ry = -(t * 42)
-  //       const tz = (1 - clamped * clamped) * 220
-  //       const ty = absT * 16
-  //       const scale   = Math.max(0.55, 1 - beyond * 0.30)
-  //       const opacity = beyond > 0.75
-  //         ? Math.max(0, 1 - (beyond - 0.75) / 0.55)
-  //         : 1
+        const ry = -(t * 42)
+        const tz = (1 - clamped * clamped) * 220
+        const ty = absT * 16
+        const scale   = Math.max(0.55, 1 - beyond * 0.30)
+        const opacity = beyond > 0.75
+          ? Math.max(0, 1 - (beyond - 0.75) / 0.55)
+          : 1
 
-  //       const px = center + relX - CARD_W / 2
+        const px = center + relX - CARD_W / 2
 
-  //       card.style.transform = `translate3d(${px}px, ${ty}px, ${tz}px) rotateY(${ry}deg) scale(${scale})`
-  //       card.style.opacity   = String(Math.max(0, opacity))
-  //     })
-  //   }
+        card.style.transform = `translate3d(${px}px, ${ty}px, ${tz}px) rotateY(${ry}deg) scale(${scale})`
+        card.style.opacity   = String(Math.max(0, opacity))
+      })
+    }
 
-  //   // Only run the ticker while the hero section is actually on screen —
-  //   // this stops ~48 elements from being recalculated every frame, forever,
-  //   // long after the user has scrolled past this section.
-  //   const io = new IntersectionObserver(
-  //     ([entry]) => {
-  //       if (entry.isIntersecting && !running) {
-  //         gsap.ticker.add(update)
-  //         running = true
-  //       } else if (!entry.isIntersecting && running) {
-  //         gsap.ticker.remove(update)
-  //         running = false
-  //       }
-  //     },
-  //     { threshold: 0 },
-  //   )
-  //   io.observe(sectionEl)
+    // Only run the ticker while the hero section is actually on screen —
+    // this stops ~48 elements from being recalculated every frame, forever,
+    // long after the user has scrolled past this section.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !running) {
+          gsap.ticker.add(update)
+          running = true
+        } else if (!entry.isIntersecting && running) {
+          gsap.ticker.remove(update)
+          running = false
+        }
+      },
+      { threshold: 0 },
+    )
+    io.observe(sectionEl)
 
-  //   return () => {
-  //     if (running) gsap.ticker.remove(update)
-  //     io.disconnect()
-  //     ro.disconnect()
-  //   }
-  //   // Re-run when isMobile flips (e.g. tablet rotation crossing the
-  //   // breakpoint) since CARD_W/CARD_H/CARD_SLOT/ONE_SET_PX all derive from it.
-  // }, [isMobile])
+    return () => {
+      if (running) gsap.ticker.remove(update)
+      io.disconnect()
+      ro.disconnect()
+    }
+    // Re-run when isMobile flips (e.g. tablet rotation crossing the
+    // breakpoint) since CARD_W/CARD_H/CARD_SLOT/ONE_SET_PX all derive from it.
+  }, [isMobile])
 
   return (
     <section
@@ -231,7 +231,7 @@ export default function HeroSection() {
         </motion.div>
 
         {/* ── 3-D Arc Carousel ── */}
-        {/* <motion.div
+        <motion.div
           style={{ y: carouselY }}
           variants={scaleIn}
           initial="hidden"
@@ -288,10 +288,10 @@ export default function HeroSection() {
               ))}
             </div>
           </div>
-        </motion.div> */}
+        </motion.div>
 
         {/* ── Badges ── */}
-        {/* <div
+       <div
           className="hidden xl:inline-flex items-center rounded-3xl gradient-border-mask px-2 py-2"
           style={{ background: '#1A1A1A36' }}
         >
@@ -334,7 +334,7 @@ export default function HeroSection() {
               )}
             </div>
           ))}
-        </div> */}
+        </div> 
       </div>
     </section>
   )
