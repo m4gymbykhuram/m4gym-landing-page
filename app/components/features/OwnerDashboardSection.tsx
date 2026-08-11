@@ -1,35 +1,18 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
+import { useScroll } from 'framer-motion'
 import { StickyCard } from './StickyCard'
 import { ownerFeatures } from './ownerFeatures'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 const FeatureOwnerDashboardSection = () => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const cardsWrapperRef = useRef<HTMLDivElement>(null)
-  const [progress, setProgress] = useState(0)
 
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-
-    // Shared progress for scale / rotate across the whole section
-    const progressST = ScrollTrigger.create({
-      trigger: el,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 1,
-      onUpdate: (self) => setProgress(self.progress),
-    })
-
-    return () => {
-      progressST.kill()
-    }
-  }, [])
+  // scrollYProgress is a MotionValue — no React state, no re-renders
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  })
 
   return (
     <section
@@ -51,10 +34,7 @@ const FeatureOwnerDashboardSection = () => {
       </div>
 
       {/* Sticky Cards Stack */}
-      <div
-        ref={cardsWrapperRef}
-        className="relative mx-auto max-w-6xl flex flex-col items-center"
-      >
+      <div className="relative mx-auto max-w-6xl flex flex-col items-center">
         {ownerFeatures.map((feature, index) => {
           const targetScale = 1 - (ownerFeatures.length - index) * 0.03
           const start = index / ownerFeatures.length
@@ -63,7 +43,7 @@ const FeatureOwnerDashboardSection = () => {
           return (
             <StickyCard
               key={feature.label}
-              progress={progress}
+              scrollYProgress={scrollYProgress}
               range={[start, end]}
               index={index}
               total={ownerFeatures.length}
@@ -73,7 +53,6 @@ const FeatureOwnerDashboardSection = () => {
               imageAlt={feature.imageAlt}
               fit={feature.fit}
               targetScale={targetScale}
-              containerRef={containerRef}
             />
           )
         })}
