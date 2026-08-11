@@ -243,7 +243,7 @@ const FeaturesPage = () => {
         >
           <div className="relative z-10 flex flex-col xl:flex-row md:items-center justify-between gap-8 lg:gap-6">
             <div className="max-w-xs shrink-0">
-              <h3 className="font-anton text-2xl sm:text-4xl text-white uppercase leading-normal text-center md:text-start md:text-nowrap">
+              <h3 className="font-anton text-2xl sm:text-3xl text-white uppercase leading-normal text-center md:text-start md:text-nowrap">
                 Built to remove busywork
               </h3>
             </div>
@@ -261,7 +261,7 @@ const FeaturesPage = () => {
                     key={w.title}
                     variants={fadeUp}
                     whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                    className="p-5 min-w-60 rounded-2xl gradient-border-card"
+                    className="p-3 min-w-60 rounded-2xl gradient-border-card"
                   >
                     <div className="flex gap-4 items-center">
                       <div
