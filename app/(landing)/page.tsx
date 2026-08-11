@@ -24,18 +24,17 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <>
+    <main className={"overflow-hidden"}>
       <HeroSection />
       <MarqueeStrip />
       <WhatInsited />
       <WhatWeOffer />
       <HorizontalCardGallery />
-      {/* <GridExpansionScrollEffect /> */}
       <Features />
       <HowItWorksSection />
       <PricingSection />
       <Testimonials />
       <TransformSection />
-    </>
+    </main>
   )
 }

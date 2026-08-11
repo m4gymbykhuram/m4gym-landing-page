@@ -152,7 +152,7 @@ const FeaturesPage = () => {
   return (
     <div className="relative w-full overflow-x-clip bg-[#080809]">
       {/* Hero Section */}
-      <div className="relative bg-[#0A0A0B] z-10 w-full pt-28 px-4 lg:px-20 lg:pt-36 pb-16 flex flex-col md:flex-row items-center gap-12 lg:gap-8 flex-1">
+      <div className="relative bg-[#0A0A0B] z-10 w-full pt-28 px-4 lg:px-16 lg:pt-36 pb-16 flex flex-col md:flex-row items-center gap-12 lg:gap-8 flex-1">
         {/* Left glow */}
         <div
           className="
@@ -227,7 +227,7 @@ const FeaturesPage = () => {
       </div>
 
       {/* Built to remove busywork section */}
-      <div className="px-3 lg:px-20 my-6">
+      <div className="px-3 lg:px-10 xl:px-14 my-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -295,33 +295,6 @@ const FeaturesPage = () => {
         </motion.div>
       </div>
 
-      {/* <div className="hidden md:flex m-0 w-full p-0">
-        <ScrollExpand
-          src="https://images.unsplash.com/photo-1641337221253-fdc7237f6b61?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Hero image"
-          startWidth={42}
-          startRadius={24}
-          endRadius={0}
-          mediaZoom={1.2}
-          scrollDistance={0.65}
-          title="Welcome"
-          maxHeight={600}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <h2 className="font-anton text-8xl uppercase leading-tight text-white">
-              M4GYM
-            </h2>
-
-            <p className="max-w-2xl text-left text-lg leading-8 text-white/45 lg:ml-auto lg:text-right">
-              M4GYM is a powerful gym management platform for owners, managers,
-              trainers and members. Replace spreadsheets and paper attendance
-              with one organized system.
-            </p>
-          </div>
-        </ScrollExpand>
-      </div> */}
-
-      {/* Skiper Sticky Stacked Cards Component */}
       <FeatureOwnerDashboardSection />
       <RoleFeaturesSection />
       <ManagementFeaturesSection />
@@ -430,6 +403,7 @@ const FeatureTabs = ({
   </motion.div>
 );
 
+// FeaturePreviewPanel — add sizes so next/image requests an appropriately-sized asset
 const FeaturePreviewPanel = ({ item }: { item: FeaturePanelItem }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
@@ -460,7 +434,9 @@ const FeaturePreviewPanel = ({ item }: { item: FeaturePanelItem }) => (
               src={item.image}
               alt={item.imageAlt}
               fill
-              className={`object-cover`}
+              sizes="(min-width: 1024px) 60vw, 100vw"
+              quality={80}
+              className="object-cover"
             />
           </div>
         </motion.div>
@@ -597,9 +573,13 @@ const BranchManagementSection = () => (
   </section>
 );
 
+// BranchSwitch — gate the infinite float so it isn't running while
+// off-screen, consistent with the rest of the page's viewport-based reveals
 const BranchSwitch = () => (
   <motion.div
-    animate={{ y: [0, -4, 0] }}
+    initial={{ y: 0 }}
+    whileInView={{ y: [0, -4, 0] }}
+    viewport={{ once: false, amount: 0.4 }}
     transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
     className="absolute left-[45%] md:left-[47%] top-12 md:top-[38%] h-10 md:h-14 w-10 md:w-14 items-center justify-center rounded-full text-black bg-[linear-gradient(180deg,#B7FF3C_0%,#DDEB18_100%)] shadow-[0px_4px_12px_0px_#00000040] flex z-20"
   >

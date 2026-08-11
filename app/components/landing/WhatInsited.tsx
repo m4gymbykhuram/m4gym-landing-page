@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef, useEffect, useCallback } from 'react'
-import { motion, useInView, useAnimation } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { motion, useInView } from 'framer-motion'
 import { fadeUp, slideLeft } from '@/lib/motion-variants'
 import SectionHeading from './SectionHeading'
 import { useScreenSize } from '@/hooks/useScreenSize'
@@ -38,9 +38,6 @@ const roles = [
   },
 ]
 
-/* ──────────────────────────────────────────────────
-   Individual role card (shared between mobile & desktop)
-────────────────────────────────────────────────── */
 function RoleCard({
   role,
   className = '',
@@ -61,12 +58,14 @@ function RoleCard({
       {/* Gradient overlay — always present, dims on hover */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition-opacity duration-300" />
 
-      {/* Content */}
+      {/*
+        Content panel. backdrop-blur is applied ONLY via the group-hover:backdrop-blur-md
+        class below — not as an inline style — so the browser doesn't have to keep an
+        active blur filter composited for every card while it's invisible (opacity-0).
+      */}
       <div
-        className="relative z-10 flex flex-col justify-end p-5 pt-16 h-max w-full opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+        className="relative z-10 flex flex-col justify-end p-5 pt-16 h-max w-full opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 group-hover:backdrop-blur-md"
         style={{
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
           maskImage: 'linear-gradient(180deg, transparent 0%, black 25%)',
           WebkitMaskImage: 'linear-gradient(180deg, transparent 0%, black 25%)',
         }}
@@ -95,86 +94,30 @@ function RoleCard({
   )
 }
 
-/* ──────────────────────────────────────────────────
-   Desktop infinite marquee
-   – Duplicates the card list so the seam is invisible
-   – Animates x from 0 → -50% (one full copy width)
-   – Pauses when any card is hovered; resumes smoothly
-────────────────────────────────────────────────── */
-
-/** px gap between cards */
 const CARD_GAP = 20
-/** card width in px — keep in sync with the inline style below */
 const CARD_W = 340
 /** scroll speed: pixels per second */
 const SPEED = 60
 
-function DesktopMarquee() {
-  const controls = useAnimation()
-  const isPaused = useRef(false)
-  /** accumulated x offset when we paused, so we resume from the right place */
-  const currentX = useRef(0)
-  const rafRef = useRef<number | null>(null)
-  const lastTimeRef = useRef<number | null>(null)
-
-  // Total width of ONE set of cards (used to loop seamlessly)
+/**
+ * Marquee is driven entirely by a CSS keyframe animation — no JS runs per
+ * frame. This moves the work off the main thread onto the compositor, which
+ * is what actually removes the jank while the page scrolls.
+ *
+ * `inView` gates the animation with `animationPlayState: paused` so it isn't
+ * running (and isn't costing anything) before the section is on screen.
+ */
+function DesktopMarquee({ inView }: { inView: boolean }) {
+  const [hovered, setHovered] = useState(false)
   const setWidth = roles.length * (CARD_W + CARD_GAP)
+  const duration = setWidth / SPEED // seconds for one full set to scroll by
 
-  /* ── rAF-based scroller ── */
-  const tick = useCallback(
-    (timestamp: number) => {
-      if (isPaused.current) return
-      if (lastTimeRef.current === null) lastTimeRef.current = timestamp
-
-      const delta = (timestamp - lastTimeRef.current) / 1000 // seconds
-      lastTimeRef.current = timestamp
-
-      currentX.current -= SPEED * delta
-
-      // Loop: when we've scrolled one full set, reset seamlessly
-      if (Math.abs(currentX.current) >= setWidth) {
-        currentX.current = 0
-      }
-
-      controls.set({ x: currentX.current })
-      rafRef.current = requestAnimationFrame(tick)
-    },
-    [controls, setWidth],
-  )
-
-  const startScroll = useCallback(() => {
-    lastTimeRef.current = null
-    rafRef.current = requestAnimationFrame(tick)
-  }, [tick])
-
-  const pauseScroll = useCallback(() => {
-    isPaused.current = true
-    if (rafRef.current !== null) {
-      cancelAnimationFrame(rafRef.current)
-      rafRef.current = null
-    }
-  }, [])
-
-  const resumeScroll = useCallback(() => {
-    isPaused.current = false
-    startScroll()
-  }, [startScroll])
-
-  useEffect(() => {
-    startScroll()
-    return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
-    }
-  }, [startScroll])
-
-  /* ── Render two copies of the card list side-by-side for seamless loop ── */
   const cardList = [...roles, ...roles]
+  const running = inView && !hovered
 
   return (
-    /* Outer clip — hides overflow so only the viewport strip is visible */
     <div
       className="relative overflow-hidden mb-24"
-      /* Fade edges with mask */
       style={{
         maskImage:
           'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
@@ -182,10 +125,24 @@ function DesktopMarquee() {
           'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
       }}
     >
-      <motion.div
-        animate={controls}
+      <style>{`
+        @keyframes what-insited-marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-${setWidth}px); }
+        }
+      `}</style>
+      <div
         className="flex"
-        style={{ gap: CARD_GAP, willChange: 'transform' }}
+        style={{
+          gap: CARD_GAP,
+          width: 'max-content',
+          willChange: 'transform',
+          animationName: 'what-insited-marquee',
+          animationDuration: `${duration}s`,
+          animationTimingFunction: 'linear',
+          animationIterationCount: 'infinite',
+          animationPlayState: running ? 'running' : 'paused',
+        }}
       >
         {cardList.map((role, i) => (
           <motion.div
@@ -193,13 +150,13 @@ function DesktopMarquee() {
             style={{ width: CARD_W, flexShrink: 0 }}
             whileHover={{ scale: 1.03, y: -6 }}
             transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-            onHoverStart={pauseScroll}
-            onHoverEnd={resumeScroll}
+            onHoverStart={() => setHovered(true)}
+            onHoverEnd={() => setHovered(false)}
           >
             <RoleCard role={role} className="h-95 w-full" />
           </motion.div>
         ))}
-      </motion.div>
+      </div>
     </div>
   )
 }
@@ -212,6 +169,11 @@ export default function WhatInsited() {
   const rolesRef = useRef(null)
   const rolesInView = useInView(rolesRef, { once: true, margin: '-80px' })
   const { isMobile } = useScreenSize()
+
+  // Separate observer for the marquee: NOT `once`, so the animation pauses
+  // again if the user scrolls past it — no point animating off-screen.
+  const marqueeRef = useRef<HTMLDivElement>(null)
+  const marqueeInView = useInView(marqueeRef, { margin: '-100px' })
 
   /* ── Mobile drag-scroll ── */
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -345,8 +307,8 @@ export default function WhatInsited() {
       </div>
 
       {/* ── Desktop: infinite auto-scroll marquee ── */}
-      <div className="hidden lg:block">
-        <DesktopMarquee />
+      <div ref={marqueeRef} className="hidden lg:block">
+        <DesktopMarquee inView={marqueeInView} />
       </div>
     </section>
   )

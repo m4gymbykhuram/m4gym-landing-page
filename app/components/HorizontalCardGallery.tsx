@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -10,98 +11,71 @@ if (typeof window !== "undefined") {
 }
 
 const gymCards = [
-  {
-    id: 1,
-    title: "Raw Power",
-    subtitle: "Heavy Lifting",
-    imgUrl: "/images/HeavyLiftingRawPower.jpg",
-  },
-  {
-    id: 2,
-    title: "Cardio Burn",
-    subtitle: "Endurance",
-    imgUrl: "images/EnduranceCardio.jpg",
-  },
-  {
-    id: 3,
-    title: "Functional",
-    subtitle: "HIIT Zone",
-    imgUrl: "images/HIIT-Zone.jpg",
-  },
-  {
-    id: 4,
-    title: "Recovery",
-    subtitle: "Mobility",
-    imgUrl: "images/MobilityRecovery.jpg",
-  },
-  {
-    id: 5,
-    title: "Combat",
-    subtitle: "Boxing Ring",
-    imgUrl: "images/Boxing-Ring-Combat.jpg",
-  },
-  {
-    id: 6,
-    title: "Iron Core",
-    subtitle: "Abs & Core",
-    imgUrl: "images/Abs-Core.jpg",
-  },
+  { id: 1, title: "Raw Power", subtitle: "Heavy Lifting", imgUrl: "/images/HeavyLiftingRawPower.jpg" },
+  { id: 2, title: "Cardio Burn", subtitle: "Endurance", imgUrl: "/images/EnduranceCardio.jpg" },
+  { id: 3, title: "Functional", subtitle: "HIIT Zone", imgUrl: "/images/HIIT-Zone.jpg" },
+  { id: 4, title: "Recovery", subtitle: "Mobility", imgUrl: "/images/MobilityRecovery.jpg" },
+  { id: 5, title: "Combat", subtitle: "Boxing Ring", imgUrl: "/images/Boxing-Ring-Combat.jpg" },
+  { id: 6, title: "Iron Core", subtitle: "Abs & Core", imgUrl: "/images/Abs-Core.jpg" },
 ];
 
 export default function HorizontalCardGallery() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    const track = trackRef.current;
-    if (!track) return;
+  useGSAP(
+    () => {
+      const track = trackRef.current;
+      const section = sectionRef.current;
+      if (!track || !section) return;
 
-    // Calculate how far the track needs to move to the left
-    // (Total width of the track) minus (the width of the viewport)
-    const getScrollAmount = () => track.scrollWidth - window.innerWidth;
+      const getScrollAmount = () => track.scrollWidth - section.offsetWidth;
 
-    gsap.to(track, {
-      x: () => -getScrollAmount(),
-      ease: "none",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        pin: true,
-        scrub: 1, // Smooth scrubbing
-        // The scrolling duration feels natural when it matches the distance
-        end: () => `+=${getScrollAmount()}`,
-        invalidateOnRefresh: true, // Recalculates on window resize
-      },
-    });
-  }, { scope: sectionRef });
+      gsap.to(track, {
+        x: () => -getScrollAmount(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          pin: true,
+          scrub: 0.5,
+          end: () => `+=${getScrollAmount()}`,
+          invalidateOnRefresh: true,
+        },
+      });
+    },
+    { scope: sectionRef },
+  );
 
   return (
-    // We give the section a comfortable height (e.g., 100vh) so it pins nicely in the center of the screen
-    <section 
-      ref={sectionRef} 
+    <section
+      ref={sectionRef}
       className="hidden relative md:flex h-screen w-full items-center overflow-hidden bg-neutral-950"
+      style={{ contain: "layout paint" }}
     >
-      
-      {/* The Track that moves left. It's wider than the screen. */}
-      <div 
-        ref={trackRef} 
-        className="flex gap-8 px-[10vw]" // Adds padding so the first/last cards have breathing room
+      <div
+        ref={trackRef}
+        className="flex gap-8"
+        style={{ willChange: "transform" }}
       >
-        {gymCards.map((card) => (
-          <div 
-            key={card.id} 
-            // Fixed dimensions as requested: 400px by 400px
+        {/* Leading spacer — breathing room before card 1 */}
+        <div className="shrink-0 w-[10vw]" aria-hidden="true" />
+
+        {gymCards.map((card, i) => (
+          <div
+            key={card.id}
             className="group relative h-[400px] w-[400px] shrink-0 overflow-hidden rounded-2xl bg-neutral-800"
           >
-            {/* Background Image */}
-            <div 
-              className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-              style={{ backgroundImage: `url(${card.imgUrl})` }}
+            <Image
+              src={card.imgUrl}
+              alt={`${card.title} - ${card.subtitle}`}
+              fill
+              sizes="400px"
+              quality={80}
+              priority={i < 2}
+              loading={i < 2 ? "eager" : "lazy"}
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            
-            {/* Dark Gradient Overlay for text readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-            {/* Card Content */}
             <div className="absolute bottom-0 left-0 z-10 flex flex-col justify-end p-8">
               <span className="mb-1 text-sm font-bold uppercase tracking-widest text-red-500">
                 {card.subtitle}
@@ -112,6 +86,10 @@ export default function HorizontalCardGallery() {
             </div>
           </div>
         ))}
+
+        {/* Trailing spacer — small, matches the card gap so the last card
+            ends flush-ish instead of leaving 10vw of dead space */}
+        <div className="shrink-0 w-4 md:w-8" aria-hidden="true" />
       </div>
     </section>
   );

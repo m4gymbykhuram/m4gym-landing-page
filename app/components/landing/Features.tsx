@@ -1,7 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, Variants, useInView } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { fadeUp } from '@/lib/motion-variants'
 import TitleWithLines from '../TitleWithLines'
 import CalendarCard from './CalendarCard'
@@ -10,9 +9,20 @@ import EquipmentCard from './EquipmentCard'
 import InventoryCard from './InventoryCard'
 import CustomButton from '../CustomButton'
 import AnimatedHeading from './AnimatedHeading'
-import InventoryChart from '../animated-svgs/InventoryChart';
 
-/* ── Card reveal variants — stagger-aware ── */
+/* ── Parent grid: fires once, staggers children on entry ── */
+const gridVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.05,
+    },
+  },
+}
+
+/* ── Card reveal — no per-card transition override, so every
+   card shares the exact same duration/easing ── */
 const cardVariants: Variants = {
   hidden: {
     opacity: 0,
@@ -51,60 +61,35 @@ const Features = () => {
         />
 
         {/* Grid of feature cards */}
-        <section className="mx-auto max-w-7xl p-3 md:px-2">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
+        <div className="mx-auto max-w-7xl p-3 md:px-2">
+          <motion.div
+            className="grid grid-cols-1 gap-6 md:grid-cols-12"
+            variants={gridVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+          >
             {/* Card 1 — large left */}
-            <motion.div
-              className="md:col-span-8"
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-            >
+            <motion.div className="md:col-span-8" variants={cardVariants}>
               <CalendarCard />
             </motion.div>
 
             {/* Card 2 — small right */}
-            <motion.div
-              className="md:col-span-4"
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: 0.15 }}
-            >
+            <motion.div className="md:col-span-4" variants={cardVariants}>
               <PaymentCard />
             </motion.div>
 
             {/* Card 3 — small left */}
-            <motion.div
-              className="md:col-span-4"
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: 0.1 }}
-            >
+            <motion.div className="md:col-span-4" variants={cardVariants}>
               <EquipmentCard />
             </motion.div>
 
             {/* Card 4 — large right */}
-            <motion.div
-              className="md:col-span-8"
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: 0.22 }}
-            >
+            <motion.div className="md:col-span-8" variants={cardVariants}>
               <InventoryCard />
             </motion.div>
-
-
-
-            
-          </div>
-        </section>
+          </motion.div>
+        </div>
 
         {/* CTA */}
         <motion.div

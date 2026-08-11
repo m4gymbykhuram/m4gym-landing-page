@@ -6,7 +6,7 @@ import { howItWorksSteps } from "@/lib/how-it-works-data";
 import TitleWithLines from "../TitleWithLines";
 import AnimatedHeading from "./AnimatedHeading";
 import { fadeUp } from "@/lib/motion-variants";
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollTrigger } from "@/lib/gsap"; // use the shared registered instance, not a fresh import
 
 function StepBlock({
   step,
@@ -107,62 +107,64 @@ export default function HowItWorksSection() {
   const [activeStep, setActiveStep] = useState(0);
   const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
   const stickyRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null); // ← new
+  const containerRef = useRef<HTMLDivElement>(null);
 
-useEffect(() => {
-  const stickyEl = stickyRef.current;
-  const containerEl = containerRef.current;
-  if (!stickyEl || !containerEl) return;
-
-  const st = ScrollTrigger.create({
-    trigger: containerEl,
-    start: "top top+=96",
-    end: "bottom bottom",
-    pin: stickyEl,
-    pinSpacing: false,
-  });
-
-  return () => st.kill();
-}, []);
-
-useEffect(() => {
-  const handleScroll = () => {
+  useEffect(() => {
     const stickyEl = stickyRef.current;
-    if (!stickyEl) return;
+    const containerEl = containerRef.current;
+    if (!stickyEl || !containerEl) return;
 
-    const stickyRect = stickyEl.getBoundingClientRect();
-    const referenceY = stickyRect.top + stickyRect.height / 2;
+    const triggers: ScrollTrigger[] = [];
 
-    let closestIndex = 0;
-    let closestDistance = Infinity;
+    // Pin the mockup for the duration of the container
+    triggers.push(
+      ScrollTrigger.create({
+        trigger: containerEl,
+        start: "top top+=96",
+        end: "bottom bottom",
+        pin: stickyEl,
+        pinSpacing: false,
+        invalidateOnRefresh: true,
+      }),
+    );
 
-    blockRefs.current.forEach((el, index) => {
+    // One ScrollTrigger per step block, using onToggle instead of a raw
+    // scroll listener + getBoundingClientRect loop. GSAP's ScrollTrigger
+    // batches its scroll reads internally and shares the same ticker
+    // driving the pin above and the ScrollSmoother wrapping the page, so
+    // this replaces a manual reflow-per-scroll-tick with one engine doing
+    // the work it's already optimized for.
+    howItWorksSteps.forEach((_, index) => {
+      const el = blockRefs.current[index];
       if (!el) return;
-      const rect = el.getBoundingClientRect();
 
-      if (referenceY >= rect.top && referenceY <= rect.bottom) {
-        closestIndex = index;
-        closestDistance = -1;
-        return;
-      }
-
-      if (closestDistance === -1) return;
-
-      const elCenter = rect.top + rect.height / 2;
-      const distance = Math.abs(elCenter - referenceY);
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = index;
-      }
+      triggers.push(
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top center",
+          end: "bottom center",
+          onToggle: (self) => {
+            if (self.isActive) setActiveStep(index);
+          },
+        }),
+      );
     });
 
-    setActiveStep(closestIndex);
-  };
+    // Images and late-loading fonts can shift block heights after this
+    // effect runs — refresh once things settle, same pattern used for
+    // the ScrollSmoother wrapper.
+    const refresh = () => ScrollTrigger.refresh();
+    if (document.readyState !== "complete") {
+      window.addEventListener("load", refresh);
+    }
+    const settleTimer = setTimeout(refresh, 300);
 
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  handleScroll();
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+    return () => {
+      window.removeEventListener("load", refresh);
+      clearTimeout(settleTimer);
+      triggers.forEach((t) => t.kill());
+    };
+  }, []);
 
   return (
     <section
@@ -194,8 +196,6 @@ useEffect(() => {
             />
           ))}
 
-          {/* Spacer so the last step has the same scroll runway as the others
-      before the sticky card unpins at the section boundary */}
           <div className="hidden lg:h-[20vh]" aria-hidden="true" />
         </div>
 
