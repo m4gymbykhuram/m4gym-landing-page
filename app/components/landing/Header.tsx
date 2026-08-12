@@ -22,31 +22,15 @@ function AnimatedNavLabel({
   isActive: boolean;
 }) {
   return (
-    <motion.span
-      className={`relative z-10 inline-block leading-none overflow-hidden ${
-        isActive ? "text-black" : "text-[#858585] group-hover:text-white"
+    <span
+      className={`relative z-10 inline-block leading-none transition-colors duration-200 ${
+        isActive
+          ? "text-black"
+          : "text-[#858585] group-hover:text-white"
       }`}
-      initial="rest"
-      whileHover="hover"
     >
-      <motion.span
-        className="block leading-none"
-        variants={{ rest: { y: 0 }, hover: { y: "-100%" } }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {label}
-      </motion.span>
-
-      <motion.span
-        className={`absolute left-0 top-full block leading-none ${
-          isActive ? "text-[#0A0A0A]" : "text-white"
-        }`}
-        variants={{ rest: { y: 0 }, hover: { y: "-100%" } }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {label}
-      </motion.span>
-    </motion.span>
+      {label}
+    </span>
   );
 }
 

@@ -362,43 +362,38 @@ const FeatureTabs = ({
   tabs,
   activeIndex,
   onChange,
-  indicatorId,
 }: {
   tabs: FeaturePanelItem[];
   activeIndex: number;
   onChange: (index: number) => void;
-  indicatorId: string;
 }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.3 }}
-    transition={{ duration: 0.6, ease: "easeOut" }}
-    className="mx-auto md:mt-4 mt-8 max-w-7xl lg:px-5"
+    transition={{ duration: 0.5, ease: "easeOut" }}
+    className="mx-auto mt-8 max-w-7xl md:mt-4 lg:px-5"
   >
-    <div className="flex gap-2 pl-5 lg:pl-0 overflow-x-auto lg:rounded-4xl lg:border border-[#2D2D2D] lg:bg-[#111214] lg:p-1.5 scrollbar-none">
-      {tabs.map((tab, index) => (
-        <button
-          key={tab.label}
-          type="button"
-          onClick={() => onChange(index)}
-          aria-pressed={activeIndex === index}
-          className={`relative min-w-max flex-1 overflow-hidden rounded-[1.65rem] px-7 py-4 text-sm font-semibold transition-colors duration-300 sm:text-base cursor-pointer ${
-            activeIndex === index
-              ? "text-white"
-              : "text-white/75 hover:text-white bg-bg-elevated md:bg-transparent"
-          }`}
-        >
-          {activeIndex === index && (
-            <motion.span
-              layoutId={indicatorId}
-              className="absolute inset-0 rounded-[1.65rem] gradient-border-mask bg-linear-to-b from-[#1112142E] to-[#DDEB182E] shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
-              transition={{ type: "spring", stiffness: 360, damping: 34 }}
-            />
-          )}
-          <span className="relative z-10">{tab.label}</span>
-        </button>
-      ))}
+    <div className="flex gap-2 overflow-x-auto pl-5 scrollbar-none lg:rounded-4xl lg:border lg:border-[#2D2D2D] lg:bg-[#111214] lg:p-1.5 lg:pl-0">
+      {tabs.map((tab, index) => {
+        const isActive = activeIndex === index;
+
+        return (
+          <button
+            key={tab.label}
+            type="button"
+            onClick={() => onChange(index)}
+            aria-pressed={isActive}
+            className={`relative min-w-max flex-1 cursor-pointer rounded-[1.65rem] px-7 py-4 text-sm font-semibold sm:text-base transition-colors duration-200 ${
+              isActive
+                ? "text-white gradient-border-mask bg-linear-to-b from-[#1112142E] to-[#DDEB182E] shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
+                : "bg-bg-elevated text-white/75 hover:bg-white/10 hover:text-white md:bg-transparent"
+            }`}
+          >
+            {tab.label}
+          </button>
+        );
+      })}
     </div>
   </motion.div>
 );
@@ -459,7 +454,6 @@ const RoleFeaturesSection = () => {
         tabs={roleTabs}
         activeIndex={activeIndex}
         onChange={setActiveIndex}
-        indicatorId="role-features-tab-indicator"
       />
       <FeaturePreviewPanel item={activeTab} />
     </section>
@@ -485,7 +479,6 @@ const ManagementFeaturesSection = () => {
         tabs={managementTabs}
         activeIndex={activeIndex}
         onChange={setActiveIndex}
-        indicatorId="management-features-tab-indicator"
       />
       <FeaturePreviewPanel item={activeTab} />
     </section>
