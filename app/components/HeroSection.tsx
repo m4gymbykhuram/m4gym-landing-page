@@ -217,16 +217,7 @@ export default function HeroSection() {
               className="cursor-pointer"
               animate
             />
-            <CustomButton
-              text="How it Works"
-              variant="outline"
-              onClick={() => {
-                const el = document.getElementById('how-it-works')
-                if (el) el.scrollIntoView({ behavior: 'smooth' })
-              }}
-              className="cursor-pointer"
-              animate={true}
-            />
+
           </motion.div>
         </motion.div>
 
