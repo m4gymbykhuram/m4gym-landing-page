@@ -83,7 +83,7 @@ export default function DeleteAccountPage() {
       <Section id="gym-owners" title="If you own a gym">
         <p>
           A gym can’t be left without an owner. Before you delete your account, either make one of your managers the owner, or close the
-          gym, which deletes the gym and all of its data. Both are in <strong>Settings</strong> in the web console, under{' '}
+          gym, which deletes the gym and all of its data. Both are in <strong>Gym Profile</strong> in the web console, under{' '}
           <strong>Ownership</strong>.
         </p>
       </Section>

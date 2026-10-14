@@ -13,7 +13,7 @@ const ROUTES = [
   {
     icon: MessageSquareText,
     title: 'Help centre in the app',
-    text: 'In the app, open More, then Help. On the web, choose Help & support. Your ticket and our replies stay in one thread, and you get a notification when we answer.',
+    text: 'In the app, open More, then Help & support. On the web, choose Help & support in the menu. Your ticket and our replies stay in one thread, and you get a notification when we answer.',
   },
   {
     icon: Mail,
@@ -46,7 +46,7 @@ const FAQ = [
   },
   {
     q: 'How do I cancel a subscription?',
-    a: 'Gym owners: Billing in the web console. Personal coaching: in the app under More, then Plan. You keep access until the end of the period you paid for.',
+    a: 'Gym owners: Billing in the web console. Personal coaching: in your Whop account, signed in with the email you subscribed with. You keep access until the end of the period you paid for.',
   },
 ]
 
