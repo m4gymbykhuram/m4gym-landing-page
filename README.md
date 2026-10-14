@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# m4gym.com
 
-## Getting Started
+The M4GYM marketing site and legal pages, built with Next.js (App Router) and Tailwind.
 
-First, run the development server:
+| Path | Page |
+| --- | --- |
+| `/` | Home: product, personal coaching, live pricing, FAQ |
+| `/privacy` | Privacy Policy |
+| `/terms` | Terms of Use |
+| `/delete-account` | How to delete an account (linked from the stores and the apps) |
+| `/support` | Help and contact |
+
+The design uses the same "Studio" tokens as the web console and the app (`app/globals.css`). Screenshots in `public/shots` are real captures of the product with sample data.
+
+## Configuration
+
+Optional public environment variables:
+
+- `NEXT_PUBLIC_APP_URL`: the web console (default `https://app.m4gym.com`)
+- `NEXT_PUBLIC_API_URL`: the API, for live prices (default `https://server.m4gym.com/api/v1`)
+- `NEXT_PUBLIC_APP_STORE_URL`, `NEXT_PUBLIC_PLAY_STORE_URL`: store links; the buttons read "Coming soon" until these are set
+
+Prices come from `GET /public/plans` and refresh hourly.
+
+## Commands
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm run lint
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
