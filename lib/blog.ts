@@ -1,5 +1,4 @@
 import type { ComponentType } from 'react'
-import type { LucideIcon } from 'lucide-react'
 import { post as overdueFees } from '@/content/blog/cut-overdue-gym-fees'
 import { post as firstThirtyDays } from '@/content/blog/keep-new-gym-members'
 import { post as qrCheckIn } from '@/content/blog/qr-check-in-for-gyms'
@@ -16,10 +15,9 @@ export interface Post {
   date: string
   category: PostCategory
   readMinutes: number
-  /** Two to four words set large on the cover. */
-  cover: string
-  icon: LucideIcon
-  tone: 'lime' | 'ink' | 'stone'
+  /** A product screenshot that relates to the post. */
+  image: string
+  imageKind: 'web' | 'phone'
   Body: ComponentType
 }
 

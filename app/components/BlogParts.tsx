@@ -1,31 +1,34 @@
 import type { ReactNode } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { formatPostDate, type Post } from '@/lib/blog'
 
-const TONES = {
-  lime: 'bg-[var(--lime)] text-[var(--ink)]',
-  ink: 'bg-[var(--ink)] text-white dark:bg-[var(--surface-raised)]',
-  stone: 'bg-[var(--surface-raised)] text-[var(--text-primary)]',
-} as const
-
-/** Typographic cover art: no stock photos, just the post's idea set large. */
+/** The cover: a real product screenshot that relates to the post. */
 export function PostCover({ post, large }: { post: Post; large?: boolean }) {
-  const Icon = post.icon
   return (
-    <div className={`relative aspect-[16/10] overflow-hidden rounded-[var(--radius-card)] ${TONES[post.tone]}`} aria-hidden="true">
-      <Icon className="absolute -right-6 -bottom-8 h-[70%] w-auto opacity-[0.12]" strokeWidth={1.25} />
-      <div className="absolute inset-0 flex flex-col justify-between p-6 md:p-8">
-        <span className="text-xs font-semibold uppercase tracking-[0.14em] opacity-70">{post.category}</span>
-        <span className={`display max-w-[85%] ${large ? 'text-[clamp(2.5rem,5vw,4.25rem)]' : 'text-4xl'}`}>{post.cover}</span>
-      </div>
+    <div className="relative aspect-[16/10] overflow-hidden rounded-[var(--radius-card)] bg-[var(--surface-raised)]">
+      {post.imageKind === 'web' ? (
+        <Image
+          src={post.image}
+          alt=""
+          width={1920}
+          height={1200}
+          sizes={large ? '60vw' : '30vw'}
+          className="absolute top-[12%] left-[8%] w-[150%] max-w-none rounded-tl-[12px] shadow-[var(--shadow-pop)]"
+        />
+      ) : (
+        <div className="absolute top-[10%] left-1/2 w-[38%] -translate-x-1/2 rounded-t-[28px] bg-[var(--ink)] p-[5px] pb-0 shadow-[var(--shadow-pop)]">
+          <Image src={post.image} alt="" width={750} height={1631} sizes="16rem" className="rounded-t-[23px]" />
+        </div>
+      )}
     </div>
   )
 }
 
 export function PostMeta({ post }: { post: Post }) {
   return (
-    <p className="text-sm text-[var(--text-muted)]">
+    <p className="label text-[var(--text-muted)]">
       <time dateTime={post.date}>{formatPostDate(post.date)}</time> · {post.readMinutes} min read
     </p>
   )
@@ -38,7 +41,7 @@ export function PostCard({ post }: { post: Post }) {
       <PostCover post={post} />
       <div className="mt-5 flex flex-1 flex-col">
         <PostMeta post={post} />
-        <h3 className="mt-2 text-xl font-bold leading-snug text-balance">
+        <h3 className="headline mt-3 text-[1.875rem]">
           <Link href={`/blog/${post.slug}`} className="after:absolute after:inset-0">
             {post.title}
           </Link>

@@ -12,6 +12,7 @@ const PAGES: Array<[path: string, priority: number, changeFrequency: 'weekly' | 
   ['/faq', 0.6, 'monthly'],
   ['/about', 0.5, 'yearly'],
   ['/contact', 0.5, 'yearly'],
+  ['/changelog', 0.5, 'weekly'],
   ['/support', 0.5, 'yearly'],
   ['/privacy', 0.3, 'yearly'],
   ['/terms', 0.3, 'yearly'],

@@ -7,7 +7,7 @@ export default function NotFound() {
     <>
       <Header />
       <main className="container-site py-28 text-center">
-        <h1 className="display text-5xl">This page doesn’t exist.</h1>
+        <h1 className="headline text-6xl">This page doesn’t exist.</h1>
         <p className="mt-4 text-lg text-[var(--text-secondary)]">The link may be old, or it was typed wrong.</p>
         <Link href="/" className="btn btn-primary mt-8">
           Back to M4GYM

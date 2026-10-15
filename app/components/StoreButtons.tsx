@@ -27,7 +27,7 @@ function StoreButton({ href, small, big, icon }: { href: string | null; small: s
     </>
   )
   const className =
-    'inline-flex h-13 min-w-40 items-center gap-2.5 rounded-[14px] bg-[var(--ink)] px-4 text-white ring-1 ring-white/10 transition-transform duration-200 active:scale-[0.97]'
+    'inline-flex h-13 min-w-40 items-center gap-2.5 rounded-[6px] bg-[var(--ink)] px-4 text-white ring-1 ring-white/15 transition-transform duration-200 active:scale-[0.97]'
   return href ? (
     <a href={href} className={className} target="_blank" rel="noreferrer">
       {body}

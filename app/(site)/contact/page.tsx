@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowUpRight, Building2, LifeBuoy, Mail, ShieldCheck, Handshake } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { links, mailto, site } from '@/lib/site'
 import { PageHero } from '../../components/Blocks'
 
@@ -12,90 +12,89 @@ export const metadata: Metadata = {
 
 const TOPICS = [
   {
-    icon: Building2,
-    title: 'Bring your gym to M4GYM',
-    text: 'Tell us about your gym and we’ll help you set it up, bring your members over, and pick the right plan.',
+    title: 'Moving your gym to M4GYM',
+    text: 'Tell us about your gym. We’ll help you set it up, bring your members across and pick a plan.',
     href: mailto('My gym and M4GYM'),
-    cta: 'Talk to us',
   },
   {
-    icon: LifeBuoy,
     title: 'Help with your account',
-    text: 'Already using M4GYM? The help centre in the app keeps your request and our replies in one thread.',
+    text: 'Already on M4GYM? The help centre in the app keeps your request and our replies in one thread.',
     href: links.support,
-    cta: 'Go to Support',
     internal: true,
   },
   {
-    icon: ShieldCheck,
     title: 'Privacy and your data',
-    text: 'Ask for a copy of your data, correct it, or ask us to delete it. Write from the email on your account.',
+    text: 'Ask for a copy of your data, correct it, or have it deleted. Write from the email on your account.',
     href: mailto('Privacy request'),
-    cta: 'Email a privacy request',
   },
   {
-    icon: Handshake,
     title: 'Partnerships and press',
-    text: 'Equipment suppliers, gym chains, coaches with a following, or writing about us: we’d like to hear from you.',
+    text: 'Equipment suppliers, gym groups, coaches with a following, or writing about us.',
     href: mailto('Partnership'),
-    cta: 'Get in touch',
   },
 ]
 
 export default function ContactPage() {
   return (
     <>
-      <PageHero eyebrow="Contact" title="Talk to a person." intro="Real people read every message. We reply within one working day." />
+      <PageHero title="Contact" intro={`Email ${site.supportEmail} for anything at all. Choose a topic below and the subject line is filled in for you. We reply within one working day.`} />
 
-      <section className="container-site pb-16">
-        <div className="grid gap-4 md:grid-cols-2">
+      <section className="container-site pb-20 md:pb-28">
+        <ul className="sheet divide-y divide-[var(--border-subtle)] p-2">
           {TOPICS.map((topic) => {
             const className =
-              'group flex h-full flex-col rounded-[var(--radius-card)] bg-[var(--surface)] p-7 shadow-[var(--shadow-sheet)] transition-transform duration-300 hover:-translate-y-0.5 md:p-8'
+              'group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 rounded-[var(--radius-card)] px-4 py-6 transition-colors hover:bg-[var(--surface-soft)] md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)_auto] md:gap-8 md:px-6'
             const body = (
               <>
-                <topic.icon className="h-6 w-6" strokeWidth={1.75} aria-hidden="true" />
-                <h2 className="mt-5 text-xl font-bold">{topic.title}</h2>
-                <p className="mt-2 flex-1 leading-relaxed text-[var(--text-secondary)]">{topic.text}</p>
-                <span className="mt-6 inline-flex items-center gap-1 font-semibold">
-                  {topic.cta}
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} aria-hidden="true" />
+                <span className="text-lg font-bold">{topic.title}</span>
+                <span className="col-start-1 row-start-2 leading-relaxed text-[var(--text-secondary)] md:col-start-auto md:row-start-auto">
+                  {topic.text}
+                </span>
+                <span className="col-start-2 row-span-2 row-start-1 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--surface-raised)] transition-colors group-hover:bg-[var(--ink)] group-hover:text-[var(--lime)] md:col-start-auto md:row-span-1 md:row-start-auto">
+                  <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:rotate-45" strokeWidth={2} aria-hidden="true" />
                 </span>
               </>
             )
-            return topic.internal ? (
-              <Link key={topic.title} href={topic.href} className={className}>
-                {body}
-              </Link>
-            ) : (
-              <a key={topic.title} href={topic.href} className={className}>
-                {body}
-              </a>
+            return (
+              <li key={topic.title}>
+                {topic.internal ? (
+                  <Link href={topic.href} className={className}>
+                    {body}
+                  </Link>
+                ) : (
+                  <a href={topic.href} className={className}>
+                    {body}
+                  </a>
+                )}
+              </li>
             )
           })}
-        </div>
-      </section>
+        </ul>
 
-      <section className="container-site pb-20 md:pb-28">
-        <div className="grid gap-8 rounded-[var(--radius-sheet)] border border-[var(--border-subtle)] bg-[var(--surface-soft)] p-8 md:grid-cols-3 md:p-10">
-          <div>
-            <p className="text-sm font-semibold text-[var(--text-muted)]">Email</p>
-            <a href={`mailto:${site.supportEmail}`} className="mt-1 inline-flex items-center gap-2 text-lg font-bold">
-              <Mail className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" /> {site.supportEmail}
-            </a>
+        <dl className="mt-6 grid gap-4 sm:grid-cols-3">
+          <div className="card-soft bg-[var(--surface)] p-5">
+            <dt className="text-sm font-medium text-[var(--text-muted)]">Email</dt>
+            <dd className="mt-2 text-lg font-semibold">
+              <a href={`mailto:${site.supportEmail}`} className="underline decoration-[var(--rule)] underline-offset-4 hover:decoration-current">
+                {site.supportEmail}
+              </a>
+            </dd>
           </div>
-          <div>
-            <p className="text-sm font-semibold text-[var(--text-muted)]">Company</p>
-            <p className="mt-1 text-lg font-bold">{site.company}</p>
-            <p className="text-[var(--text-secondary)]">{site.country}</p>
+          <div className="card-soft bg-[var(--surface)] p-5">
+            <dt className="text-sm font-medium text-[var(--text-muted)]">Company</dt>
+            <dd className="mt-2 text-lg font-semibold">
+              {site.company}
+            </dd>
           </div>
-          <div>
-            <p className="text-sm font-semibold text-[var(--text-muted)]">Quick answers</p>
-            <Link href={links.faq} className="mt-1 inline-block text-lg font-bold underline underline-offset-4">
-              Read the FAQ
-            </Link>
+          <div className="card-soft bg-[var(--surface)] p-5">
+            <dt className="text-sm font-medium text-[var(--text-muted)]">Quick answers</dt>
+            <dd className="mt-2 text-lg font-semibold">
+              <Link href={links.faq} className="underline decoration-[var(--rule)] underline-offset-4 hover:decoration-current">
+                Read the FAQ
+              </Link>
+            </dd>
           </div>
-        </div>
+        </dl>
       </section>
     </>
   )
