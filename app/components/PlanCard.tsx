@@ -23,7 +23,7 @@ export function PlanCard({ plan }: { plan: PublicPlan }) {
   ]
   const dark = plan.highlight
   return (
-    <article className={`relative flex flex-col rounded-[var(--radius-sheet)] p-7 md:p-8 ${dark ? 'bg-[var(--ink)] text-white dark:bg-[var(--surface-raised)]' : 'sheet'}`}>
+    <article className={`relative flex flex-col rounded-[var(--radius-sheet)] p-7 md:p-8 ${dark ? 'bg-[var(--surface-raised)] text-white ring-1 ring-[var(--lime)]/40' : 'sheet'}`}>
       <div className="flex items-baseline justify-between gap-3">
         {dark && <span className="badge badge-lime">Recommended</span>}
       </div>

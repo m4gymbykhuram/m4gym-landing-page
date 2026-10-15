@@ -18,7 +18,7 @@ export function BrowserFrame({ src, alt, priority }: { src: string; alt: string;
 /** A real screenshot of the app inside a phone outline. */
 export function PhoneFrame({ src, alt, className = '', priority }: { src: string; alt: string; className?: string; priority?: boolean }) {
   return (
-    <div className={`rounded-[40px] bg-[var(--ink)] p-[6px] shadow-[var(--shadow-device)] dark:ring-1 dark:ring-white/10 ${className}`}>
+    <div className={`rounded-[40px] bg-[var(--ink)] p-[6px] shadow-[var(--shadow-device)] ring-1 ring-white/10 ${className}`}>
       <div className="overflow-hidden rounded-[34px] bg-[var(--ground)]">
         <Image src={src} alt={alt} width={750} height={1631} priority={priority} sizes="(min-width: 1024px) 18rem, 60vw" className="block h-auto w-full" />
       </div>

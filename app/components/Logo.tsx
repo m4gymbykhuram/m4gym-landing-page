@@ -1,13 +1,11 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
-/** The wordmark, with the lettering that reads on the current theme. */
+/** The wordmark, in its version for dark backgrounds. */
 export function Logo({ className = 'h-8' }: { className?: string }) {
   return (
     <Link href="/" aria-label="M4GYM home" className="inline-flex shrink-0 items-center">
-      <picture>
-        <source srcSet="/m4gym-logo-dark.svg" media="(prefers-color-scheme: dark)" />
-        <img src="/m4gym-logo-light.svg" alt="M4GYM" className={`${className} w-auto`} />
-      </picture>
+      <Image src="/m4gym-logo-dark.svg" alt="M4GYM" width={132} height={40} priority className={`${className} w-auto`} />
     </Link>
   )
 }

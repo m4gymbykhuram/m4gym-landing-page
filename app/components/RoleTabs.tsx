@@ -66,7 +66,7 @@ export function RoleTabs() {
               aria-controls={`role-panel-${item.id}`}
               onClick={() => setActiveId(item.id)}
               className={`rounded-[13px] px-3 py-2.5 text-left transition-[background-color,box-shadow,color] duration-200 sm:min-w-44 sm:px-5 ${
-                selected ? 'bg-[var(--surface)] shadow-[0_1px_3px_rgb(22_23_15/0.12)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                selected ? 'bg-[var(--surface-strong)] shadow-[0_1px_3px_rgb(0_0_0/0.5)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
               }`}
             >
               <span className="block text-[15px] font-bold sm:text-[17px]">{item.who}</span>

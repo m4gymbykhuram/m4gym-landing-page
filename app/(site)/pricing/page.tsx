@@ -115,7 +115,7 @@ export default async function PricingPage() {
       </section>
 
       <section className="container-site pb-14 md:pb-20">
-        <div className="flex flex-col gap-6 rounded-[var(--radius-sheet)] bg-[var(--ink)] p-8 text-white md:flex-row md:items-center md:justify-between md:p-12 dark:bg-[var(--surface)]">
+        <div className="flex flex-col gap-6 rounded-[var(--radius-sheet)] bg-[var(--surface-raised)] p-8 text-white md:flex-row md:items-center md:justify-between md:p-12">
           <div className="max-w-2xl">
             <h2 className="headline text-[clamp(1.75rem,3vw,2.5rem)]">Personal coaching</h2>
             <p className="mt-3 text-lg text-white/70">

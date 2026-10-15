@@ -154,7 +154,7 @@ export default async function Home() {
 
       {/* Personal coaching */}
       <section className="container-site pb-16 md:pb-24">
-        <div className="grid items-center gap-10 overflow-hidden rounded-[var(--radius-sheet)] bg-[var(--ink)] px-6 pt-10 text-white md:px-12 md:pt-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] dark:bg-[var(--surface)]">
+        <div className="grid items-center gap-10 overflow-hidden rounded-[var(--radius-sheet)] bg-[var(--surface-raised)] px-6 pt-10 text-white md:px-12 md:pt-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
           <div className="pb-10 md:pb-12">
             <h2 className="headline max-w-[18ch] text-[clamp(2rem,4vw,3.25rem)]">Personal coaching for people without a gym</h2>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/70">

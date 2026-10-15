@@ -50,7 +50,7 @@ export default function ContactPage() {
                 <span className="col-start-1 row-start-2 leading-relaxed text-[var(--text-secondary)] md:col-start-auto md:row-start-auto">
                   {topic.text}
                 </span>
-                <span className="col-start-2 row-span-2 row-start-1 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--surface-raised)] transition-colors group-hover:bg-[var(--ink)] group-hover:text-[var(--lime)] md:col-start-auto md:row-span-1 md:row-start-auto">
+                <span className="col-start-2 row-span-2 row-start-1 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--surface-raised)] transition-colors group-hover:bg-[var(--lime)] group-hover:text-[var(--ink)] md:col-start-auto md:row-span-1 md:row-start-auto">
                   <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:rotate-45" strokeWidth={2} aria-hidden="true" />
                 </span>
               </>
