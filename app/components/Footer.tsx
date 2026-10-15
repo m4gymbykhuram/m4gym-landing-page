@@ -6,16 +6,26 @@ const COLUMNS = [
   {
     title: 'Product',
     items: [
-      { href: '/#features', label: 'Features' },
-      { href: '/#coaching', label: 'Personal coaching' },
-      { href: '/#pricing', label: 'Pricing' },
+      { href: links.features, label: 'Features' },
+      { href: links.pricing, label: 'Pricing' },
+      { href: links.coaching, label: 'Personal coaching' },
+      { href: links.download, label: 'Get the app' },
       { href: links.signIn, label: 'Sign in', external: true },
+    ],
+  },
+  {
+    title: 'Company',
+    items: [
+      { href: links.about, label: 'About' },
+      { href: links.blog, label: 'Blog' },
+      { href: links.contact, label: 'Contact' },
     ],
   },
   {
     title: 'Help',
     items: [
       { href: links.support, label: 'Support' },
+      { href: links.faq, label: 'FAQ' },
       { href: `mailto:${site.supportEmail}`, label: site.supportEmail, external: true },
     ],
   },
@@ -32,8 +42,8 @@ const COLUMNS = [
 export function Footer() {
   return (
     <footer className="border-t border-[var(--border-subtle)] bg-[var(--ground)]">
-      <div className="container-site grid gap-10 py-14 md:grid-cols-[1.4fr_repeat(3,1fr)]">
-        <div className="max-w-xs">
+      <div className="container-site grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+        <div className="max-w-xs sm:col-span-2 lg:col-span-1">
           <Logo className="h-7" />
           <p className="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
             Members, fees, check-ins, classes and coaching for gyms, in one place.
