@@ -6,78 +6,78 @@ import { BrowserFrame } from '../../components/Frames'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: `M4GYM is made by ${site.company}. We build software for the people who run gyms, coach in them and train in them.`,
+  description: `M4GYM is gym management software made by ${site.company}: a web console for owners and an app for coaches and members.`,
   alternates: { canonical: '/about' },
 }
 
-const PRINCIPLES = [
-  {
-    title: 'The right tool for each person',
-    text: 'Owners need a big screen for members and money. Coaches and members need their phone. So owners get the web console and everyone else gets the app, and they share one set of data.',
-  },
-  {
-    title: 'One account, every gym',
-    text: 'Your progress and achievements belong to you, not to a gym. Change gym, train at two, or train on your own, and your history comes with you.',
-  },
-  {
-    title: 'AI drafts, people decide',
-    text: 'Ask M4 saves coaches hours by drafting plans and answering questions. A person always reviews the plan, and it never replaces the coach.',
-  },
-  {
-    title: 'Your data is yours',
-    text: 'We don’t sell it and we don’t use it for advertising. You can export it, and you can delete your account at any time.',
-  },
+const PARTS = [
+  [
+    'The web console',
+    'For owners and managers, at app.m4gym.com. Members, fees, check-ins, classes, coaches, equipment, shop stock, issues and billing.',
+  ],
+  [
+    'The app',
+    'For coaches and members, on iPhone and Android. Workouts, the membership card, the schedule, progress, and a coach’s view of each client.',
+  ],
+  ['Ask M4', 'An assistant inside both. It answers questions about the gym for owners and drafts weekly plans for coaches.'],
+  ['Personal coaching', 'The app on its own, for people who train without a gym, with a weekly plan that adjusts as they go.'],
 ]
 
 export default function AboutPage() {
   return (
     <>
       <PageHero
-        eyebrow="About"
-        title="Built for the people who run gyms."
-        intro={`M4GYM is made by ${site.company}. We build the software that a gym runs on, so owners spend less time on registers and spreadsheets and more time with their members.`}
+        title="About M4GYM"
+        intro={`M4GYM is gym management software made by ${site.company}. It replaces the sign-in book, the fee spreadsheet and the training plans sent over chat with one system that owners, coaches and members all use.`}
       />
 
-      <section className="container-site pb-20">
+      <section className="container-site pb-14 md:pb-20">
         <BrowserFrame src="/shots/web-dashboard.webp" alt="The M4GYM owner dashboard" />
       </section>
 
-      <section className="border-y border-[var(--border-subtle)] bg-[var(--surface)] py-20 md:py-28">
-        <div className="container-site grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-          <SectionTitle
-            title="Why M4GYM exists."
-            intro="Most gyms run on a sign-in book, a spreadsheet of fees, and a coach’s memory. It works until it doesn’t: fees slip, new members drift away, and nobody notices until it’s too late."
-          />
-          <div className="space-y-5 text-lg leading-relaxed text-[var(--text-secondary)]">
-            <p>
-              We started M4GYM to give small and growing gyms the tools that big chains have, without the cost or the complexity. Members
-              check in with their phone. Fees are tracked without a spreadsheet. Every member gets a coach and a plan from day one.
-            </p>
-            <p>
-              And because not everyone trains at a gym, the same app coaches people on their own, at home or wherever they train.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="container-site py-20 md:py-28">
-        <SectionTitle title="What we believe." />
-        <div className="mt-12 grid gap-4 md:grid-cols-2">
-          {PRINCIPLES.map((item, index) => (
-            <div key={item.title} className="rounded-[var(--radius-card)] border border-[var(--border-subtle)] bg-[var(--surface)] p-7 md:p-8">
-              <p className="display text-3xl text-[var(--text-faint)]">0{index + 1}</p>
-              <h3 className="mt-4 text-xl font-bold">{item.title}</h3>
-              <p className="mt-2 leading-relaxed text-[var(--text-secondary)]">{item.text}</p>
+      <section className="container-site border-t border-[var(--rule)] py-14 md:py-20">
+        <SectionTitle title="What M4GYM is made of" />
+        <dl className="sheet mt-8 divide-y divide-[var(--border-subtle)] px-6 md:px-8">
+          {PARTS.map(([title, text]) => (
+            <div key={title} className="grid gap-1 py-5 sm:grid-cols-[12rem_1fr] sm:gap-8">
+              <dt className="font-bold">{title}</dt>
+              <dd className="leading-relaxed text-[var(--text-secondary)]">{text}</dd>
             </div>
           ))}
+        </dl>
+      </section>
+
+      <section className="container-site grid gap-10 border-t border-[var(--rule)] py-14 md:py-20 lg:grid-cols-3">
+        <div>
+          <h2 className="text-lg font-bold">How it’s built</h2>
+          <p className="mt-2 leading-relaxed text-[var(--text-secondary)]">
+            We ship small improvements every few days, to the web console and the app together. The{' '}
+            <Link href={links.changelog} className="font-semibold text-[var(--text-primary)] underline underline-offset-4">
+              changelog
+            </Link>{' '}
+            lists each one.
+          </p>
         </div>
-        <p className="mt-12 text-[var(--text-secondary)]">
-          Want to talk?{' '}
-          <Link href={links.contact} className="font-semibold text-[var(--text-primary)] underline underline-offset-4">
-            Get in touch
-          </Link>
-          .
-        </p>
+        <div>
+          <h2 className="text-lg font-bold">Who answers support</h2>
+          <p className="mt-2 leading-relaxed text-[var(--text-secondary)]">
+            The people who build M4GYM. Write from the help centre in the app or email{' '}
+            <a href={`mailto:${site.supportEmail}`} className="font-semibold text-[var(--text-primary)] underline underline-offset-4">
+              {site.supportEmail}
+            </a>
+            .
+          </p>
+        </div>
+        <div>
+          <h2 className="text-lg font-bold">Your data</h2>
+          <p className="mt-2 leading-relaxed text-[var(--text-secondary)]">
+            We don’t sell it or use it for advertising. You can export your members and delete your account at any time. The{' '}
+            <Link href={links.privacy} className="font-semibold text-[var(--text-primary)] underline underline-offset-4">
+              Privacy Policy
+            </Link>{' '}
+            has the details.
+          </p>
+        </div>
       </section>
 
       <CtaBand />

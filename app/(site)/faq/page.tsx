@@ -15,8 +15,7 @@ export default function FaqPage() {
     <>
       <JsonLd data={faqJsonLd(FAQ.flatMap((group) => group.items))} />
       <PageHero
-        eyebrow="FAQ"
-        title="Questions, answered."
+        title="Frequently asked questions"
         intro={
           <p>
             Can’t find yours? Email{' '}
@@ -32,17 +31,15 @@ export default function FaqPage() {
         }
       />
 
-      <div className="container-site grid gap-12 pb-20 md:pb-28 lg:grid-cols-[14rem_minmax(0,1fr)]">
+      <div className="container-site grid gap-12 pb-20 md:pb-28 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-16">
         <nav aria-label="Topics" className="hidden lg:block">
           <div className="sticky top-24">
-            <p className="text-sm font-semibold">Topics</p>
-            <ol className="mt-3 space-y-2 border-l border-[var(--border-solid)]">
-              {FAQ.map((group) => (
+            <p className="label text-[var(--text-muted)]">Topics</p>
+            <ol className="mt-3 space-y-0.5">
+              {FAQ.map((group, index) => (
                 <li key={group.id}>
-                  <a
-                    href={`#${group.id}`}
-                    className="-ml-px block border-l border-transparent pl-4 text-sm text-[var(--text-muted)] hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]"
-                  >
+                  <a href={`#${group.id}`} className="flex gap-3 rounded-[12px] px-3 py-2 text-sm text-[var(--text-muted)] hover:bg-[var(--surface-raised)] hover:text-[var(--text-primary)]">
+                    <span className="tabular-nums text-[var(--text-faint)]">{String(index + 1).padStart(2, '0')}</span>
                     {group.title}
                   </a>
                 </li>
@@ -50,10 +47,10 @@ export default function FaqPage() {
             </ol>
           </div>
         </nav>
-        <div className="max-w-3xl space-y-16">
+        <div className="space-y-14">
           {FAQ.map((group) => (
             <section key={group.id} id={group.id} className="scroll-mt-24">
-              <h2 className="mb-4 text-2xl font-bold">{group.title}</h2>
+              <h2 className="headline mb-6 text-[clamp(1.75rem,3vw,2.5rem)]">{group.title}</h2>
               <FaqList items={group.items} />
             </section>
           ))}

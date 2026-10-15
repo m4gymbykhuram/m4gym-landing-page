@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Check, Sparkles } from 'lucide-react'
+import { ArrowRight, Check } from 'lucide-react'
 import { faqGroup, faqJsonLd } from '@/lib/faq'
 import { formatPrice, getPricing, limitLine, periodLabel } from '@/lib/plans'
 import { links } from '@/lib/site'
@@ -9,20 +9,28 @@ import { PlanCard } from '../../components/PlanCard'
 
 export const metadata: Metadata = {
   title: 'Pricing',
-  description: 'Start free, upgrade when the gym grows. One price for the gym; the app is free for your coaches and members.',
+  description: 'M4GYM pricing: a free plan for small gyms and monthly plans for larger ones. The app is free for your coaches and members.',
   alternates: { canonical: '/pricing' },
 }
 
 const EVERY_PLAN = [
-  'The app for every coach and member, at no extra cost',
-  'Fees, due dates and overdue tracking',
+  'The iPhone and Android app for every coach and member',
+  'Membership fees, due dates and overdue lists',
   'Check-in by tap or QR membership card',
   'Workout plans, progress and achievements',
-  'Classes, appointments and coach calendars',
+  'Classes, one-to-one sessions and coach calendars',
   'Reminders and announcements',
   'Equipment, issues and shop stock',
-  'Your gym’s public page and join requests',
+  'A public gym page where people can ask to join',
 ]
+
+const LIMITS = [
+  ['Members', 'memberLimit', 'member', 'members'],
+  ['Coaches', 'trainerLimit', 'coach', 'coaches'],
+  ['Classes', 'classLimit', 'class', 'classes'],
+  ['Equipment', 'equipmentLimit', 'item', 'items'],
+  ['Shop products', 'inventoryLimit', 'product', 'products'],
+] as const
 
 export default async function PricingPage() {
   const pricing = await getPricing()
@@ -35,69 +43,55 @@ export default async function PricingPage() {
     <>
       <JsonLd data={faqJsonLd(questions)} />
       <PageHero
-        eyebrow="Pricing"
-        title="Start free. Upgrade when the gym grows."
-        intro="One price for the gym. The app is free for your coaches and members, and there’s no card needed to start."
-        centered
+        title="Pricing"
+        intro="One subscription per gym, billed monthly through Whop. The app is free for your coaches and members. Start on the free plan; no card needed."
       />
 
-      <section className="container-site pb-20">
+      <section className="container-site pb-14 md:pb-20">
         {gymPlans.length ? (
-          <>
-            <div className={`grid grid-cols-1 gap-5 md:grid-cols-2 ${gymPlans.length > 2 ? 'lg:grid-cols-3' : 'mx-auto max-w-4xl'}`}>
-              {gymPlans.map((plan) => (
-                <PlanCard key={plan.key} plan={plan} />
-              ))}
-            </div>
-            <p className="mt-6 text-center text-sm text-[var(--text-muted)]">
-              Paid plans are billed monthly through Whop. Change or cancel from Billing in your console.
-            </p>
-          </>
+          <div className={`grid grid-cols-1 gap-4 md:grid-cols-2 ${gymPlans.length > 2 ? 'lg:grid-cols-3' : ''}`}>
+            {gymPlans.map((plan) => (
+              <PlanCard key={plan.key} plan={plan} />
+            ))}
+          </div>
         ) : (
-          <div className="mx-auto max-w-2xl rounded-[var(--radius-card)] bg-[var(--surface)] p-8 text-center shadow-[var(--shadow-sheet)]">
+          <div className="sheet p-8">
             <p className="text-lg font-semibold">Plans and prices are shown when you sign up.</p>
             <p className="mt-1 text-[var(--text-secondary)]">Start on the free plan; no card needed.</p>
             <a href={links.signUp} className="btn btn-primary mt-6">
-              Start free
+              Create your gym <ArrowRight aria-hidden="true" strokeWidth={2.25} />
             </a>
           </div>
         )}
+        <p className="mt-4 text-sm text-[var(--text-muted)]">Change or cancel from Billing in your console. You keep paid features until the end of the period.</p>
       </section>
 
       {gymPlans.length > 1 && (
-        <section className="container-site pb-20">
-          <SectionTitle title="Compare plans." />
-          <div className="mt-8 overflow-x-auto rounded-[var(--radius-card)] border border-[var(--border-subtle)] bg-[var(--surface)]">
-            <table className="w-full min-w-[36rem] table-fixed text-left text-[15px]">
+        <section className="container-site border-t border-[var(--rule)] py-14 md:py-20">
+          <SectionTitle title="Limits by plan" />
+          <div className="sheet mt-8 overflow-x-auto px-6 py-2">
+            <table className="w-full min-w-[36rem] table-fixed text-left">
               <thead>
-                <tr className="border-b border-[var(--border-subtle)]">
-                  <th scope="col" className="w-36 p-4 font-semibold text-[var(--text-muted)]">
-                    Limit
+                <tr className="border-b border-[var(--border-solid)]">
+                  <th scope="col" className="w-40 py-4 pr-4 text-sm font-medium text-[var(--text-muted)]">
+                    <span className="sr-only">Limit</span>
                   </th>
                   {gymPlans.map((plan) => (
-                    <th key={plan.key} scope="col" className="p-4 font-bold">
+                    <th key={plan.key} scope="col" className="py-4 pr-4 font-bold">
                       {plan.name}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[var(--border-subtle)] text-[var(--text-secondary)]">
-                {(
-                  [
-                    ['Members', 'memberLimit', 'member', 'members'],
-                    ['Coaches', 'trainerLimit', 'coach', 'coaches'],
-                    ['Classes', 'classLimit', 'class', 'classes'],
-                    ['Equipment', 'equipmentLimit', 'item', 'items'],
-                    ['Shop products', 'inventoryLimit', 'product', 'products'],
-                  ] as const
-                ).map(([label, key, one, many]) => (
-                  <tr key={key}>
-                    <th scope="row" className="p-4 font-semibold text-[var(--text-primary)]">
+              <tbody>
+                {LIMITS.map(([label, key, one, many]) => (
+                  <tr key={key} className="border-b border-[var(--border-subtle)] last:border-0">
+                    <th scope="row" className="py-4 pr-4 text-sm font-medium text-[var(--text-muted)]">
                       {label}
                     </th>
                     {gymPlans.map((plan) => (
-                      <td key={plan.key} className="p-4">
-                        {limitLine(plan[key], one, many)}
+                      <td key={plan.key} className="py-4 pr-4 font-semibold tabular-nums">
+                        {plan[key] == null ? 'Unlimited' : limitLine(plan[key], one, many).split(' ')[0]}
                       </td>
                     ))}
                   </tr>
@@ -108,44 +102,36 @@ export default async function PricingPage() {
         </section>
       )}
 
-      <section className="border-y border-[var(--border-subtle)] bg-[var(--surface)] py-20 md:py-24">
-        <div className="container-site grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <SectionTitle title="In every plan, free included." intro="Plans differ in limits and extras. The core of running a gym is in all of them." />
-          <ul className="grid gap-x-8 gap-y-3.5 sm:grid-cols-2">
-            {EVERY_PLAN.map((line) => (
-              <li key={line} className="flex gap-2.5 text-[var(--text-secondary)]">
-                <Check className="mt-1 h-4 w-4 shrink-0 text-[var(--success)]" strokeWidth={2.25} aria-hidden="true" />
-                {line}
-              </li>
-            ))}
-          </ul>
+      <section className="container-site border-t border-[var(--rule)] py-14 md:py-20">
+        <SectionTitle title="Included in every plan" intro="Plans differ in limits and a few extras. These are in all of them, the free plan too." />
+        <ul className="mt-8 grid gap-x-10 gap-y-3 sm:grid-cols-2">
+          {EVERY_PLAN.map((line) => (
+            <li key={line} className="flex items-start gap-3 leading-relaxed">
+              <Check className="mt-1 h-4 w-4 shrink-0 text-[var(--success)]" strokeWidth={2.5} aria-hidden="true" />
+              {line}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="container-site pb-14 md:pb-20">
+        <div className="flex flex-col gap-6 rounded-[var(--radius-sheet)] bg-[var(--ink)] p-8 text-white md:flex-row md:items-center md:justify-between md:p-12 dark:bg-[var(--surface)]">
+          <div className="max-w-2xl">
+            <h2 className="headline text-[clamp(1.75rem,3vw,2.5rem)]">Personal coaching</h2>
+            <p className="mt-3 text-lg text-white/70">
+              For people who train without a gym. Separate from gym plans:{' '}
+              {coachingPrice ? `free for the first week, then ${coachingPrice} a ${periodLabel(personal?.billingPeriod ?? null)}.` : 'free for the first week.'}
+            </p>
+          </div>
+          <Link href={links.coaching} className="btn btn-lime shrink-0">
+            About personal coaching <ArrowRight aria-hidden="true" strokeWidth={2.25} />
+          </Link>
         </div>
       </section>
 
-      <section className="container-site py-20 md:py-24">
-        <div className="grid items-center gap-8 rounded-[var(--radius-sheet)] bg-[var(--ink)] p-8 text-white md:grid-cols-[1.3fr_0.7fr] md:p-12 dark:bg-[var(--surface)]">
-          <div>
-            <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--lime)]">
-              <Sparkles className="h-4 w-4" strokeWidth={2} aria-hidden="true" /> Personal coaching
-            </p>
-            <h2 className="display mt-3 text-4xl">Training without a gym?</h2>
-            <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/75">
-              The app builds your week from your goal and the kit you have, and adjusts as you go. Separate from gym plans.
-            </p>
-          </div>
-          <div className="md:text-right">
-            <p className="display text-5xl text-white">{coachingPrice ?? 'Free trial'}</p>
-            {coachingPrice && <p className="mt-1 text-white/60">a {periodLabel(personal?.billingPeriod ?? null)}, after a free week</p>}
-            <Link href={links.coaching} className="btn btn-lime mt-6">
-              How it works <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="container-site grid gap-10 pb-20 md:pb-28 lg:grid-cols-[0.8fr_1.2fr]">
+      <section className="container-site grid gap-10 border-t border-[var(--rule)] py-14 md:py-20 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
         <div>
-          <h2 className="display text-4xl md:text-5xl">Billing questions.</h2>
+          <SectionTitle title="Billing questions" />
           <p className="mt-4 text-[var(--text-secondary)]">
             More in the{' '}
             <Link href={links.faq} className="font-semibold text-[var(--text-primary)] underline underline-offset-4">

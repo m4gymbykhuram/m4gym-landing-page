@@ -1,4 +1,3 @@
-import { Users } from 'lucide-react'
 import { Callout } from '@/app/components/BlogParts'
 import type { Post } from '@/lib/blog'
 
@@ -66,26 +65,18 @@ function Body() {
         </p>
       </Callout>
 
-      <h2>The short version</h2>
-      <ol>
-        <li>Day one: a coach and a plan.</li>
-        <li>Week two: notice them, and adjust the plan.</li>
-        <li>Week three: point out progress.</li>
-        <li>Week four: fixed days, a class, and a chat before the first renewal.</li>
-      </ol>
     </>
   )
 }
 
 export const post: Post = {
   slug: 'keep-new-gym-members',
-  title: 'The first 30 days: how to keep new gym members',
-  description: 'Most members who leave decide in their first month. A week-by-week guide to turning new joiners into regulars.',
+  title: 'Keeping new members past their first month',
+  description: 'Members who leave usually decide in their first month. A week-by-week guide for owners and coaches.',
   date: '2026-10-15',
   category: 'Running a gym',
   readMinutes: 5,
-  cover: 'The first 30 days.',
-  icon: Users,
-  tone: 'stone',
+  image: '/shots/web-members.webp',
+  imageKind: 'web',
   Body,
 }

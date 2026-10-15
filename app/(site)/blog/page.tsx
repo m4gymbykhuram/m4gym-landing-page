@@ -17,17 +17,16 @@ export default function BlogPage() {
   return (
     <>
       <PageHero
-        eyebrow="Blog"
-        title="Notes on running a gym, coaching and training."
-        intro="Practical, plain-words guides for owners, coaches and anyone training on their own."
+        title="Blog"
+        intro="Guides for gym owners, coaches and people training on their own, from the team that builds M4GYM."
       />
 
       <section className="container-site pb-16">
-        <article className="group relative grid items-center gap-8 rounded-[var(--radius-sheet)] bg-[var(--surface)] p-4 shadow-[var(--shadow-sheet)] md:grid-cols-[1.15fr_1fr] md:p-5">
+        <article className="sheet group relative grid items-center gap-8 p-3 md:grid-cols-[1.2fr_1fr] md:gap-12">
           <PostCover post={featured} large />
-          <div className="p-3 md:p-6">
-            <p className="text-sm font-semibold text-[var(--text-muted)]">Latest · {featured.category}</p>
-            <h2 className="display mt-3 text-4xl text-balance md:text-5xl">
+          <div className="p-4 md:p-6">
+            <p className="text-sm font-medium text-[var(--text-muted)]">Latest · {featured.category}</p>
+            <h2 className="headline mt-4 text-[clamp(2.75rem,5vw,4.5rem)] transition-colors group-hover:text-[var(--text-secondary)]">
               <Link href={`/blog/${featured.slug}`} className="after:absolute after:inset-0">
                 {featured.title}
               </Link>
@@ -41,10 +40,10 @@ export default function BlogPage() {
       </section>
 
       <section className="container-site pb-20 md:pb-28">
-        <div className="flex items-end justify-between gap-6 border-b border-[var(--border-subtle)] pb-4">
-          <h2 className="text-2xl font-bold">All posts</h2>
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="headline text-[clamp(1.75rem,3vw,2.5rem)]">All posts</h2>
           <a href="/blog/rss.xml" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)]">
-            <Rss className="h-4 w-4" strokeWidth={2} aria-hidden="true" /> RSS
+            <Rss className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" /> RSS
           </a>
         </div>
         <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">

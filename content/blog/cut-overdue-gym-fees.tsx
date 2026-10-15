@@ -1,4 +1,3 @@
-import { Wallet } from 'lucide-react'
 import { Callout } from '@/app/components/BlogParts'
 import type { Post } from '@/lib/blog'
 
@@ -8,9 +7,9 @@ function Body() {
       <p>
         In most small gyms, fees are paid at the desk in cash or by bank transfer, and someone keeps track in a register, a spreadsheet or
         their head. When a fee goes overdue it is rarely because the member has decided not to pay. They forgot, they assumed someone else
-        in the family paid, or nobody mentioned it. That is good news, because forgetting is easy to fix.
+        in the family paid, or nobody mentioned it.
       </p>
-      <p>Here are seven habits that keep fees coming in on time, without awkward conversations at the front desk.</p>
+      <p>These seven habits help, and none of them needs an awkward conversation at the front desk.</p>
 
       <h2>1. Give every member one clear due date</h2>
       <p>
@@ -34,8 +33,7 @@ function Body() {
       <h2>4. Make paying the easy part</h2>
       <p>
         If a member has to ask for your bank details every month, some won’t bother. Put the account details on a card at the desk and in
-        your welcome message, accept the methods people actually use, and give a receipt every time. Paying should take less effort than
-        forgetting.
+        your welcome message, accept the methods people actually use, and give a receipt every time.
       </p>
 
       <h2>5. Record every payment the moment it’s made</h2>
@@ -65,26 +63,18 @@ function Body() {
         </p>
       </Callout>
 
-      <h2>The short version</h2>
-      <ul>
-        <li>One due date per member, told to them when they join.</li>
-        <li>Check who is due each morning, and remind before the date.</li>
-        <li>Record payments straight away so the list stays right.</li>
-        <li>Agree a grace period, and talk privately to anyone far behind.</li>
-      </ul>
     </>
   )
 }
 
 export const post: Post = {
   slug: 'cut-overdue-gym-fees',
-  title: 'Seven ways to cut overdue membership fees',
-  description: 'Most overdue fees aren’t refusals, they’re forgotten. Seven habits that get small gyms paid on time.',
+  title: 'How to reduce overdue membership fees at a small gym',
+  description: 'Most overdue fees are forgotten rather than refused. Seven habits that get members paying on time.',
   date: '2026-10-15',
   category: 'Running a gym',
   readMinutes: 4,
-  cover: 'Paid on time.',
-  icon: Wallet,
-  tone: 'lime',
+  image: '/shots/web-payments.webp',
+  imageKind: 'web',
   Body,
 }

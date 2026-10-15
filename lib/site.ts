@@ -23,6 +23,7 @@ export const links = {
   blog: '/blog',
   about: '/about',
   contact: '/contact',
+  changelog: '/changelog',
   privacy: '/privacy',
   terms: '/terms',
   deleteAccount: '/delete-account',

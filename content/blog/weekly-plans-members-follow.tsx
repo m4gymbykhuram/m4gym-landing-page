@@ -1,4 +1,3 @@
-import { ClipboardList } from 'lucide-react'
 import { Callout } from '@/app/components/BlogParts'
 import type { Post } from '@/lib/blog'
 
@@ -52,12 +51,12 @@ function Body() {
 
       <h2>Read what actually happened</h2>
       <p>
-        The most useful thing a coach can see is not the plan but the record: which sessions were done, which were skipped, and which were
-        started but not finished. Skipped sessions on the same day each week usually mean the day is wrong, not the member. Unfinished
+        The record is more useful to a coach than the plan: which sessions were done, which were skipped, and which were
+        started but not finished. Skipped sessions on the same day each week usually mean that day doesn’t suit the member. Unfinished
         sessions often mean the session is too long.
       </p>
 
-      <h2>Use AI for the draft, not the decision</h2>
+      <h2>Using AI to draft plans</h2>
       <p>
         Drafting a fresh week for every member takes hours. AI is good at the first draft: it can take a member’s goal, days and recent
         workouts and propose a sensible week. The coach’s job is the part AI can’t do: knowing the person, spotting the problem, and making
@@ -77,13 +76,12 @@ function Body() {
 
 export const post: Post = {
   slug: 'weekly-plans-members-follow',
-  title: 'How to write a weekly plan members actually follow',
-  description: 'The plan isn’t the problem; the fit is. A coach’s guide to weekly training that gets finished, week after week.',
+  title: 'Writing weekly training plans that members finish',
+  description: 'How coaches can fit a plan to a member’s real week, keep sessions clear, and use what was skipped to adjust.',
   date: '2026-10-15',
   category: 'Coaching',
   readMinutes: 5,
-  cover: 'Plans that get done.',
-  icon: ClipboardList,
-  tone: 'ink',
+  image: '/shots/app-coach-plan-editor.webp',
+  imageKind: 'phone',
   Body,
 }

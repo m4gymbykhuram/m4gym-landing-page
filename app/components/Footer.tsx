@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { links, site } from '@/lib/site'
-import { Logo } from './Logo'
 
 const COLUMNS = [
   {
@@ -19,6 +18,7 @@ const COLUMNS = [
       { href: links.about, label: 'About' },
       { href: links.blog, label: 'Blog' },
       { href: links.contact, label: 'Contact' },
+      { href: links.changelog, label: 'Changelog' },
     ],
   },
   {
@@ -26,7 +26,6 @@ const COLUMNS = [
     items: [
       { href: links.support, label: 'Support' },
       { href: links.faq, label: 'FAQ' },
-      { href: `mailto:${site.supportEmail}`, label: site.supportEmail, external: true },
     ],
   },
   {
@@ -41,26 +40,27 @@ const COLUMNS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--border-subtle)] bg-[var(--ground)]">
-      <div className="container-site grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+    <footer className="bg-[var(--ink)] text-white">
+      <div className="container-site grid gap-10 pt-16 pb-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(4,1fr)]">
         <div className="max-w-xs sm:col-span-2 lg:col-span-1">
-          <Logo className="h-7" />
-          <p className="mt-4 text-sm leading-relaxed text-[var(--text-muted)]">
-            Members, fees, check-ins, classes and coaching for gyms, in one place.
-          </p>
+          <p className="text-sm font-bold text-[var(--lime)]">M4GYM</p>
+          <p className="mt-4 text-lg leading-snug text-white/80">Members, fees, check-ins, classes and coaching for gyms, in one place.</p>
+          <a href={`mailto:${site.supportEmail}`} className="mt-6 inline-block text-sm text-white/60 hover:text-[var(--lime)]">
+            {site.supportEmail}
+          </a>
         </div>
         {COLUMNS.map((column) => (
           <div key={column.title}>
-            <p className="text-sm font-semibold text-[var(--text-primary)]">{column.title}</p>
-            <ul className="mt-3 space-y-2.5">
+            <p className="text-sm font-medium text-white/45">{column.title}</p>
+            <ul className="mt-4 space-y-2.5">
               {column.items.map((item) => (
                 <li key={item.href}>
                   {'external' in item && item.external ? (
-                    <a href={item.href} className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)]">
+                    <a href={item.href} className="text-[15px] text-white/80 hover:text-[var(--lime)]">
                       {item.label}
                     </a>
                   ) : (
-                    <Link href={item.href} className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)]">
+                    <Link href={item.href} className="text-[15px] text-white/80 hover:text-[var(--lime)]">
                       {item.label}
                     </Link>
                   )}
@@ -70,11 +70,13 @@ export function Footer() {
           </div>
         ))}
       </div>
-      <div className="container-site flex flex-col gap-2 border-t border-[var(--border-subtle)] py-6 text-xs text-[var(--text-faint)] sm:flex-row sm:justify-between">
-        <p>
-          © {new Date().getFullYear()} {site.company}. M4GYM is a product of {site.company}.
-        </p>
-        <p>Made for gyms in {site.country} and everywhere else.</p>
+      <div className="border-t border-white/10">
+        <div className="container-site flex flex-col gap-2 py-5 text-sm text-white/45 sm:flex-row sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} {site.company}
+          </p>
+          <p>Made for gyms everywhere</p>
+        </div>
       </div>
     </footer>
   )

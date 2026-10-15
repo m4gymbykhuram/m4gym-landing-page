@@ -1,4 +1,3 @@
-import { ScanLine } from 'lucide-react'
 import { Callout } from '@/app/components/BlogParts'
 import type { Post } from '@/lib/blog'
 
@@ -10,7 +9,7 @@ function Body() {
         what they actually learn from it, and the answer is usually “not much”. Handwriting is hard to read, pages go missing, and nobody
         has time to add up a month of entries.
       </p>
-      <p>Checking in with a phone fixes most of that. Here is what changes, and how to switch without upsetting anyone.</p>
+      <p>This post covers what a register misses, how phone check-in works, and how to switch over without upsetting anyone.</p>
 
       <h2>What a register can’t tell you</h2>
       <ul>
@@ -66,14 +65,14 @@ function Body() {
       <h2>What you get back</h2>
       <p>
         Once check-ins are recorded properly, the useful questions answer themselves: who trained today, who hasn’t been in for two weeks,
-        and which hours are busiest. Those are the numbers that help you keep members, not just count them.
+        and which hours are busiest.
       </p>
 
       <Callout title="How M4GYM does it">
         <p>
           Members check in from the app or show the QR code on their membership card at the desk. You can require them to be at the gym,
-          and check-ins made without signal are sent when the phone reconnects. If a member hasn’t trained for a week, the app sends them a
-          gentle nudge.
+          and check-ins made without signal are sent when the phone reconnects. If a member hasn’t trained for a week, the app sends them one
+          reminder.
         </p>
       </Callout>
     </>
@@ -82,13 +81,12 @@ function Body() {
 
 export const post: Post = {
   slug: 'qr-check-in-for-gyms',
-  title: 'From sign-in register to QR check-in',
-  description: 'What a paper register can’t tell you, the two ways phone check-in works, and how to switch in two weeks.',
+  title: 'Moving from a paper sign-in book to QR check-in',
+  description: 'What a paper register misses, the two ways phone check-in works, and how to switch over in two weeks.',
   date: '2026-10-15',
   category: 'Running a gym',
   readMinutes: 4,
-  cover: 'In the door in a second.',
-  icon: ScanLine,
-  tone: 'ink',
+  image: '/shots/app-member-card.webp',
+  imageKind: 'phone',
   Body,
 }

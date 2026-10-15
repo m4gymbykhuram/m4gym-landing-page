@@ -1,234 +1,258 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, Check, Sparkles } from 'lucide-react'
-import { POSTS } from '@/lib/blog'
-import { formatPrice, getPricing, periodLabel } from '@/lib/plans'
+import { ArrowRight } from 'lucide-react'
+import { POSTS, formatPostDate } from '@/lib/blog'
+import { CHANGELOG, formatReleaseDate } from '@/lib/changelog'
+import { formatPrice, getPricing, limitLine, periodLabel } from '@/lib/plans'
 import { links } from '@/lib/site'
+import { Notification } from '../components/Artifacts'
 import { CtaBand, SectionTitle } from '../components/Blocks'
-import { PostCard } from '../components/BlogParts'
+import { DayTimeline, type DayEvent } from '../components/DayTimeline'
 import { BrowserFrame, PhoneFrame } from '../components/Frames'
 import { isFreePlan } from '../components/PlanCard'
+import { RoleTabs } from '../components/RoleTabs'
 import { StoreButtons } from '../components/StoreButtons'
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
-const ROLES = [
-  {
-    who: 'Owners and managers',
-    where: 'On the web',
-    lines: ['Members, fees and who still owes', 'Check-ins, classes and coach calendars', 'Equipment, stock and issues'],
-  },
-  {
-    who: 'Coaches',
-    where: 'In the app',
-    lines: ['Their clients and each one’s progress', 'Weekly plans, drafted with Ask M4', 'Appointments and classes in one schedule'],
-  },
-  {
-    who: 'Members',
-    where: 'In the app',
-    lines: ['Today’s workout, set by set', 'Check in with a tap or a card', 'Weight, streaks and what’s next'],
-  },
-]
+/** A crop of a real screenshot, shown as a card. */
+function Snippet({ src, alt, phone, height = 'h-72' }: { src: string; alt: string; phone?: boolean; height?: string }) {
+  return (
+    <div className={`relative overflow-hidden rounded-[22px] bg-[var(--surface)] shadow-[var(--shadow-pop)] ${height}`}>
+      <Image
+        src={src}
+        alt={alt}
+        width={phone ? 750 : 1920}
+        height={phone ? 1631 : 1200}
+        sizes="28rem"
+        className={phone ? 'absolute top-0 left-1/2 w-[78%] max-w-none -translate-x-1/2' : 'absolute top-0 left-0 w-[210%] max-w-none'}
+      />
+    </div>
+  )
+}
 
-const HIGHLIGHTS = [
+// Times and wording come from the server's reminder service.
+const DAY: DayEvent[] = [
   {
-    id: 'fees',
-    eyebrow: 'Fees',
-    title: 'Know who has paid before they walk in.',
-    image: '/shots/web-payments.webp',
-    alt: 'The payments page with money collected this month',
-    kind: 'web' as const,
+    time: '06:00',
+    who: 'Members',
+    title: 'Members check in',
+    text: 'A tap on Check in, or the QR code on their membership card scanned at the desk. You can require members to be at the gym. With no signal, the check-in is stored on the phone and sent with its original time later.',
+    artifact: <Snippet src="/shots/app-member-card.webp" alt="A member’s membership card with its QR code" phone />,
   },
   {
-    id: 'check-in',
-    eyebrow: 'Check-in',
-    title: 'In the door in a second.',
-    image: '/shots/app-member-card.webp',
-    alt: 'A digital membership card with a QR code',
-    kind: 'phone' as const,
+    time: '08:00',
+    who: 'Members',
+    title: 'Workout reminder',
+    text: 'Sent at 8:00 on days the member has a workout planned.',
+    artifact: <Notification title="Today’s workout is ready" body="Open the app when you’re at the gym and start it." />,
   },
   {
-    id: 'coaching',
-    eyebrow: 'Coaching',
-    title: 'Every member gets a coach and a plan.',
-    image: '/shots/app-coach-plan-editor.webp',
-    alt: 'A coach editing a weekly plan',
-    kind: 'phone' as const,
+    time: '09:00',
+    who: 'Owners, on Mondays',
+    title: 'Weekly fee summary',
+    text: 'Fees that are overdue and fees due in the next seven days. Members get their own reminder three days before their membership ends, and again the day after.',
+    artifact: <Notification title="Iron Yard: fees this week" body="3 overdue, 5 due in the next 7 days." />,
+  },
+  {
+    time: '12:30',
+    who: 'Coaches',
+    title: 'Coaches plan next week',
+    text: 'Ask M4 drafts a week from the member’s goal, available days and recent workouts. The coach edits it and saves it to the member’s app.',
+    artifact: <Snippet src="/shots/app-coach-plan-editor.webp" alt="A coach editing a member’s weekly plan" phone />,
+  },
+  {
+    time: '17:00',
+    who: 'Members',
+    title: 'A message after a quiet week',
+    text: 'If a member hasn’t trained for seven days, the app sends one message. They don’t get another for the same gap.',
+    artifact: <Notification title="It’s been a week" body="One short session gets you going again. Your plan is waiting in the app." />,
+  },
+  {
+    time: '18:00',
+    who: 'Members and coaches',
+    title: 'Class reminder',
+    text: 'Everyone booked into a class, and the coaches running it, hear about it an hour before it starts.',
+    artifact: <Notification title="HIIT at 7:00 PM" body="Starts in about an hour." />,
+  },
+  {
+    time: '21:30',
+    who: 'Owners',
+    title: 'The dashboard at the end of the day',
+    text: 'Check-ins, money collected this month, people waiting to join, overdue fees and open issues.',
+    artifact: <Snippet src="/shots/web-dashboard.webp" alt="The owner dashboard" />,
   },
 ]
 
 export default async function Home() {
   const pricing = await getPricing()
-  const freePlan = pricing?.gym.find(isFreePlan)
+  const gymPlans = pricing?.gym ?? []
+  const freePlan = gymPlans.find(isFreePlan)
   const coachingPrice = pricing?.personal ? formatPrice(pricing.personal.price, pricing.personal.currency) : null
 
   return (
     <>
       {/* Hero */}
       <section className="overflow-hidden">
-        <div className="container-site pt-16 pb-10 text-center md:pt-24">
-          <p className="rise mx-auto inline-flex items-center gap-2 rounded-full border border-[var(--border-solid)] bg-[var(--surface)] px-3.5 py-1.5 text-sm font-medium text-[var(--text-secondary)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--lime-deep)]" aria-hidden="true" />
-            For gym owners, coaches and members
+        <div className="container-site pt-12 md:pt-20">
+          <h1 className="rise headline max-w-[22ch] text-[clamp(2.5rem,5.5vw,4.75rem)]">
+            Gym management software, with an app for your members and coaches
+          </h1>
+          <p className="rise-2 mt-6 max-w-2xl text-lg leading-relaxed text-[var(--text-secondary)] md:text-xl">
+            Record membership fees and see who is overdue. Check members in with a QR card. Schedule classes and coaches. Give every
+            member a weekly training plan they follow in the app.
           </p>
-          <h1 className="rise-2 display mx-auto mt-6 max-w-5xl text-balance text-[clamp(2.75rem,7vw,5.5rem)]">Your whole gym, in one place.</h1>
-          <p className="rise-3 mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-[var(--text-secondary)] md:text-xl">
-            Members, fees, check-ins, classes and coaching. Owners run it from the web; coaches and members have it on their phones.
-          </p>
-          <div className="rise-3 mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href={links.signUp} className="btn btn-primary w-full sm:w-auto">
-              Start free <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+          <div className="rise-3 mt-8 flex flex-wrap gap-3">
+            <a href={links.signUp} className="btn btn-primary">
+              Create your gym <ArrowRight aria-hidden="true" strokeWidth={2.25} />
             </a>
-            <Link href={links.features} className="btn btn-outline w-full sm:w-auto">
-              See what it does
+            <Link href={links.features} className="btn btn-outline">
+              See the features
             </Link>
           </div>
           <p className="rise-3 mt-4 text-sm text-[var(--text-muted)]">
-            {freePlan?.memberLimit ? `Free for up to ${freePlan.memberLimit} members.` : 'Free plan available.'} No card needed.
+            {freePlan?.memberLimit ? `Free for up to ${freePlan.memberLimit} members. ` : 'Free plan available. '}
+            No card needed. The iPhone and Android app is included for your coaches and members.
           </p>
-        </div>
 
-        <div className="rise-4 container-site relative pb-20">
-          <div className="relative mx-auto max-w-5xl">
-            <BrowserFrame src="/shots/web-dashboard.webp" alt="The M4GYM dashboard: today’s check-ins, active members, overdue fees and what needs attention" priority />
+          <div className="rise-4 relative mt-14 pb-16 md:mt-16">
+            <BrowserFrame src="/shots/web-dashboard.webp" alt="The M4GYM owner dashboard: check-ins today, money collected, active members and overdue fees" priority />
             <PhoneFrame
               src="/shots/app-member-home.webp"
-              alt="The member app home: this week’s workouts, today’s plan and check-in"
-              className="absolute -right-2 bottom-[-3.5rem] hidden w-[24%] max-w-60 sm:block md:-right-8"
+              alt="The member app: this week’s training, the next workout and check-in"
+              className="absolute -right-2 bottom-0 hidden w-[22%] max-w-60 sm:block md:-right-6"
               priority
             />
           </div>
         </div>
       </section>
 
-      {/* Roles */}
-      <section className="border-y border-[var(--border-subtle)] bg-[var(--surface)] py-20 md:py-24">
-        <div className="container-site">
-          <SectionTitle title="Everyone at the gym, on the same page." />
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
-            {ROLES.map((role) => (
-              <div key={role.who} className="rounded-[var(--radius-card)] bg-[var(--surface-soft)] p-7">
-                <p className="text-sm font-medium text-[var(--text-muted)]">{role.where}</p>
-                <h3 className="mt-1 text-xl font-bold">{role.who}</h3>
-                <ul className="mt-5 space-y-3 text-[15px] text-[var(--text-secondary)]">
-                  {role.lines.map((line) => (
-                    <li key={line} className="flex gap-2.5">
-                      <Check className="mt-1 h-4 w-4 shrink-0 text-[var(--success)]" strokeWidth={2.25} aria-hidden="true" />
-                      {line}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+      {/* Who uses what */}
+      <section className="container-site py-16 md:py-24">
+        <SectionTitle
+          title="Who uses what"
+          intro="Owners and managers work in the web console. Coaches and members use the app on their phones. Everyone works from the same records."
+        />
+        <div className="mt-10">
+          <RoleTabs />
         </div>
       </section>
 
-      {/* Highlights, each opening its part of the features page */}
-      <section className="py-20 md:py-28">
-        <div className="container-site">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <SectionTitle title="Built for the work you do every day." />
-            <Link href={links.features} className="btn btn-outline w-fit shrink-0">
-              All features <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-            </Link>
-          </div>
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {HIGHLIGHTS.map((item) => (
-              <Link
-                key={item.id}
-                href={`${links.features}#${item.id}`}
-                className="group flex flex-col overflow-hidden rounded-[var(--radius-sheet)] bg-[var(--surface)] shadow-[var(--shadow-sheet)] transition-transform duration-300 hover:-translate-y-1"
-              >
-                <div className="flex-1 p-7 pb-0">
-                  <p className="text-sm font-semibold text-[var(--text-muted)]">{item.eyebrow}</p>
-                  <h3 className="display mt-2 text-3xl">{item.title}</h3>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold">
-                    Learn more
-                    <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} aria-hidden="true" />
-                  </span>
-                </div>
-                <div className="relative mt-8 h-64 overflow-hidden bg-[var(--surface-soft)]">
-                  {item.kind === 'web' ? (
-                    <Image src={item.image} alt={item.alt} width={1920} height={1200} sizes="(min-width: 1024px) 40vw, 100vw" className="absolute top-6 left-6 w-[160%] max-w-none rounded-tl-xl border border-[var(--border-solid)]" />
-                  ) : (
-                    <div className="absolute top-6 left-1/2 w-44 -translate-x-1/2 rounded-t-[32px] bg-[var(--ink)] p-[6px] pb-0">
-                      <Image src={item.image} alt={item.alt} width={750} height={1631} sizes="11rem" className="rounded-t-[26px]" />
-                    </div>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
+      {/* A normal day */}
+      <section className="container-site pb-16 md:pb-24">
+        <SectionTitle
+          title="A normal day with M4GYM"
+          intro="The times below are when M4GYM sends each reminder, in your gym’s time zone. Members and coaches can turn each kind off in the app’s settings."
+        />
+        <div className="mt-12">
+          <DayTimeline events={DAY} />
         </div>
       </section>
 
       {/* Personal coaching */}
-      <section className="container-site pb-20 md:pb-28">
-        <div className="grid items-center gap-10 overflow-hidden rounded-[var(--radius-sheet)] bg-[var(--ink)] p-8 text-white md:p-14 lg:grid-cols-[1.2fr_0.8fr] dark:bg-[var(--surface)]">
-          <div>
-            <p className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--lime)]">
-              <Sparkles className="h-4 w-4" strokeWidth={2} aria-hidden="true" /> Personal coaching
+      <section className="container-site pb-16 md:pb-24">
+        <div className="grid items-center gap-10 overflow-hidden rounded-[var(--radius-sheet)] bg-[var(--ink)] px-6 pt-10 text-white md:px-12 md:pt-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] dark:bg-[var(--surface)]">
+          <div className="pb-10 md:pb-12">
+            <h2 className="headline max-w-[18ch] text-[clamp(2rem,4vw,3.25rem)]">Personal coaching for people without a gym</h2>
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/70">
+              The same app works for people who train alone. They answer a few questions about their goal, body, equipment and the days
+              they can train, and get a weekly plan that adjusts as they log workouts. Ask M4 answers questions about the plan.
             </p>
-            <h2 className="display mt-3 text-4xl md:text-5xl">Training without a gym?</h2>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/75">
-              Get the app anyway. Tell it your goal, the kit you have and the days you can train, and it builds your week, adjusts as you go,
-              and answers questions with Ask M4.
-            </p>
-            <p className="mt-5 text-white/90">
+            <p className="mt-5 text-[15px] text-white/80">
               {coachingPrice
-                ? `Try a week free, then ${coachingPrice} a ${periodLabel(pricing?.personal?.billingPeriod ?? null)}.`
-                : 'Try a week free.'}{' '}
-              <span className="text-white/60">Cancel any time.</span>
+                ? `Free for the first week, then ${coachingPrice} a ${periodLabel(pricing?.personal?.billingPeriod ?? null)}. Cancel at any time.`
+                : 'Free for the first week. Cancel at any time.'}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
               <StoreButtons />
-              <Link href={links.coaching} className="inline-flex items-center gap-1 font-semibold text-[var(--lime)]">
-                How it works <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+              <Link href={links.coaching} className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-[var(--lime)] hover:underline">
+                About personal coaching <ArrowRight className="h-4 w-4" strokeWidth={2.25} aria-hidden="true" />
               </Link>
             </div>
           </div>
-          <div className="flex justify-center lg:justify-end">
-            <PhoneFrame src="/shots/app-member-workout.webp" alt="A workout in the app, set by set" className="w-[60%] max-w-64 ring-1 ring-white/10" />
+          <div className="flex justify-center self-end">
+            <div className="w-[62%] max-w-72 rounded-t-[40px] bg-black p-[6px] pb-0 ring-1 ring-white/10">
+              <Image src="/shots/app-member-workout.webp" alt="A workout in progress: back squat, four sets of eight" width={750} height={1631} sizes="18rem" className="h-[22rem] rounded-t-[34px] object-cover object-top" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing teaser */}
-      <section className="border-y border-[var(--border-subtle)] bg-[var(--surface)] py-20 md:py-24">
-        <div className="container-site flex flex-col justify-between gap-8 md:flex-row md:items-center">
-          <SectionTitle
-            title="Start free. Upgrade when the gym grows."
-            intro={`One price for the gym; the app is free for your coaches and members.${freePlan?.memberLimit ? ` Free covers up to ${freePlan.memberLimit} members.` : ''}`}
-          />
-          <div className="flex shrink-0 flex-wrap gap-3">
-            <Link href={links.pricing} className="btn btn-primary">
-              See pricing <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-            </Link>
-            <Link href={links.faq} className="btn btn-outline">
-              Read the FAQ
+      {/* Pricing */}
+      <section className="container-site pb-16 md:pb-24">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+          <SectionTitle title="Pricing" intro="One subscription per gym, billed monthly. Coaches and members don’t pay for the app." />
+          <div>
+            {gymPlans.length > 0 && (
+              <ul className="sheet divide-y divide-[var(--border-subtle)] px-2">
+                {gymPlans.map((plan) => {
+                  const price = formatPrice(plan.price, plan.currency)
+                  return (
+                    <li key={plan.key} className="grid grid-cols-[1fr_auto] items-center gap-4 px-4 py-4">
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold">{plan.name}</p>
+                        <p className="mt-0.5 text-sm text-[var(--text-muted)]">
+                          {limitLine(plan.memberLimit, 'member', 'members')} · {limitLine(plan.trainerLimit, 'coach', 'coaches')}
+                        </p>
+                      </div>
+                      <p className="display text-3xl tabular-nums">
+                        {price ?? '—'}
+                        {!isFreePlan(plan) && price && <span className="ml-1 text-sm font-medium text-[var(--text-muted)]">/{periodLabel(plan.billingPeriod).slice(0, 2)}</span>}
+                      </p>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+            <Link href={links.pricing} className="btn btn-outline mt-5">
+              Compare plans
             </Link>
           </div>
         </div>
       </section>
 
-      {/* From the blog */}
-      <section className="py-20 md:py-28">
-        <div className="container-site">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <SectionTitle eyebrow="From the blog" title="Guides for running a better gym." />
-            <Link href={links.blog} className="btn btn-outline w-fit shrink-0">
-              All posts <ArrowRight className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+      {/* Recently shipped and the blog */}
+      <section className="container-site grid gap-10 pb-16 md:pb-24 lg:grid-cols-2">
+        <div>
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 className="headline text-[clamp(1.75rem,3vw,2.5rem)]">Recently shipped</h2>
+            <Link href={links.changelog} className="text-sm font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)]">
+              Changelog
             </Link>
           </div>
-          <div className="mt-12 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {POSTS.slice(0, 3).map((post) => (
-              <PostCard key={post.slug} post={post} />
+          <ul className="sheet mt-5 divide-y divide-[var(--border-subtle)] px-6">
+            {CHANGELOG.slice(0, 2).flatMap((release) =>
+              release.items.slice(0, 3).map((item) => (
+                <li key={release.date + item.title} className="py-4">
+                  <p className="text-xs font-medium text-[var(--text-muted)]">{formatReleaseDate(release.date)}</p>
+                  <p className="mt-1 font-semibold leading-snug">{item.title}</p>
+                </li>
+              )),
+            )}
+          </ul>
+        </div>
+        <div>
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 className="headline text-[clamp(1.75rem,3vw,2.5rem)]">From the blog</h2>
+            <Link href={links.blog} className="text-sm font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)]">
+              All posts
+            </Link>
+          </div>
+          <ul className="sheet mt-5 divide-y divide-[var(--border-subtle)] px-2">
+            {POSTS.slice(0, 4).map((post) => (
+              <li key={post.slug}>
+                <Link href={`/blog/${post.slug}`} className="block rounded-[16px] px-4 py-4 transition-colors hover:bg-[var(--surface-soft)]">
+                  <p className="text-xs font-medium text-[var(--text-muted)]">
+                    {post.category} · {formatPostDate(post.date)}
+                  </p>
+                  <p className="mt-1 font-semibold leading-snug">{post.title}</p>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 

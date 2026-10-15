@@ -52,8 +52,9 @@ const FAQ = [
 
 export default function SupportPage() {
   return (
-    <div className="container-site py-14 md:py-20">
-      <h1 className="display max-w-3xl text-[clamp(2.5rem,6vw,4rem)]">How can we help?</h1>
+    <div className="container-site pt-10 pb-20 md:pt-16 md:pb-28">
+      <p className="rise inline-flex items-center gap-2 text-sm font-medium text-[var(--text-muted)]">Support</p>
+      <h1 className="rise-2 headline mt-5 max-w-3xl text-[clamp(2.75rem,6vw,5.75rem)]">How can we help?</h1>
       <p className="mt-5 max-w-2xl text-lg text-[var(--text-secondary)]">
         Real people answer every request. Gym owners on paid plans get priority.
       </p>

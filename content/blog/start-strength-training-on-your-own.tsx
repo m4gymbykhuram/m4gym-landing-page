@@ -1,4 +1,3 @@
-import { Dumbbell } from 'lucide-react'
 import Link from 'next/link'
 import { Callout } from '@/app/components/BlogParts'
 import type { Post } from '@/lib/blog'
@@ -91,8 +90,7 @@ function Body() {
 
       <h2>After four weeks</h2>
       <p>
-        Keep going with the same pattern, adding a little each week, or move to a plan that splits the body into different days. The best
-        plan is still the one you will actually do.
+        Keep going with the same pattern, adding a little each week, or move to a plan that splits the body into different days.
       </p>
 
       <Callout title="Training without a gym?">
@@ -107,13 +105,12 @@ function Body() {
 
 export const post: Post = {
   slug: 'start-strength-training-on-your-own',
-  title: 'Starting strength training on your own: the first four weeks',
-  description: 'Five movements, three days a week, and how to progress safely. A plain-words plan for training without a gym.',
+  title: 'A four-week plan for starting strength training on your own',
+  description: 'Five movements, three days a week, and how to add a little each week. For training at home or without a coach.',
   date: '2026-10-15',
   category: 'Training',
   readMinutes: 6,
-  cover: 'Your first four weeks.',
-  icon: Dumbbell,
-  tone: 'lime',
+  image: '/shots/app-member-workout.webp',
+  imageKind: 'phone',
   Body,
 }

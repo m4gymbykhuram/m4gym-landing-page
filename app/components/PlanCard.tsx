@@ -21,33 +21,28 @@ export function PlanCard({ plan }: { plan: PublicPlan }) {
         ? ['Ask M4: 5 messages a month']
         : ['Activity log of every change', 'Member export', 'Priority support']),
   ]
+  const dark = plan.highlight
   return (
-    <article
-      className={`relative flex flex-col rounded-[var(--radius-card)] border bg-[var(--surface)] p-7 ${
-        plan.highlight ? 'border-[var(--emphasis)] ring-1 ring-[var(--emphasis)]' : 'border-[var(--border-subtle)]'
-      }`}
-    >
-      {plan.highlight && (
-        <span className="absolute -top-3 left-7 rounded-full bg-[var(--lime)] px-3 py-1 text-xs font-bold text-[var(--ink)]">
-          Most gyms pick this
-        </span>
-      )}
-      <h3 className="text-lg font-bold">{plan.name}</h3>
-      {plan.description && <p className="mt-1 text-sm text-[var(--text-muted)]">{plan.description}</p>}
-      <p className="mt-5 flex items-baseline gap-1.5">
-        <span className="display text-5xl">{price ?? '—'}</span>
-        {!isFree && price && <span className="text-sm text-[var(--text-muted)]">/ {periodLabel(plan.billingPeriod)}</span>}
+    <article className={`relative flex flex-col rounded-[var(--radius-sheet)] p-7 md:p-8 ${dark ? 'bg-[var(--ink)] text-white dark:bg-[var(--surface-raised)]' : 'sheet'}`}>
+      <div className="flex items-baseline justify-between gap-3">
+        {dark && <span className="badge badge-lime">Recommended</span>}
+      </div>
+      <h3 className={`text-xl font-bold leading-snug ${dark ? 'mt-4' : ''}`}>{plan.name}</h3>
+      {plan.description && <p className={`mt-1 text-sm ${dark ? 'text-white/60' : 'text-[var(--text-muted)]'}`}>{plan.description}</p>}
+      <p className="mt-8 flex items-baseline gap-2">
+        <span className="display text-6xl tabular-nums">{price ?? '—'}</span>
+        {!isFree && price && <span className={`text-sm font-medium ${dark ? 'text-white/60' : 'text-[var(--text-muted)]'}`}>/ {periodLabel(plan.billingPeriod)}</span>}
       </p>
-      <ul className="mt-6 flex-1 space-y-2.5 text-sm text-[var(--text-secondary)]">
+      <ul className="mt-8 flex-1 space-y-2.5 text-[15px]">
         {lines.map((line) => (
-          <li key={line} className="flex gap-2.5">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--success)]" strokeWidth={2.25} aria-hidden="true" />
+          <li key={line} className={`flex gap-3 ${dark ? 'text-white/85' : 'text-[var(--text-secondary)]'}`}>
+            <Check className={`mt-0.5 h-4 w-4 shrink-0 ${dark ? 'text-[var(--lime)]' : 'text-[var(--success)]'}`} strokeWidth={2.5} aria-hidden="true" />
             {line}
           </li>
         ))}
       </ul>
-      <a href={links.signUp} className={`btn mt-7 w-full ${plan.highlight ? 'btn-primary' : 'btn-outline'}`}>
-        {isFree ? 'Start free' : `Start with ${plan.name}`}
+      <a href={links.signUp} className={`btn mt-8 w-full ${dark ? 'btn-lime' : 'btn-outline'}`}>
+        {isFree ? 'Start free' : 'Choose this plan'}
       </a>
     </article>
   )
