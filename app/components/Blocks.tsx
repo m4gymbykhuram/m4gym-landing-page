@@ -73,7 +73,7 @@ export function FaqList({ items }: { items: FaqItem[] }) {
             <span className="flex-1 text-[17px] font-bold leading-snug">{item.q}</span>
             <span
               aria-hidden="true"
-              className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--surface-raised)] transition-colors group-open:bg-[var(--ink)] group-open:text-[var(--lime)]"
+              className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--surface-raised)] transition-colors group-open:bg-[var(--lime)] group-open:text-[var(--ink)]"
             >
               <span className="absolute h-[2px] w-3 rounded-full bg-current" />
               <span className="absolute h-3 w-[2px] rounded-full bg-current transition-transform duration-300 group-open:scale-y-0" />

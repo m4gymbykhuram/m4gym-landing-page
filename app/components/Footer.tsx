@@ -40,7 +40,7 @@ const COLUMNS = [
 
 export function Footer() {
   return (
-    <footer className="bg-[var(--ink)] text-white">
+    <footer className="border-t border-[var(--border-subtle)] bg-[var(--surface)] text-white">
       <div className="container-site grid gap-10 pt-16 pb-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(4,1fr)]">
         <div className="max-w-xs sm:col-span-2 lg:col-span-1">
           <p className="text-sm font-bold text-[var(--lime)]">M4GYM</p>

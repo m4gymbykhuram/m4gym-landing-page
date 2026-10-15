@@ -59,7 +59,7 @@ export function DayTimeline({ events }: { events: DayEvent[] }) {
                 <span
                   key={event.time}
                   className={`absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-[var(--ground)] transition-colors duration-300 ${
-                    index <= active ? 'bg-[var(--ink)] dark:bg-[var(--lime)]' : 'bg-[var(--border-hover)]'
+                    index <= active ? 'bg-[var(--lime)]' : 'bg-[var(--border-hover)]'
                   }`}
                   style={{ left: `${dayProgress(event.time) * 100}%` }}
                   aria-hidden="true"
