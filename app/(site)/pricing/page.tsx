@@ -120,7 +120,7 @@ export default async function PricingPage() {
             <h2 className="headline text-[clamp(1.75rem,3vw,2.5rem)]">Personal coaching</h2>
             <p className="mt-3 text-lg text-white/70">
               For people who train without a gym. Separate from gym plans:{' '}
-              {coachingPrice ? `free for the first week, then ${coachingPrice} a ${periodLabel(personal?.billingPeriod ?? null)}.` : 'free for the first week.'}
+              {coachingPrice ? `${coachingPrice} a ${periodLabel(personal?.billingPeriod ?? null)}, with included Coaching Credits and optional top-ups.` : 'start with trial Coaching Credits, then choose a subscription or top-up.'}
             </p>
           </div>
           <Link href={links.coaching} className="btn btn-lime shrink-0">

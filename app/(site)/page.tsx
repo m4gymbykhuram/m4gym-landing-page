@@ -156,15 +156,15 @@ export default async function Home() {
       <section className="container-site pb-16 md:pb-24">
         <div className="grid items-center gap-10 overflow-hidden rounded-[var(--radius-sheet)] bg-[var(--surface-raised)] px-6 pt-10 text-white md:px-12 md:pt-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
           <div className="pb-10 md:pb-12">
-            <h2 className="headline max-w-[18ch] text-[clamp(2rem,4vw,3.25rem)]">Personal coaching for people without a gym</h2>
+            <h2 className="headline max-w-[18ch] text-[clamp(2rem,4vw,3.25rem)]">Train on your own, with a plan that fits</h2>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/70">
-              The same app works for people who train alone. They answer a few questions about their goal, body, equipment and the days
-              they can train, and get a weekly plan that adjusts as they log workouts. Ask M4 answers questions about the plan.
+              Describe your goal and what makes training difficult. Review your details, get a plan, and share a quick daily update.
+              M4 AI Coach adapts your upcoming training around your equipment, available time and how you feel.
             </p>
             <p className="mt-5 text-[15px] text-white/80">
               {coachingPrice
-                ? `Free for the first week, then ${coachingPrice} a ${periodLabel(pricing?.personal?.billingPeriod ?? null)}. Cancel at any time.`
-                : 'Free for the first week. Cancel at any time.'}
+                ? `Personal subscriptions are ${coachingPrice} a ${periodLabel(pricing?.personal?.billingPeriod ?? null)}, with included Coaching Credits and optional top-ups.`
+                : 'Start with trial Coaching Credits. Subscribe for a monthly allowance and top up when you need more.'}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
               <StoreButtons />

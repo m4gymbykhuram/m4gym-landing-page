@@ -61,7 +61,7 @@ export const FAQ: FaqGroup[] = [
     items: [
       {
         q: 'Do my members and coaches pay for the app?',
-        a: 'No. The app is free for everyone at your gym; your plan covers it. Personal coaching is a separate, optional subscription for people training on their own.',
+        a: 'Your gym subscription covers app access and a shared AI allowance. Owners can top up Coaching Credits for everyone. Members can optionally buy personal credits; the app asks before using them when gym-funded coaching runs out, unless they have opted into automatic use.',
       },
       {
         q: 'Do you take payments from my members?',
@@ -87,11 +87,15 @@ export const FAQ: FaqGroup[] = [
       },
       {
         q: 'Does Ask M4 replace coaches?',
-        a: 'No. It drafts; people decide. A coach reviews and changes every plan it suggests, and nothing it says is medical advice.',
+        a: 'Owners choose AI or human coaching per member. AI-coached members receive automatic plan adjustments. For human-coached members, AI collects updates and proposes changes for their coach to approve.',
       },
       {
         q: 'What is personal coaching?',
-        a: 'The app for people who train without a gym. It builds your week from your goal, your kit and your days, and adjusts as you go. It starts with a free trial.',
+        a: 'Personal coaching works entirely in the mobile app, with or without a gym. Describe your needs, review your details, and get a plan. Daily updates help AI adapt your upcoming workouts and recovery. Subscriptions include Coaching Credits; top-ups are optional.',
+      },
+      {
+        q: 'What happens when Coaching Credits run out?',
+        a: 'AI features pause until you top up or your included allowance renews. Existing plans, workout logging, daily updates and human coaching keep working. Included credits refresh monthly; purchased credits carry over.',
       },
       {
         q: 'Can I keep my progress if I join a gym later?',

@@ -18,7 +18,7 @@ export function PlanCard({ plan }: { plan: PublicPlan }) {
     ...(plan.features?.length
       ? plan.features
       : isFree
-        ? ['Ask M4: 5 messages a month']
+        ? ['Included Coaching Credits', 'Optional AI top-ups']
         : ['Activity log of every change', 'Member export', 'Priority support']),
   ]
   const dark = plan.highlight
